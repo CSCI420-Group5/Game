@@ -49,8 +49,8 @@ sf::ConvexShape Wrestler::getPath()
     path.setPointCount(4);
     path.setPoint(0, sf::Vector2f(fin_x, fin_y));
     path.setPoint(1, sf::Vector2f(x, y));
-    path.setPoint(2, sf::Vector2f(x+width, y+height));
-    path.setPoint(3, sf::Vector2f(fin_x+width, fin_y+height));
+    path.setPoint(2, sf::Vector2f(x+width, y+length));
+    path.setPoint(3, sf::Vector2f(fin_x+width, fin_y+length));
 
     return path;
 }
@@ -168,13 +168,13 @@ int Wrestler::getX()
 }
 int Wrestler::getY()
 {
-    return Y;
+    return y;
 }
-int Wrestler::getXSpd()
+float Wrestler::getXSpd()
 {
     return x_spd;
 }
-int Wrestler::getYSpd()
+float Wrestler::getYSpd()
 {
     return y_spd;
 }
@@ -186,11 +186,11 @@ void Wrestler::setY(int num)
 {
     y = num;
 }
-void Wrestler::setXSpd(int num)
+void Wrestler::setXSpd(float num)
 {
     x_spd = num;
 }
-void Wrestler::setYSpd(int num)
+void Wrestler::setYSpd(float num)
 {
     y_spd = num;
 }
