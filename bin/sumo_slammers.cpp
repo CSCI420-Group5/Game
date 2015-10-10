@@ -5,9 +5,13 @@
 
 #include <SFML/Graphics.hpp>
 #include "Wrestler.h"
+#include "LocationalMap.h"
 
 int main(int argc, char** argv)
 {
+    LocationalMap loc_map;
+    loc_map.init(800, 600, 25);
+
   // create main window
   sf::RenderWindow App(sf::VideoMode(800,600,32), "Sumo Slamemrs - SFML");
 

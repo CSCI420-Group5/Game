@@ -11,6 +11,8 @@ class Wrestler
 
         void init(int hit_length, int hit_width);
 
+        int getId();
+
         int getMovedX();
         int getMovedY();
         sf::ConvexShape getPath(); //Returns the intermediate shape a wrestles will move through this frame (to avoid clipping)
@@ -35,10 +37,10 @@ class Wrestler
         void setIsHuman(bool val);
         void setCurrentState(int num);
 
-        int getLength();
+        int getHeight();
         int getWidth();
 
-        void setLength(int num);
+        void setHeight(int num);
         void setWidth(int num);
 
         int getX();
@@ -53,6 +55,8 @@ class Wrestler
 
     protected:
     private:
+        int id;
+
         //attributes
         int speed;
         int strength;
@@ -63,9 +67,9 @@ class Wrestler
         bool is_human;
         int current_state; //0=normal, 1=grabbing, 2=grabbed, 3=thrown, 4=dashing, 5=falling
 
-        //hitbox
-        int length;
+        //hitbox, width is x direction and height is y direction
         int width;
+        int height;
 
         //position kept as the top-left corner of the hitbox
         int x;

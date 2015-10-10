@@ -6,11 +6,14 @@ Wrestler::Wrestler()
     //ctor
 }
 
-void Wrestler::init(int hit_length, int hit_width)
+void Wrestler::init(int hit_height, int hit_width)
 {
+    //Maybe should be a more unique id
+    id = reinterpret_cast<int>(&id);
+
     current_state = 0;
 
-    length = hit_length;
+    height = hit_height;
     width = hit_width;
 
     x_spd = 0;
@@ -49,8 +52,8 @@ sf::ConvexShape Wrestler::getPath()
     path.setPointCount(4);
     path.setPoint(0, sf::Vector2f(fin_x, fin_y));
     path.setPoint(1, sf::Vector2f(x, y));
-    path.setPoint(2, sf::Vector2f(x+width, y+length));
-    path.setPoint(3, sf::Vector2f(fin_x+width, fin_y+length));
+    path.setPoint(2, sf::Vector2f(x+width, y+height));
+    path.setPoint(3, sf::Vector2f(fin_x+width, fin_y+height));
 
     return path;
 }
@@ -98,6 +101,10 @@ void Wrestler::useDash()
 
 
 //General setters an getters below here:
+int Wrestler::getId()
+{
+    return id;
+}
 int Wrestler::getSpeed()
 {
     return speed;
@@ -145,21 +152,21 @@ void Wrestler::setCurrentState(int num)
     current_state = num;
 }
 
-int Wrestler::getLength()
+int Wrestler::getHeight()
 {
-    return length;
+    return height;
 }
 int Wrestler::getWidth()
 {
     return width;
 }
-void Wrestler::setLength(int num)
+void Wrestler::setHeight(int num)
 {
-    length = num;
+    height = num;
 }
 void Wrestler::setWidth(int num)
 {
-    length = num;
+    width = num;
 }
 
 int Wrestler::getX()
