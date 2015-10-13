@@ -9,7 +9,7 @@ LocationalMap::LocationalMap()
 
 void LocationalMap::init(int scn_width, int scn_height, int cell_sz)
 {
-    //cell_size should be divisible be screen width and height to work correctly
+    //cell_size should be divisible by screen width and height to work correctly
     cell_size = cell_sz;
     screen_w = scn_width;
     screen_h = scn_height;
@@ -87,7 +87,7 @@ void LocationalMap::clearCells()
     }
 }
 
-LocationalMap::~LocationalMap()
+/* LocationalMap::~LocationalMap()
 {
     delete cells;
-}
+} */

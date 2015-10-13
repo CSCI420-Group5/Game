@@ -7,7 +7,7 @@ class LocationalMap
 {
     public:
         LocationalMap();
-        virtual ~LocationalMap();
+        // virtual ~LocationalMap(); commented out due to crashing
 
         void init(int scn_width, int scn_height, int cell_sz);
         void add(Wrestler sumo);
