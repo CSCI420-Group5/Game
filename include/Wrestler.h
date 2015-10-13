@@ -55,7 +55,7 @@ class Wrestler
 
     protected:
     private:
-        int id;
+        long int id;
 
         //attributes
         int speed;

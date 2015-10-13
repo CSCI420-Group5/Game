@@ -9,7 +9,7 @@ Wrestler::Wrestler()
 void Wrestler::init(int hit_height, int hit_width)
 {
     //Maybe should be a more unique id
-    id = reinterpret_cast<int>(&id);
+    id = reinterpret_cast<long int>(&id);
 
     current_state = 0;
 
@@ -64,21 +64,21 @@ void Wrestler::moveWrestler(float friction)
     y = getMovedY();
 
     //If movement is not zero, move closer to it based on friction
-    if(x < 0)
+    if(x_spd < 0)
     {
-        x = x + friction;
+        x_spd = x_spd + friction;
     }
     else if(x > 0)
     {
-        x = x - friction;
+        x_spd = x_spd - friction;
     }
-    if(y < 0)
+    if(y_spd < 0)
     {
-        y = y + friction;
+        y_spd = y_spd + friction;
     }
-    else if(y > 0)
+    else if(y_spd > 0)
     {
-        y = y - friction;
+        y_spd = y_spd - friction;
     }
 }
 
