@@ -87,6 +87,15 @@ void LocationalMap::clearCells()
     }
 }
 
+int LocationalMap::getCols()
+{
+    return cols;
+}
+int LocationalMap::getRows()
+{
+    return rows;
+}
+
 LocationalMap::~LocationalMap()
 {
     delete cells;

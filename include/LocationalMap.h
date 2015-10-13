@@ -14,6 +14,9 @@ class LocationalMap
         std::vector<int> getCell(int i, int j);
         void clearCells();
         void printCells();
+
+        int getCols();
+        int getRows();
     protected:
     private:
         int cell_size;
