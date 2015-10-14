@@ -6,7 +6,7 @@ Wrestler::Wrestler()
     //ctor
 }
 
-void Wrestler::init(int hit_height, int hit_width)
+void Wrestler::init(int hit_height, int hit_width, int x_pos, int y_pos)
 {
     //Maybe should be a more unique id
     id = reinterpret_cast<long int>(&id);
@@ -15,6 +15,9 @@ void Wrestler::init(int hit_height, int hit_width)
 
     height = hit_height;
     width = hit_width;
+
+    x = x_pos;
+    y = y_pos;
 
     x_spd = 0;
     y_spd = 0;
@@ -101,7 +104,7 @@ void Wrestler::useDash()
 
 
 //General setters an getters below here:
-int Wrestler::getId()
+long int Wrestler::getId()
 {
     return id;
 }
@@ -169,11 +172,11 @@ void Wrestler::setWidth(int num)
     width = num;
 }
 
-int Wrestler::getX()
+int Wrestler::getX() const
 {
     return x;
 }
-int Wrestler::getY()
+int Wrestler::getY() const
 {
     return y;
 }
@@ -200,6 +203,11 @@ void Wrestler::setXSpd(float num)
 void Wrestler::setYSpd(float num)
 {
     y_spd = num;
+}
+
+bool Wrestler::operator < (const Wrestler &wrest) const
+{
+  return (y < wrest.getY());
 }
 
 Wrestler::~Wrestler()

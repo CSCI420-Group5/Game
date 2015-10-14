@@ -6,6 +6,7 @@
 #include "Wrestler.h"
 #include "LocationalMap.h"
 #include "Logic.h"
+#include "FumioView.h"
 
 int main(int argc, char** argv)
 {
@@ -13,18 +14,23 @@ int main(int argc, char** argv)
     loc_map.init(800, 600, 25);
 
     // create main window
-    sf::RenderWindow App(sf::VideoMode(800,600,32), "Sumo Slamemrs - SFML");
+    sf::RenderWindow App(sf::VideoMode(800,600,32), "Sumo Slammers - SFML");
 
     // TODO when we have more wrestlers, create a vector and loop through them?
 
     // create wrestlers
     Wrestler human_sumo;
-    human_sumo.init(5, 5);
+    human_sumo.init(20, 20, 200, 299);
     human_sumo.setIsHuman(true);
 
     Wrestler ai_sumo;
-    ai_sumo.init(5, 5);
+    ai_sumo.init(20, 20, 600, 300);
     ai_sumo.setIsHuman(false);
+
+    std::vector<Wrestler> wrestlers;
+    wrestlers.push_back(human_sumo);
+    wrestlers.push_back(ai_sumo);
+    FumioView view;
 
     // create game timer used to keep things synched
     sf::Clock timer;
@@ -51,8 +57,10 @@ int main(int argc, char** argv)
         // clear screen and fill with blue
         App.clear(sf::Color::Blue);
 
-        // TODO have basic shape (rectangle?) for WrestlerView objects 
+        // TODO have basic shape (rectangle?) for WrestlerView objects
         // associated with created wrestlers and draw them
+        view.drawWrestlers(&App, wrestlers);
+
 
         // display
         App.display();

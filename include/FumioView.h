@@ -1,5 +1,7 @@
 #ifndef FUMIOVIEW_H
 #define FUMIOVIEW_H
+#include "SFML/Graphics.hpp"
+#include "Wrestler.h"
 
 
 class FumioView
@@ -8,12 +10,11 @@ class FumioView
         FumioView();
         virtual ~FumioView();
 
-        void init(sf::Texture sprite_sht);
         void init();
+        void drawWrestlers(sf::RenderWindow *App, std::vector<Wrestler> wrestlers);
     protected:
     private:
-        sf::Sprite sprite;
-        sf::RectangleShape hitbox:
+        sf::Texture sprite_sheet;
 };
 
 #endif // FUMIOVIEW_H

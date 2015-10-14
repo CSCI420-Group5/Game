@@ -9,9 +9,9 @@ class Wrestler
         Wrestler();
         virtual ~Wrestler();
 
-        void init(int hit_length, int hit_width);
+        void init(int hit_length, int hit_width, int x_pos, int y_pos);
 
-        int getId();
+        long int getId();
 
         int getMovedX();
         int getMovedY();
@@ -43,8 +43,8 @@ class Wrestler
         void setHeight(int num);
         void setWidth(int num);
 
-        int getX();
-        int getY();
+        int getX() const;
+        int getY() const;
         float getXSpd();
         float getYSpd();
 
@@ -52,6 +52,8 @@ class Wrestler
         void setY(int num);
         void setXSpd(float num);
         void setYSpd(float num);
+
+        bool operator<(const Wrestler &wrest) const;
 
     protected:
     private:
