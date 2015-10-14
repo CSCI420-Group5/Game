@@ -12,25 +12,25 @@ void getInputAndMove(Wrestler& sumo, sf::Time time)
     
     // move left
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        sumo.setXSpd(-move_factor-10);
+        sumo.setXSpd(-move_factor-1);
         sumo.setX(sumo.getMovedX());
     }
 
     // move right
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        sumo.setXSpd(move_factor+10);
+        sumo.setXSpd(move_factor+1);
         sumo.setX(sumo.getMovedX());
     }
 
     // move up
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        sumo.setYSpd(-move_factor-10);
+        sumo.setYSpd(-move_factor-1);
         sumo.setY(sumo.getMovedY());
     }
 
     // move down
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        sumo.setYSpd(move_factor+10);
+        sumo.setYSpd(move_factor+1);
         sumo.setY(sumo.getMovedY());
     }
 }
@@ -49,25 +49,25 @@ void moveAI(Wrestler& ai_sumo, Wrestler human_sumo, sf::Time time)
 
     // move left
     if (player_loc.x < ai_loc.x) {
-        ai_sumo.setXSpd(-move_factor-10);
+        ai_sumo.setXSpd(-move_factor-1);
         ai_sumo.setX(ai_sumo.getMovedX());
     }
 
     // move right
     else if (player_loc.x > ai_loc.x) {
-        ai_sumo.setXSpd(move_factor+10);
+        ai_sumo.setXSpd(move_factor+1);
         ai_sumo.setX(ai_sumo.getMovedX());
     }
 
     // move up
     if (player_loc.y < ai_loc.y) {
-        ai_sumo.setYSpd(-move_factor-10);
+        ai_sumo.setYSpd(-move_factor-1);
         ai_sumo.setY(ai_sumo.getMovedY());
     }
 
     // move down
     if (player_loc.y > ai_loc.y) {
-        ai_sumo.setYSpd(move_factor+10);
+        ai_sumo.setYSpd(move_factor+1);
         ai_sumo.setY(ai_sumo.getMovedY());
     }
 }

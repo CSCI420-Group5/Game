@@ -26,9 +26,13 @@ void Wrestler::init(int hit_height, int hit_width, int x_pos, int y_pos)
 int Wrestler::getMovedX()
 {
     //round off speeds because pixels are whole numbers
-    int fin_x = x + int(x_spd - 0.5);
 
+    int fin_x;
     if(x_spd < 0)
+    {
+        fin_x = x + int(x_spd - 0.5);
+    }
+    else
     {
         fin_x = x + int(x_spd + 0.5);
     }
@@ -37,9 +41,12 @@ int Wrestler::getMovedX()
 
 int Wrestler::getMovedY()
 {
-    int fin_y = y + int(y_spd - 0.5);
-
+    int fin_y;
     if(y_spd < 0)
+    {
+        fin_y = y + int(y_spd - 0.5);
+    }
+    else
     {
         fin_y = y + int(y_spd + 0.5);
     }
