@@ -1,5 +1,6 @@
 /*
    Main game loop
+   Github example
  */
 
 #include <SFML/Graphics.hpp>
