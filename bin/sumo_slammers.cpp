@@ -48,12 +48,13 @@ int main(int argc, char** argv)
                 App.close();
         }
         sf::Time time = timer.restart();
+        float elapsed_time = time.asSeconds();
 
         // move human controlled wrestler
-        getInputAndMove(wrestlers[0], time);
+        getInputAndMove(wrestlers[0], elapsed_time);
 
         // move ai controlled wrestler
-        moveAI(wrestlers[1], wrestlers[0], time);
+        moveAI(wrestlers[1], wrestlers[0], elapsed_time);
 
         // clear screen and fill with blue
         App.clear(sf::Color::Blue);

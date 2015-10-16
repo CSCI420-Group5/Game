@@ -4,9 +4,9 @@
 #include "SFML/Graphics.hpp"
 #include "Wrestler.h"
 
-void getInputAndMove(Wrestler& sumo, sf::Time time);
+void getInputAndMove(Wrestler& sumo, float elapsed_time);
 
-void moveAI(Wrestler& ai_sumo, Wrestler human_sumo, sf::Time time);
+void moveAI(Wrestler& ai_sumo, Wrestler human_sumo, float elapsed_time);
 
 // detectCollision()
 // calcCollision()

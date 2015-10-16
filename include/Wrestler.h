@@ -13,8 +13,8 @@ class Wrestler
 
         long int getId();
 
-        int getMovedX();
-        int getMovedY();
+        float getMovedX();
+        float getMovedY();
         sf::ConvexShape getPath(); //Returns the intermediate shape a wrestles will move through this frame (to avoid clipping)
         void moveWrestler(float friction);
 
@@ -48,8 +48,8 @@ class Wrestler
         float getXSpd();
         float getYSpd();
 
-        void setX(int num);
-        void setY(int num);
+        void setX(float num);
+        void setY(float num);
         void setXSpd(float num);
         void setYSpd(float num);
 
@@ -74,8 +74,8 @@ class Wrestler
         int height;
 
         //position kept as the top-left corner of the hitbox
-        int x;
-        int y;
+        float x;
+        float y;
         //Speeds stored as floats so can increase slowly. Should be cast to integers before using.
         float x_spd;
         float y_spd;
