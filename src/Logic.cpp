@@ -1,5 +1,6 @@
 #include "Logic.h"
 #include <cmath>
+#include <iostream>
 
 void moveWrestler(Wrestler& sumo, int dir, float move_factor)
 {
@@ -168,4 +169,36 @@ void moveAI(Wrestler& ai_sumo, Wrestler human_sumo, float elapsed_time)
 
     else
         moveWrestler(ai_sumo, 5, move_factor);
+}
+
+void calcCollision(std::vector<int> ids, std::vector<Wrestler>& wrestlers)
+{
+    int wrestler1, wrestler2;
+    int tmp_id = ids[0];
+    for (int i=0; i<wrestlers.size(); i++) {
+        if (wrestlers[i].getId() == tmp_id)
+            wrestler1 = i;
+    }
+    tmp_id = ids[1];
+    for (int i=0; i<wrestlers.size(); i++) {
+        if (wrestlers[i].getId() == tmp_id)
+            wrestler2 = i;
+    }
+
+    // v1 = (u1(m1-m2)+2m2u2)/m1+m2
+    // v2 = (u2(m2-m1)+2m1u1)/m1+m2
+    sf::Vector2f
+    u1(wrestlers[wrestler1].getXSpd(),wrestlers[wrestler1].getYSpd());
+
+    sf::Vector2f
+    u2(wrestlers[wrestler2].getXSpd(),wrestlers[wrestler2].getYSpd());
+
+    // using equal mass temporarily
+    sf::Vector2f v1 = u2;
+    sf::Vector2f v2 = u1;
+
+    wrestlers[wrestler1].setXSpd(v1.x);
+    wrestlers[wrestler1].setYSpd(v1.y);
+    wrestlers[wrestler2].setXSpd(v2.x);
+    wrestlers[wrestler2].setYSpd(v2.y);
 }

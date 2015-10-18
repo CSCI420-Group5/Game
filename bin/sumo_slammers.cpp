@@ -1,6 +1,5 @@
 /*
    Main game loop
-   Github example
  */
 
 #include <SFML/Graphics.hpp>
@@ -9,10 +8,12 @@
 #include "Logic.h"
 #include "FumioView.h"
 
+#include <iostream>
+
 int main(int argc, char** argv)
 {
     LocationalMap loc_map;
-    loc_map.init(800, 600, 25);
+    loc_map.init(800, 600, 20);
 
     // create main window
     sf::RenderWindow App(sf::VideoMode(800,600,32), "Sumo Slammers - SFML");
@@ -50,11 +51,34 @@ int main(int argc, char** argv)
         sf::Time time = timer.restart();
         float elapsed_time = time.asSeconds();
 
+        // add wrestlers to locational map
+        loc_map.add(wrestlers[0]);
+        loc_map.add(wrestlers[1]);
+
+        // check for collisions
+        for (int i=0; i<loc_map.getRows(); i++) {
+            for (int j=0; j<loc_map.getCols(); j++) {
+                std::vector<int> tmp = loc_map.getCell(i, j);
+                // if there's a collision
+                if (tmp.size() >= 2) {
+                    calcCollision(tmp, wrestlers);
+                    loc_map.clearCells();
+                    App.clear(sf::Color::Blue);
+                    view.drawWrestlers(&App, wrestlers);
+                    App.display();
+                    continue;
+                }
+            }
+        }
+
         // move human controlled wrestler
         getInputAndMove(wrestlers[0], elapsed_time);
 
         // move ai controlled wrestler
         moveAI(wrestlers[1], wrestlers[0], elapsed_time);
+
+        // clear location map
+        loc_map.clearCells();
 
         // clear screen and fill with blue
         App.clear(sf::Color::Blue);
@@ -62,7 +86,6 @@ int main(int argc, char** argv)
         // TODO have basic shape (rectangle?) for WrestlerView objects
         // associated with created wrestlers and draw them
         view.drawWrestlers(&App, wrestlers);
-
 
         // display
         App.display();
