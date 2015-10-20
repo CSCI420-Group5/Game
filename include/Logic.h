@@ -5,10 +5,10 @@
 #include "Wrestler.h"
 #include "LocationalMap.h"
 
-void getInputAndMove(Wrestler& sumo, float elapsed_time);
+void getInputAndMove(Wrestler& sumo);
 
-void moveAI(Wrestler& ai_sumo, Wrestler human_sumo, float elapsed_time);
+void moveAI(Wrestler& ai_sumo, Wrestler human_sumo);
 
 void calcCollision(std::vector<int> ids, std::vector<Wrestler>& wrestlers);
 
-#endif // LOGIC_H 
+#endif // LOGIC_H
