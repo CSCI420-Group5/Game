@@ -5,6 +5,7 @@
 MainMenu::MainMenu(float width, float height)
 {
 	inMenu = 0;
+	selected = 0;
 
 	font.loadFromFile("arial.ttf");
 
@@ -17,6 +18,11 @@ MainMenu::MainMenu(float width, float height)
 	text[1].setColor(sf::Color::White);
 	text[1].setString("Exit");
 	text[1].setPosition(sf::Vector2f(width / 2, height / 1.5));
+
+	text[2].setFont(font);
+	text[2].setColor(sf::Color::White);
+	text[2].setString("~ ~ Sumo Slammers! ~ ~");
+	text[2].setPosition(sf::Vector2f(width / 2, height / 4));
 
 	highlight.setSize(sf::Vector2f(90, 40));
   	highlight.setFillColor(sf::Color(150, 0, 35));
@@ -41,6 +47,7 @@ void MainMenu::draw(sf::RenderWindow &window)
 	
 	window.draw(text[0]);
 	window.draw(text[1]);
+	window.draw(text[2]);
 }
 
 void MainMenu::navigate(sf::RenderWindow &window)

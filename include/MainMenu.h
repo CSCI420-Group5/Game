@@ -23,7 +23,7 @@ class MainMenu
         int inMenu;
 
 		sf::Font font;
-		sf::Text text[2];
+		sf::Text text[3];
         sf::RectangleShape highlight;
 
     protected:
