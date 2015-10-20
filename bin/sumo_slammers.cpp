@@ -103,7 +103,7 @@ int main(int argc, char** argv)
                 // check for collisions
                 for (int i=0; i<loc_map.getRows(); i++) {
                     for (int j=0; j<loc_map.getCols(); j++) {
-                        std::vector<int> tmp = loc_map.getCell(i, j);
+                        std::vector<long int> tmp = loc_map.getCell(i, j);
                         // if there's a collision
                         if (tmp.size() >= 2) {
                             bool collided = calcCollision(tmp, wrestlers, have_collided);

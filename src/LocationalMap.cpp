@@ -15,7 +15,7 @@ void LocationalMap::init(int scn_width, int scn_height, int cell_sz)
     screen_h = scn_height;
     cols = scn_width / cell_size;
     rows = scn_height / cell_size;
-    cells = new std::vector<int>[rows*cols];
+    cells = new std::vector<long int>[rows*cols];
 }
 
 void LocationalMap::printCells()
@@ -32,7 +32,7 @@ void LocationalMap::printCells()
     }
 }
 
-std::vector<int> LocationalMap::getCell(int i, int j)
+std::vector<long int> LocationalMap::getCell(int i, int j)
 //a cell will return a vector of all actor id's in it.
 //Can then only compare actors in the same cell to find collisions
 {

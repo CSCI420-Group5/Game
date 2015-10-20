@@ -1,5 +1,6 @@
 #include "Logic.h"
 #include <cmath>
+#include <iostream>
 
 void moveWrestlers(std::vector<Wrestler> &wrestlers)
 {
@@ -146,21 +147,22 @@ void setAISpd(Wrestler& ai_sumo, Wrestler human_sumo)
         setWrestlerSpd(ai_sumo, 5);*/
 }
 
-bool calcCollision(std::vector<int> ids, std::vector<Wrestler>& wrestlers, bool have_collided)
+bool calcCollision(std::vector<long int> ids, std::vector<Wrestler>& wrestlers, bool have_collided)
 {
     if (!have_collided){
         int w1, w2;
         long int tmp_id = ids[0];
         for (unsigned int i=0; i<wrestlers.size(); i++) {
-            if (wrestlers[i].getId() == tmp_id)
+            if (wrestlers[i].getId() == tmp_id) {
                 w1 = i;
+            }
         }
         tmp_id = ids[1];
         for (unsigned int i=0; i<wrestlers.size(); i++) {
-            if (wrestlers[i].getId() == tmp_id)
+            if (wrestlers[i].getId() == tmp_id) {
                 w2 = i;
+            }
         }
-
 
         // create rectangle shapes to detect collisions
         sf::RectangleShape
