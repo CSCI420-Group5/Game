@@ -48,37 +48,41 @@ int main(int argc, char** argv)
             if(Event.type == sf::Event::Closed)
                 App.close();
         }
-        sf::Time time = timer.restart();
-        float elapsed_time = time.asSeconds();
 
-        // add wrestlers to locational map
-        loc_map.add(wrestlers[0]);
-        loc_map.add(wrestlers[1]);
+        //Don't update the game logic unless a certain amount of time has passed
+        if(timer.getElapsedTime().asSeconds() > 1.0/60)
+        {
+            timer.restart();
 
-        // check for collisions
-        for (int i=0; i<loc_map.getRows(); i++) {
-            for (int j=0; j<loc_map.getCols(); j++) {
-                std::vector<int> tmp = loc_map.getCell(i, j);
-                // if there's a collision
-                if (tmp.size() >= 2) {
-                    calcCollision(tmp, wrestlers);
-                    loc_map.clearCells();
-                    App.clear(sf::Color::Blue);
-                    view.drawWrestlers(&App, wrestlers);
-                    App.display();
-                    continue;
+            // add wrestlers to locational map
+            loc_map.add(wrestlers[0]);
+            loc_map.add(wrestlers[1]);
+
+            // check for collisions
+            for (int i=0; i<loc_map.getRows(); i++) {
+                for (int j=0; j<loc_map.getCols(); j++) {
+                    std::vector<int> tmp = loc_map.getCell(i, j);
+                    // if there's a collision
+                    if (tmp.size() >= 2) {
+                        calcCollision(tmp, wrestlers);
+                        loc_map.clearCells();
+                        App.clear(sf::Color::Blue);
+                        view.drawWrestlers(&App, wrestlers);
+                        App.display();
+                        continue;
+                    }
                 }
             }
+
+            // move human controlled wrestler
+            getInputAndMove(wrestlers[0]);
+
+            // move ai controlled wrestler
+            moveAI(wrestlers[1], wrestlers[0]);
+
+            // clear location map
+            loc_map.clearCells();
         }
-
-        // move human controlled wrestler
-        getInputAndMove(wrestlers[0], elapsed_time);
-
-        // move ai controlled wrestler
-        moveAI(wrestlers[1], wrestlers[0], elapsed_time);
-
-        // clear location map
-        loc_map.clearCells();
 
         // clear screen and fill with blue
         App.clear(sf::Color::Blue);
