@@ -57,12 +57,12 @@ void MainMenu::navigate(sf::RenderWindow &window)
 	        moveUp();
 	    }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	    {
 	        moveDown();
 	    }
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
 	    {
 	        if (selected == 0)
 	        {
@@ -75,23 +75,23 @@ void MainMenu::navigate(sf::RenderWindow &window)
 
 void MainMenu::moveUp()
 {
-	if (selected == 0)
-	{
-		selected = 1;
+	//if (selected == 0)
+	//{
+	//	selected = 1;
 		
-	} else {
+	//} else {
 		selected = 0;
-	}
+//	}
 }
 
 void MainMenu::moveDown()
 {
-	if (selected == 0)
-	{
+//	if (selected == 0)
+//	{
 		selected = 1;
-	} else {
-		selected = 0;
-	}
+//	} else {
+	//	selected = 0;
+	//}
 }
 
 int MainMenu::getStatus()

@@ -101,7 +101,7 @@ int main(int argc, char** argv)
 
 
         // menu status indicating that menu should be up
-        if (menu.getStatus() == 0)
+        else
         {
             menu.navigate(App);
             menu.draw(App);
