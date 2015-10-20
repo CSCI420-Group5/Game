@@ -15,7 +15,7 @@ class Wrestler
 
         float getMovedX();
         float getMovedY();
-        sf::ConvexShape getPath(); //Returns the intermediate shape a wrestles will move through this frame (to avoid clipping)
+        sf::ConvexShape getPath(); //Returns the intermediate shape a wrestler will move through this frame (to avoid clipping)
         void moveWrestler(float friction);
 
         void useGrab(Wrestler grabee);
