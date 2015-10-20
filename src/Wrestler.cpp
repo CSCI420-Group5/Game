@@ -25,37 +25,14 @@ void Wrestler::init(int hit_height, int hit_width, int x_pos, int y_pos)
 
 float Wrestler::getMovedX()
 {
-    //round off speeds because pixels are whole numbers
-
-    float fin_x;
-    // commenting out, I'm not sure we need to make movements whole numbers
-    /*if(x_spd < 0)
-    {
-        fin_x = x + int(x_spd - 0.5);
-    }
-    else
-    {
-        fin_x = x + int(x_spd + 0.5);
-    }*/
-
-    fin_x = x + x_spd;
+    float fin_x = x + x_spd;
 
     return fin_x;
 }
 
 float Wrestler::getMovedY()
 {
-    float fin_y;
-    /*if(y_spd < 0)
-    {
-        fin_y = y + int(y_spd - 0.5);
-    }
-    else
-    {
-        fin_y = y + int(y_spd + 0.5);
-    }*/
-
-    fin_y = y + y_spd;
+    float fin_y = y + y_spd;
 
     return fin_y;
 }
@@ -77,25 +54,55 @@ sf::ConvexShape Wrestler::getPath()
 
 void Wrestler::moveWrestler(float friction)
 {
-    x = getMovedX();
-    y = getMovedY();
+    float fin_x = getMovedX();
+    float fin_y = getMovedY();
+
+    //Check for walls and reverse speed inelastically if there
+    if (fin_x > 0 && fin_x < (800-getWidth())) {
+        x = fin_x;
+    }
+    else{
+        setXSpd((-getXSpd())/2);
+    }
+    if (fin_y > 0 && fin_y < (600-getHeight())) {
+        y = fin_y;
+    }
+    else{
+        setYSpd((-getYSpd())/2);
+    }
 
     //If movement is not zero, move closer to it based on friction
-    if(x_spd < 0)
-    {
-        x_spd = x_spd + friction;
+    if(x_spd < 0){
+        if(x_spd > (friction * -1)){
+            x_spd = 0;
+        }
+        else{
+            x_spd = x_spd + friction;
+        }
     }
-    else if(x > 0)
-    {
-        x_spd = x_spd - friction;
+    else if(x > 0){
+        if(x_spd < friction){
+            x_spd = 0;
+        }
+        else{
+            x_spd = x_spd - friction;
+        }
     }
-    if(y_spd < 0)
-    {
-        y_spd = y_spd + friction;
+    if(y_spd < 0){
+        if(y_spd > (friction * -1)){
+            y_spd = 0;
+        }
+        else{
+            y_spd = y_spd + friction;
+        }
     }
-    else if(y_spd > 0)
-    {
-        y_spd = y_spd - friction;
+    else if(y_spd > 0){
+        if(y_spd < friction){
+            y_spd = 0;
+        }
+        else{
+            y_spd = y_spd - friction;
+        }
     }
 }
 

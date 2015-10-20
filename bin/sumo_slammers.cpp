@@ -21,6 +21,7 @@ int main(int argc, char** argv)
 
     // TODO when we have more wrestlers, create a vector and loop through them?
     std::vector<Wrestler> wrestlers;
+    bool have_collided = false;
 
     // Create menu
     MainMenu menu(800, 600);
@@ -61,6 +62,13 @@ int main(int argc, char** argv)
             {
                 timer.restart();
 
+                // set speed for human controlled wrestler
+                getInputSetSpd(wrestlers[0]);
+
+                // set speed for ai controlled wrestler
+                setAISpd(wrestlers[1], wrestlers[0]);
+
+
                 // add wrestlers to locational map
                 loc_map.add(wrestlers[0]);
                 loc_map.add(wrestlers[1]);
@@ -71,21 +79,21 @@ int main(int argc, char** argv)
                         std::vector<int> tmp = loc_map.getCell(i, j);
                         // if there's a collision
                         if (tmp.size() >= 2) {
-                            calcCollision(tmp, wrestlers);
-                            loc_map.clearCells();
+                            bool collided = calcCollision(tmp, wrestlers, have_collided);
+                            if (collided){
+                                have_collided = true;
+                            }
+                            /*loc_map.clearCells();
                             App.clear(sf::Color::Blue);
                             view.drawWrestlers(&App, wrestlers);
                             App.display();
-                            continue;
+                            continue;*/
                         }
                     }
                 }
+                have_collided = false;
 
-                // move human controlled wrestler
-                getInputAndMove(wrestlers[0]);
-
-                // move ai controlled wrestler
-                moveAI(wrestlers[1], wrestlers[0]);
+                moveWrestlers(wrestlers);
 
                 // clear location map
                 loc_map.clearCells();
