@@ -23,12 +23,22 @@ void moveWrestler(Wrestler& sumo, int dir)
         // if we don't move, slow us down until we stop (friction?)
         else if (dir == 4) {
             if (sumo.getXSpd() < 0) {
-                sumo.setXSpd(sumo.getXSpd()+0.1);
-                sumo.setX(sumo.getMovedX());
+                if (sumo.getXSpd() > -0.1) {
+                    sumo.setXSpd(0);
+                }
+                else {
+                    sumo.setXSpd(sumo.getXSpd()+0.1);
+                    sumo.setX(sumo.getMovedX());
+                }
             }
             else {
-                sumo.setXSpd(sumo.getXSpd()-0.1);
-                sumo.setX(sumo.getMovedX());
+                if (sumo.getXSpd() < 0.1) {
+                    sumo.setXSpd(0);
+                }
+                else {
+                    sumo.setXSpd(sumo.getXSpd()-0.1);
+                    sumo.setX(sumo.getMovedX());
+                }
             }
         }
     }
@@ -49,14 +59,25 @@ void moveWrestler(Wrestler& sumo, int dir)
             sumo.setY(sumo.getMovedY());
         }
 
+        // if we don't move, slow us down until we stop (friction?)
         else if (dir == 5) {
             if (sumo.getYSpd() < 0) {
-                sumo.setYSpd(sumo.getYSpd()+0.1);
-                sumo.setY(sumo.getMovedY());
+                if (sumo.getYSpd() > -0.1){
+                    sumo.setYSpd(0);
+                }
+                else {
+                    sumo.setYSpd(sumo.getYSpd()+0.1);
+                    sumo.setY(sumo.getMovedY());
+                }
             }
             else {
-                sumo.setYSpd(sumo.getYSpd()-0.1);
-                sumo.setY(sumo.getMovedY());
+                if (sumo.getYSpd() < 0.1){
+                    sumo.setYSpd(0);
+                }
+                else {
+                    sumo.setYSpd(sumo.getYSpd()-0.1);
+                    sumo.setY(sumo.getMovedY());
+                }
             }
         }
     }
