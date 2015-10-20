@@ -7,6 +7,7 @@
 #include "LocationalMap.h"
 #include "Logic.h"
 #include "FumioView.h"
+#include "MainMenu.h"
 
 #include <iostream>
 
@@ -20,6 +21,9 @@ int main(int argc, char** argv)
 
     // TODO when we have more wrestlers, create a vector and loop through them?
     std::vector<Wrestler> wrestlers;
+
+    // Create menu
+    MainMenu menu(800, 600);
 
     // create wrestlers
     Wrestler human_sumo;
@@ -49,47 +53,59 @@ int main(int argc, char** argv)
                 App.close();
         }
 
-        //Don't update the game logic unless a certain amount of time has passed
-        if(timer.getElapsedTime().asSeconds() > 1.0/60)
+        // Menu status indicating game should be playing
+        if (menu.getStatus() == 1)
         {
-            timer.restart();
+            //Don't update the game logic unless a certain amount of time has passed
+            if(timer.getElapsedTime().asSeconds() > 1.0/60)
+            {
+                timer.restart();
 
-            // add wrestlers to locational map
-            loc_map.add(wrestlers[0]);
-            loc_map.add(wrestlers[1]);
+                // add wrestlers to locational map
+                loc_map.add(wrestlers[0]);
+                loc_map.add(wrestlers[1]);
 
-            // check for collisions
-            for (int i=0; i<loc_map.getRows(); i++) {
-                for (int j=0; j<loc_map.getCols(); j++) {
-                    std::vector<int> tmp = loc_map.getCell(i, j);
-                    // if there's a collision
-                    if (tmp.size() >= 2) {
-                        calcCollision(tmp, wrestlers);
-                        loc_map.clearCells();
-                        App.clear(sf::Color::Blue);
-                        view.drawWrestlers(&App, wrestlers);
-                        App.display();
-                        continue;
+                // check for collisions
+                for (int i=0; i<loc_map.getRows(); i++) {
+                    for (int j=0; j<loc_map.getCols(); j++) {
+                        std::vector<int> tmp = loc_map.getCell(i, j);
+                        // if there's a collision
+                        if (tmp.size() >= 2) {
+                            calcCollision(tmp, wrestlers);
+                            loc_map.clearCells();
+                            App.clear(sf::Color::Blue);
+                            view.drawWrestlers(&App, wrestlers);
+                            App.display();
+                            continue;
+                        }
                     }
                 }
+
+                // move human controlled wrestler
+                getInputAndMove(wrestlers[0]);
+
+                // move ai controlled wrestler
+                moveAI(wrestlers[1], wrestlers[0]);
+
+                // clear location map
+                loc_map.clearCells();
             }
 
-            // move human controlled wrestler
-            getInputAndMove(wrestlers[0]);
+            // clear screen and fill with blue
+            App.clear(sf::Color::Blue);
 
-            // move ai controlled wrestler
-            moveAI(wrestlers[1], wrestlers[0]);
-
-            // clear location map
-            loc_map.clearCells();
+            // TODO have basic shape (rectangle?) for WrestlerView objects
+            // associated with created wrestlers and draw them
+            view.drawWrestlers(&App, wrestlers);
         }
 
-        // clear screen and fill with blue
-        App.clear(sf::Color::Blue);
 
-        // TODO have basic shape (rectangle?) for WrestlerView objects
-        // associated with created wrestlers and draw them
-        view.drawWrestlers(&App, wrestlers);
+        // menu status indicating that menu should be up
+        if (menu.getStatus() == 0)
+        {
+            menu.navigate(App);
+            menu.draw(App);
+        }
 
         // display
         App.display();
