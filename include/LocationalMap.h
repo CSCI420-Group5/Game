@@ -11,7 +11,7 @@ class LocationalMap
 
         void init(int scn_width, int scn_height, int cell_sz);
         void add(Wrestler sumo);
-        std::vector<int> getCell(int i, int j);
+        std::vector<long int> getCell(int i, int j);
         void clearCells();
         void printCells();
 
@@ -24,7 +24,7 @@ class LocationalMap
         int screen_h;
         int cols;
         int rows;
-        std::vector<int> *cells; //Will be a 2D array in row-major order
+        std::vector<long int> *cells; //Will be a 2D array in row-major order
 };
 
 #endif // LOCATIONALMAP_H
