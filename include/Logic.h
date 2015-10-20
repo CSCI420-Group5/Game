@@ -3,12 +3,12 @@
 
 #include "SFML/Graphics.hpp"
 #include "Wrestler.h"
+#include "LocationalMap.h"
 
 void getInputAndMove(Wrestler& sumo, float elapsed_time);
 
 void moveAI(Wrestler& ai_sumo, Wrestler human_sumo, float elapsed_time);
 
-// detectCollision()
-// calcCollision()
+void calcCollision(std::vector<int> ids, std::vector<Wrestler>& wrestlers);
 
 #endif // LOGIC_H 
