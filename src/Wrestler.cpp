@@ -25,14 +25,30 @@ void Wrestler::init(int hit_height, int hit_width, int x_pos, int y_pos)
 
 float Wrestler::getMovedX()
 {
-    float fin_x = x + x_spd;
+    float mid = 0;
+    if (x_spd > 0){
+        mid = x_spd + 1;
+    }
+    else if (x_spd < 0){
+        mid = x_spd - 1;
+    }
+
+    float fin_x = x + (int)mid;
 
     return fin_x;
 }
 
 float Wrestler::getMovedY()
 {
-    float fin_y = y + y_spd;
+    float mid = 0;
+    if (y_spd > 0){
+        mid = y_spd + 1;
+    }
+    else if (y_spd < 0){
+        mid = y_spd - 1;
+    }
+
+    float fin_y = y + (int)mid;
 
     return fin_y;
 }

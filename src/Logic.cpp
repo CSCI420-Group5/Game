@@ -1,6 +1,7 @@
 #include "Logic.h"
 #include <cmath>
 #include <iostream>
+#include <set>
 
 void moveWrestlers(std::vector<Wrestler> &wrestlers)
 {
@@ -147,7 +148,137 @@ void setAISpd(Wrestler& ai_sumo, Wrestler human_sumo)
         setWrestlerSpd(ai_sumo, 5);*/
 }
 
-bool calcCollision(std::vector<long int> ids, std::vector<Wrestler>& wrestlers, bool have_collided)
+void calcCollision(LocationalMap& loc_map, std::vector<Wrestler>& wrestlers)
+{
+    std::vector<std::set<long int> > collision_sets;
+    std::vector<long int> tmp;
+    std::vector<int> tmp_pos;
+    bool in_set = false;
+
+    for (int i=0; i<loc_map.getRows(); i++) {
+        for (int j=0; j<loc_map.getCols(); j++) {
+
+            tmp = loc_map.getCell(i, j);
+
+            // if there's possibly colliding items
+            if (tmp.size() >= 2) {
+
+                //Find the wrestlers in the main list from their ids and put the location in main list in vector parallel to tmp
+                for (unsigned int idi=0; idi<tmp.size(); idi++){
+                    for (unsigned int w=0; w<wrestlers.size(); w++) {
+                        if (wrestlers[w].getId() == tmp[idi]) {
+
+                            tmp_pos.push_back(w);
+                            break;
+                        }
+                    }
+                }
+
+                //Have to compare everything in the cell to each other, but omit same object and alternate permutations
+                for (unsigned int w1=0; w1<tmp.size(); w1++){
+                    for (unsigned int w2=w1+1; w2<tmp.size(); w2++){
+
+                        // create rectangle shapes to detect collisions from where the object will be next frame
+                        sf::RectangleShape
+                        wrest_box1(sf::Vector2f(wrestlers[tmp_pos[w1]].getWidth(),wrestlers[tmp_pos[w1]].getHeight()));
+                        wrest_box1.setPosition(wrestlers[tmp_pos[w1]].getMovedX(),wrestlers[tmp_pos[w1]].getMovedY());
+
+                        sf::RectangleShape
+                        wrest_box2(sf::Vector2f(wrestlers[tmp_pos[w2]].getWidth(),wrestlers[tmp_pos[w2]].getWidth()));
+                        wrest_box2.setPosition(wrestlers[tmp_pos[w2]].getMovedX(),wrestlers[tmp_pos[w2]].getMovedY());
+
+                        sf::FloatRect w1_bounds = wrest_box1.getGlobalBounds();
+                        sf::FloatRect w2_bounds = wrest_box2.getGlobalBounds();
+
+                        //Check if the bounding boxes intersect
+                        if (w1_bounds.intersects(w2_bounds)) {
+
+                            //Have to see if the pair is already in a set
+                            for (unsigned int cs=0; cs<collision_sets.size(); cs++){
+                                if ((collision_sets[cs].find(tmp[w1]) != collision_sets[cs].end()) &&
+                                    (collision_sets[cs].find(tmp[w2]) != collision_sets[cs].end())){
+
+                                    in_set = true;
+                                    break;
+                                }
+                            }
+
+                            //Do collision and insert ids into a new set if not already in a set
+                            if (!in_set){
+                                //Calculate collision
+                                // v1 = (u1(m1-m2)+2m2u2)/m1+m2
+                                // v2 = (u2(m2-m1)+2m1u1)/m1+m2
+                                sf::Vector2f
+                                u1(wrestlers[tmp_pos[w1]].getXSpd(),wrestlers[tmp_pos[w1]].getYSpd());
+
+                                sf::Vector2f
+                                u2(wrestlers[tmp_pos[w2]].getXSpd(),wrestlers[tmp_pos[w2]].getYSpd());
+
+                                // using equal mass temporarily
+                                sf::Vector2f v1 = u2;
+                                sf::Vector2f v2 = u1;
+
+                                wrestlers[tmp_pos[w1]].setXSpd(v1.x);
+                                wrestlers[tmp_pos[w1]].setYSpd(v1.y);
+                                wrestlers[tmp_pos[w2]].setXSpd(v2.x);
+                                wrestlers[tmp_pos[w2]].setYSpd(v2.y);
+
+                                //Set positions so they aren't overlapping
+                                int mid_x = (wrestlers[tmp_pos[w1]].getMovedX() + wrestlers[tmp_pos[w2]].getMovedX() + wrestlers[tmp_pos[w2]].getWidth()) / 2;
+                                int mid_y = (wrestlers[tmp_pos[w1]].getMovedY() + wrestlers[tmp_pos[w2]].getMovedY() + wrestlers[tmp_pos[w2]].getHeight()) / 2;
+
+                                //Readjust position on x-axis if mostly colliding on x or y-axis if mostly colliding on y. Both if same.
+                                if (std::abs(wrestlers[tmp_pos[w1]].getMovedX() - wrestlers[tmp_pos[w2]].getMovedX()) >=
+                                    std::abs(wrestlers[tmp_pos[w1]].getMovedY() - wrestlers[tmp_pos[w2]].getMovedY())){
+
+                                    if ((wrestlers[tmp_pos[w1]].getX() < wrestlers[tmp_pos[w2]].getX()) &&
+                                        (wrestlers[tmp_pos[w1]].getMovedX() + wrestlers[tmp_pos[w1]].getWidth() > wrestlers[tmp_pos[w2]].getMovedX())){
+                                        wrestlers[tmp_pos[w1]].setX(mid_x - wrestlers[tmp_pos[w1]].getWidth() - 1);
+                                        wrestlers[tmp_pos[w2]].setX(mid_x);
+                                    }
+                                    else if ((wrestlers[tmp_pos[w1]].getX() > wrestlers[tmp_pos[w2]].getX()) &&
+                                        (wrestlers[tmp_pos[w1]].getMovedX() < wrestlers[tmp_pos[w2]].getMovedX() + wrestlers[tmp_pos[w2]].getWidth())){
+                                        wrestlers[tmp_pos[w1]].setX(mid_x);
+                                        wrestlers[tmp_pos[w2]].setX(mid_x - wrestlers[tmp_pos[w2]].getWidth() - 1);
+                                    }
+                                }
+                                if (std::abs(wrestlers[tmp_pos[w1]].getMovedY() - wrestlers[tmp_pos[w2]].getMovedY()) >=
+                                    std::abs(wrestlers[tmp_pos[w1]].getMovedX() - wrestlers[tmp_pos[w2]].getMovedX())){
+
+                                    if ((wrestlers[tmp_pos[w1]].getY() < wrestlers[tmp_pos[w2]].getY()) &&
+                                        (wrestlers[tmp_pos[w1]].getMovedY() + wrestlers[tmp_pos[w1]].getHeight() > wrestlers[tmp_pos[w2]].getMovedY())){
+                                        wrestlers[tmp_pos[w1]].setY(mid_y - wrestlers[tmp_pos[w1]].getHeight() - 1);
+                                        wrestlers[tmp_pos[w2]].setY(mid_y);
+                                    }
+                                    else if ((wrestlers[tmp_pos[w1]].getY() > wrestlers[tmp_pos[w2]].getY()) &&
+                                        (wrestlers[tmp_pos[w1]].getMovedY() < wrestlers[tmp_pos[w2]].getMovedY() + wrestlers[tmp_pos[w2]].getHeight())){
+                                        wrestlers[tmp_pos[w1]].setY(mid_y);
+                                        wrestlers[tmp_pos[w2]].setY(mid_y - wrestlers[tmp_pos[w2]].getHeight() - 1);
+                                    }
+                                }
+
+
+                                //Insert ids for no more collisions this iteration
+                                std::set<long int> new_set;
+                                new_set.insert(tmp[w1]);
+                                new_set.insert(tmp[w2]);
+
+                                collision_sets.push_back(new_set);
+                                in_set = false;
+
+                                std::cout << "Collision between: Wrestler " << tmp_pos[w1] << " and Wrestler " << tmp_pos[w2] << std::endl;
+                            }
+                        }
+                    }
+                }
+            }
+            tmp.clear();
+            tmp_pos.clear();
+        }
+    }
+}
+
+/*bool calcCollision(std::vector<long int> ids, std::vector<Wrestler>& wrestlers, bool have_collided)
 {
     if (!have_collided){
         int w1, w2;
@@ -198,4 +329,4 @@ bool calcCollision(std::vector<long int> ids, std::vector<Wrestler>& wrestlers, 
         }
     }
     return false;
-}
+}*/
