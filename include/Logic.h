@@ -11,6 +11,7 @@ void getInputSetSpd(Wrestler& sumo);
 
 void setAISpd(Wrestler& ai_sumo, Wrestler human_sumo);
 
-bool calcCollision(std::vector<long int> ids, std::vector<Wrestler>& wrestlers, bool have_collided);
+void calcCollision(LocationalMap& loc_map, std::vector<Wrestler>& wrestlers);
+//bool calcCollision(std::vector<long int> ids, std::vector<Wrestler>& wrestlers, bool have_collided);
 
 #endif // LOGIC_H

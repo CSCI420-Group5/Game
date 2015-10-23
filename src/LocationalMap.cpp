@@ -50,11 +50,11 @@ void LocationalMap::add(Wrestler sumo)
     size_t n;
 
     //Find all of the i rows that the object occupies
-    while((height + cell_size) <= sumo.getY() && height < screen_h){
+    while((height + cell_size) <= sumo.getMovedY() && height < screen_h){
         height += cell_size;
         i++;
     }
-    while(height < (sumo.getY() + sumo.getHeight()) && height < screen_h){
+    while(height < (sumo.getMovedY() + sumo.getHeight()) && height < screen_h){
         add_rows.push_back(i);
         height += cell_size;
         i++;
@@ -62,11 +62,11 @@ void LocationalMap::add(Wrestler sumo)
 
     //Find all of the j columns that the object occupies
     //And add the object to the cell list for each row for each column
-    while((width + cell_size) <= sumo.getX() && width < screen_w){
+    while((width + cell_size) <= sumo.getMovedX() && width < screen_w){
         width += cell_size;
         j++;
     }
-    while(width < (sumo.getX() + sumo.getWidth()) && width < screen_w){
+    while(width < (sumo.getMovedX() + sumo.getWidth()) && width < screen_w){
         for (n = 0; n < add_rows.size(); n++){
             cells[add_rows[n]*cols+j].push_back(sumo.getId());
         }

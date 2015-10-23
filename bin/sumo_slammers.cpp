@@ -21,7 +21,6 @@ int main(int argc, char** argv)
 
     // TODO when we have more wrestlers, create a vector and loop through them?
     std::vector<Wrestler> wrestlers;
-    bool have_collided = false;
 
     // Create menu
     MainMenu menu(800, 600);
@@ -35,8 +34,18 @@ int main(int argc, char** argv)
     ai_sumo.init(20, 20, 400, 300);
     ai_sumo.setIsHuman(false);
 
+    Wrestler ai_sumo2;
+    ai_sumo2.init(20, 20, 400, 330);
+    ai_sumo2.setIsHuman(false);
+
+    Wrestler ai_sumo3;
+    ai_sumo3.init(20, 20, 400, 360);
+    ai_sumo3.setIsHuman(false);
+
     wrestlers.push_back(human_sumo);
     wrestlers.push_back(ai_sumo);
+    wrestlers.push_back(ai_sumo2);
+    wrestlers.push_back(ai_sumo3);
     FumioView view;
 
     // create game timer used to keep things synched
@@ -93,15 +102,20 @@ int main(int argc, char** argv)
                 getInputSetSpd(wrestlers[0]);
 
                 // set speed for ai controlled wrestler
-                setAISpd(wrestlers[1], wrestlers[0]);
+                //setAISpd(wrestlers[1], wrestlers[0]);
+                //setAISpd(wrestlers[2], wrestlers[0]);
+                //setAISpd(wrestlers[3], wrestlers[0]);
 
 
                 // add wrestlers to locational map
                 loc_map.add(wrestlers[0]);
                 loc_map.add(wrestlers[1]);
+                loc_map.add(wrestlers[2]);
+                loc_map.add(wrestlers[3]);
 
                 // check for collisions
-                for (int i=0; i<loc_map.getRows(); i++) {
+                calcCollision(loc_map, wrestlers);
+                /*for (int i=0; i<loc_map.getRows(); i++) {
                     for (int j=0; j<loc_map.getCols(); j++) {
                         std::vector<long int> tmp = loc_map.getCell(i, j);
                         // if there's a collision
@@ -110,15 +124,15 @@ int main(int argc, char** argv)
                             if (collided){
                                 have_collided = true;
                             }
-                            /*loc_map.clearCells();
+                            loc_map.clearCells();
                             App.clear(sf::Color::Blue);
                             view.drawWrestlers(&App, wrestlers);
                             App.display();
-                            continue;*/
+                            continue;
                         }
                     }
                 }
-                have_collided = false;
+                have_collided = false;*/
 
                 moveWrestlers(wrestlers);
 

@@ -74,8 +74,8 @@ class Wrestler
         int height;
 
         //position kept as the top-left corner of the hitbox
-        float x;
-        float y;
+        int x;
+        int y;
         //Speeds stored as floats so can increase slowly. Should be cast to integers before using.
         float x_spd;
         float y_spd;
