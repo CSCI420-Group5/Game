@@ -30,7 +30,7 @@ int main(int argc, char** argv)
     human_sumo.init(20, 20, 200, 290);
     human_sumo.setIsHuman(true);
 
-    Wrestler ai_sumo;
+    /*Wrestler ai_sumo;
     ai_sumo.init(20, 20, 400, 300);
     ai_sumo.setIsHuman(false);
 
@@ -40,12 +40,12 @@ int main(int argc, char** argv)
 
     Wrestler ai_sumo3;
     ai_sumo3.init(20, 20, 400, 360);
-    ai_sumo3.setIsHuman(false);
+    ai_sumo3.setIsHuman(false);*/
 
     wrestlers.push_back(human_sumo);
-    wrestlers.push_back(ai_sumo);
-    wrestlers.push_back(ai_sumo2);
-    wrestlers.push_back(ai_sumo3);
+    //wrestlers.push_back(ai_sumo);
+    //wrestlers.push_back(ai_sumo2);
+    //wrestlers.push_back(ai_sumo3);
     FumioView view;
 
     // create game timer used to keep things synched
@@ -109,9 +109,9 @@ int main(int argc, char** argv)
 
                 // add wrestlers to locational map
                 loc_map.add(wrestlers[0]);
-                loc_map.add(wrestlers[1]);
-                loc_map.add(wrestlers[2]);
-                loc_map.add(wrestlers[3]);
+                //loc_map.add(wrestlers[1]);
+                //loc_map.add(wrestlers[2]);
+                //loc_map.add(wrestlers[3]);
 
                 // check for collisions
                 calcCollision(loc_map, wrestlers);
