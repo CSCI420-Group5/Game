@@ -6,7 +6,7 @@ Wrestler::Wrestler()
     //ctor
 }
 
-void Wrestler::init(int hit_height, int hit_width, int x_pos, int y_pos)
+void Wrestler::init(int hit_height, int hit_width, int x, int y)
 {
     //Maybe should be a more unique id
     id = reinterpret_cast<long int>(&id);
@@ -16,110 +16,26 @@ void Wrestler::init(int hit_height, int hit_width, int x_pos, int y_pos)
     height = hit_height;
     width = hit_width;
 
-    x = x_pos;
-    y = y_pos;
+    position.x = x;
+    position.y = y;
 
-    x_spd = 0;
-    y_spd = 0;
-}
-
-float Wrestler::getMovedX()
-{
-    float mid = 0;
-    if (x_spd > 0){
-        mid = x_spd + 1;
-    }
-    else if (x_spd < 0){
-        mid = x_spd - 1;
-    }
-
-    float fin_x = x + (int)mid;
-
-    return fin_x;
-}
-
-float Wrestler::getMovedY()
-{
-    float mid = 0;
-    if (y_spd > 0){
-        mid = y_spd + 1;
-    }
-    else if (y_spd < 0){
-        mid = y_spd - 1;
-    }
-
-    float fin_y = y + (int)mid;
-
-    return fin_y;
+    velocity.x = 0;
+    velocity.y = 0;
 }
 
 sf::ConvexShape Wrestler::getPath()
 {
-    int fin_x = getMovedX();
-    int fin_y = getMovedY();
+    int fin_x = getMovedPos().x;
+    int fin_y = getMovedPos().y;
 
     sf::ConvexShape path;
     path.setPointCount(4);
     path.setPoint(0, sf::Vector2f(fin_x, fin_y));
-    path.setPoint(1, sf::Vector2f(x, y));
-    path.setPoint(2, sf::Vector2f(x+width, y+height));
+    path.setPoint(1, sf::Vector2f(position));
+    path.setPoint(2, sf::Vector2f(position.x+width, position.y+height));
     path.setPoint(3, sf::Vector2f(fin_x+width, fin_y+height));
 
     return path;
-}
-
-void Wrestler::moveWrestler(float friction)
-{
-    float fin_x = getMovedX();
-    float fin_y = getMovedY();
-
-    //Check for walls and reverse speed inelastically if there
-    if (fin_x > 0 && fin_x < (800-width)) {
-        x = fin_x;
-    }
-    else{
-        setXSpd((-x_spd)/2);
-    }
-    if (fin_y > 0 && fin_y < (600-height)) {
-        y = fin_y;
-    }
-    else{
-        setYSpd((-y_spd)/2);
-    }
-
-    //If movement is not zero, move closer to it based on friction
-    if(x_spd < 0){
-        if(x_spd > (friction * -1)){
-            x_spd = 0;
-        }
-        else{
-            x_spd = x_spd + friction;
-        }
-    }
-    else if(x > 0){
-        if(x_spd < friction){
-            x_spd = 0;
-        }
-        else{
-            x_spd = x_spd - friction;
-        }
-    }
-    if(y_spd < 0){
-        if(y_spd > (friction * -1)){
-            y_spd = 0;
-        }
-        else{
-            y_spd = y_spd + friction;
-        }
-    }
-    else if(y_spd > 0){
-        if(y_spd < friction){
-            y_spd = 0;
-        }
-        else{
-            y_spd = y_spd - friction;
-        }
-    }
 }
 
 void Wrestler::useGrab(Wrestler grabee)
@@ -137,14 +53,6 @@ void Wrestler::useDash()
     //Not done
 }
 
-
-
-
-//General setters an getters below here:
-long int Wrestler::getId()
-{
-    return id;
-}
 int Wrestler::getSpeed()
 {
     return speed;
@@ -190,61 +98,6 @@ void Wrestler::setIsHuman(bool val)
 void Wrestler::setCurrentState(int num)
 {
     current_state = num;
-}
-
-int Wrestler::getHeight()
-{
-    return height;
-}
-int Wrestler::getWidth()
-{
-    return width;
-}
-void Wrestler::setHeight(int num)
-{
-    height = num;
-}
-void Wrestler::setWidth(int num)
-{
-    width = num;
-}
-
-int Wrestler::getX() const
-{
-    return x;
-}
-int Wrestler::getY() const
-{
-    return y;
-}
-float Wrestler::getXSpd()
-{
-    return x_spd;
-}
-float Wrestler::getYSpd()
-{
-    return y_spd;
-}
-void Wrestler::setX(float num)
-{
-    x = num;
-}
-void Wrestler::setY(float num)
-{
-    y = num;
-}
-void Wrestler::setXSpd(float num)
-{
-    x_spd = num;
-}
-void Wrestler::setYSpd(float num)
-{
-    y_spd = num;
-}
-
-bool Wrestler::operator < (const Wrestler &wrest) const
-{
-  return (y < wrest.getY());
 }
 
 Wrestler::~Wrestler()
