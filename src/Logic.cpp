@@ -12,12 +12,7 @@ void moveWrestlers(std::vector<Wrestler> &wrestlers)
 
 void setWrestlerSpd(Wrestler& sumo, int dir)
 {
-/*    float fin_x = sumo.getMovedX();
-    float fin_y = sumo.getMovedY();*/
     float acc = 0.2;
-
-    // check borders
-/*    if (fin_x > 0 && fin_x < (800-sumo.getWidth())) {*/
         // move left
         if (dir == 1) {
             sumo.setXSpd(sumo.getXSpd()-acc);
@@ -27,34 +22,6 @@ void setWrestlerSpd(Wrestler& sumo, int dir)
         else if (dir == 3) {
             sumo.setXSpd(sumo.getXSpd()+acc);
         }
-
-// Friction moved to end of moveWrestler function so as to have an effect when moving too
-// Now need to have friction less than acceleration though
-/*        // if we don't move, slow us down until we stop (friction?)
-        else if (dir == 4) {
-            if (sumo.getXSpd() < 0) {
-                if (sumo.getXSpd() > -0.1) {
-                    sumo.setXSpd(0);
-                }
-                else {
-                    sumo.setXSpd(sumo.getXSpd()+0.1);
-                }
-            }
-            else {
-                if (sumo.getXSpd() < 0.1) {
-                    sumo.setXSpd(0);
-                }
-                else {
-                    sumo.setXSpd(sumo.getXSpd()-0.1);
-                }
-            }
-        }
-    }
-    else {
-        sumo.setXSpd((-sumo.getXSpd())/2);
-    }
-
-    if (fin_y > 0 && fin_y < (600-sumo.getHeight())) {*/
         // move up
         if (dir == 0) {
             sumo.setYSpd(sumo.getYSpd()-acc);
@@ -64,30 +31,6 @@ void setWrestlerSpd(Wrestler& sumo, int dir)
         else if (dir == 2) {
             sumo.setYSpd(sumo.getYSpd()+acc);
         }
-
-/*        // if we don't move, slow us down until we stop (friction?)
-        else if (dir == 5) {
-            if (sumo.getYSpd() < 0) {
-                if (sumo.getYSpd() > -0.1){
-                    sumo.setYSpd(0);
-                }
-                else {
-                    sumo.setYSpd(sumo.getYSpd()+0.1)
-                }
-            }
-            else {
-                if (sumo.getYSpd() < 0.1){
-                    sumo.setYSpd(0);
-                }
-                else {
-                    sumo.setYSpd(sumo.getYSpd()-0.1);
-                }
-            }
-        }
-    }
-    else {
-        sumo.setYSpd((-sumo.getYSpd())/2);
-    }*/
 }
 
 void getInputSetSpd(Wrestler& sumo)
@@ -101,10 +44,6 @@ void getInputSetSpd(Wrestler& sumo)
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         setWrestlerSpd(sumo, 3);
 
-/*    // if we don't move, slow us down
-    else
-        setWrestlerSpd(sumo, 4);*/
-
     // move up
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         setWrestlerSpd(sumo, 0);
@@ -112,9 +51,6 @@ void getInputSetSpd(Wrestler& sumo)
     // move down
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         setWrestlerSpd(sumo, 2);
-
-/*    else
-        setWrestlerSpd(sumo, 5);*/
 }
 
 void setAISpd(Wrestler& ai_sumo, Wrestler human_sumo)
@@ -132,10 +68,6 @@ void setAISpd(Wrestler& ai_sumo, Wrestler human_sumo)
     else if (player_loc.x > ai_loc.x)
         setWrestlerSpd(ai_sumo, 3);
 
-/*    // if we don't move, do friction stuff
-    else
-        setWrestlerSpd(ai_sumo, 4);*/
-
     // move up
     if (player_loc.y < ai_loc.y)
         setWrestlerSpd(ai_sumo, 0);
@@ -143,9 +75,6 @@ void setAISpd(Wrestler& ai_sumo, Wrestler human_sumo)
     // move down
     else if (player_loc.y > ai_loc.y)
         setWrestlerSpd(ai_sumo, 2);
-
-/*    else
-        setWrestlerSpd(ai_sumo, 5);*/
 }
 
 void calcCollision(LocationalMap& loc_map, std::vector<Wrestler>& wrestlers)
@@ -214,49 +143,87 @@ void calcCollision(LocationalMap& loc_map, std::vector<Wrestler>& wrestlers)
                                 sf::Vector2f
                                 u2(wrestlers[tmp_pos[w2]].getXSpd(),wrestlers[tmp_pos[w2]].getYSpd());
 
-                                // using equal mass temporarily
-                                sf::Vector2f v1 = u2;
-                                sf::Vector2f v2 = u1;
-
-                                wrestlers[tmp_pos[w1]].setXSpd(v1.x);
-                                wrestlers[tmp_pos[w1]].setYSpd(v1.y);
-                                wrestlers[tmp_pos[w2]].setXSpd(v2.x);
-                                wrestlers[tmp_pos[w2]].setYSpd(v2.y);
-
                                 //Set positions so they aren't overlapping
                                 int mid_x = (wrestlers[tmp_pos[w1]].getMovedX() + wrestlers[tmp_pos[w2]].getMovedX() + wrestlers[tmp_pos[w2]].getWidth()) / 2;
                                 int mid_y = (wrestlers[tmp_pos[w1]].getMovedY() + wrestlers[tmp_pos[w2]].getMovedY() + wrestlers[tmp_pos[w2]].getHeight()) / 2;
 
-                                //Readjust position on x-axis if mostly colliding on x or y-axis if mostly colliding on y. Both if same.
-                                if (std::abs(wrestlers[tmp_pos[w1]].getMovedX() - wrestlers[tmp_pos[w2]].getMovedX()) >=
-                                    std::abs(wrestlers[tmp_pos[w1]].getMovedY() - wrestlers[tmp_pos[w2]].getMovedY())){
+                                //Don't allow the wrestlers to move outside of the collision path
+                                //Set the mid position to the edge of the one being hit
+                                if (u1.x >= 0 && u2.x >= 0){
+                                    if (u1.x > u2.x){
+                                        mid_x = wrestlers[tmp_pos[w2]].getMovedX();
+                                    }
+                                    else{
+                                        mid_x = wrestlers[tmp_pos[w1]].getMovedX();
+                                    }
+                                }
+                                else if(u1.x <= 0 && u2.x <= 0){
+                                    if (u1.x < u2.x){
+                                        mid_x = wrestlers[tmp_pos[w2]].getMovedX() + wrestlers[tmp_pos[w2]].getWidth();
+                                    }
+                                    else{
+                                        mid_x = wrestlers[tmp_pos[w1]].getMovedX() + wrestlers[tmp_pos[w1]].getWidth();
+                                    }
+                                }
+                                if (u1.y >= 0 && u2.y >= 0){
+                                    if (u1.y > u2.y){
+                                        mid_y = wrestlers[tmp_pos[w2]].getMovedY();
+                                    }
+                                    else{
+                                        mid_y = wrestlers[tmp_pos[w1]].getMovedY();
+                                    }
+                                }
+                                else if(u1.y <= 0 && u2.y <= 0){
+                                    if (u1.y < u2.y){
+                                        mid_y = wrestlers[tmp_pos[w2]].getMovedY() + wrestlers[tmp_pos[w2]].getHeight();
+                                    }
+                                    else{
+                                        mid_y = wrestlers[tmp_pos[w1]].getMovedY() + wrestlers[tmp_pos[w1]].getHeight();
+                                    }
+                                }
 
-                                    if ((wrestlers[tmp_pos[w1]].getX() < wrestlers[tmp_pos[w2]].getX()) &&
-                                        (wrestlers[tmp_pos[w1]].getMovedX() + wrestlers[tmp_pos[w1]].getWidth() > wrestlers[tmp_pos[w2]].getMovedX())){
-                                        wrestlers[tmp_pos[w1]].setX(mid_x - wrestlers[tmp_pos[w1]].getWidth() - 1);
+                                //Readjust position on x-axis if mostly colliding on x or y-axis if mostly colliding on y. Both if same.
+                                if (std::abs(wrestlers[tmp_pos[w1]].getX() - wrestlers[tmp_pos[w2]].getX()) >=
+                                    std::abs(wrestlers[tmp_pos[w1]].getY() - wrestlers[tmp_pos[w2]].getY())){
+
+                                    //w1 is starts on the left
+                                    if (wrestlers[tmp_pos[w1]].getX() < wrestlers[tmp_pos[w2]].getX()){
+                                        wrestlers[tmp_pos[w1]].setX(mid_x - wrestlers[tmp_pos[w1]].getWidth());
                                         wrestlers[tmp_pos[w2]].setX(mid_x);
                                     }
-                                    else if ((wrestlers[tmp_pos[w1]].getX() > wrestlers[tmp_pos[w2]].getX()) &&
-                                        (wrestlers[tmp_pos[w1]].getMovedX() < wrestlers[tmp_pos[w2]].getMovedX() + wrestlers[tmp_pos[w2]].getWidth())){
+                                    //w1 is starts on the right
+                                    else if (wrestlers[tmp_pos[w1]].getX() > wrestlers[tmp_pos[w2]].getX()){
                                         wrestlers[tmp_pos[w1]].setX(mid_x);
-                                        wrestlers[tmp_pos[w2]].setX(mid_x - wrestlers[tmp_pos[w2]].getWidth() - 1);
+                                        wrestlers[tmp_pos[w2]].setX(mid_x - wrestlers[tmp_pos[w2]].getWidth());
                                     }
                                 }
-                                if (std::abs(wrestlers[tmp_pos[w1]].getMovedY() - wrestlers[tmp_pos[w2]].getMovedY()) >=
-                                    std::abs(wrestlers[tmp_pos[w1]].getMovedX() - wrestlers[tmp_pos[w2]].getMovedX())){
+                                if (std::abs(wrestlers[tmp_pos[w1]].getY() - wrestlers[tmp_pos[w2]].getY()) >=
+                                    std::abs(wrestlers[tmp_pos[w1]].getX() - wrestlers[tmp_pos[w2]].getX())){
 
-                                    if ((wrestlers[tmp_pos[w1]].getY() < wrestlers[tmp_pos[w2]].getY()) &&
-                                        (wrestlers[tmp_pos[w1]].getMovedY() + wrestlers[tmp_pos[w1]].getHeight() > wrestlers[tmp_pos[w2]].getMovedY())){
-                                        wrestlers[tmp_pos[w1]].setY(mid_y - wrestlers[tmp_pos[w1]].getHeight() - 1);
+                                    //w1 is starts on the top
+                                    if (wrestlers[tmp_pos[w1]].getY() < wrestlers[tmp_pos[w2]].getY()){
+                                        wrestlers[tmp_pos[w1]].setY(mid_y - wrestlers[tmp_pos[w1]].getHeight());
                                         wrestlers[tmp_pos[w2]].setY(mid_y);
                                     }
-                                    else if ((wrestlers[tmp_pos[w1]].getY() > wrestlers[tmp_pos[w2]].getY()) &&
-                                        (wrestlers[tmp_pos[w1]].getMovedY() < wrestlers[tmp_pos[w2]].getMovedY() + wrestlers[tmp_pos[w2]].getHeight())){
+                                    //w1 is starts on the bottom
+                                    else if (wrestlers[tmp_pos[w1]].getY() > wrestlers[tmp_pos[w2]].getY()){
                                         wrestlers[tmp_pos[w1]].setY(mid_y);
-                                        wrestlers[tmp_pos[w2]].setY(mid_y - wrestlers[tmp_pos[w2]].getHeight() - 1);
+                                        wrestlers[tmp_pos[w2]].setY(mid_y - wrestlers[tmp_pos[w2]].getHeight());
                                     }
                                 }
 
+                                // using equal mass temporarily
+                                float m1 = 10.f;
+                                float m2 = 10.f;
+
+                                sf::Vector2f v1 = (u1*(m1-m2)+2.f*m2*u2)/(m1+m2);
+                                sf::Vector2f v2 = (u2*(m2-m1)+2.f*m1*u1)/(m1+m2);
+
+                                //Set new speeds
+                                wrestlers[tmp_pos[w1]].setXSpd(v1.x);
+                                wrestlers[tmp_pos[w1]].setYSpd(v1.y);
+                                wrestlers[tmp_pos[w2]].setXSpd(v2.x);
+                                wrestlers[tmp_pos[w2]].setYSpd(v2.y);
 
                                 //Insert ids for no more collisions this iteration
                                 std::set<long int> new_set;
@@ -266,7 +233,7 @@ void calcCollision(LocationalMap& loc_map, std::vector<Wrestler>& wrestlers)
                                 collision_sets.push_back(new_set);
                                 in_set = false;
 
-                                std::cout << "Collision between: Wrestler " << tmp_pos[w1] << " and Wrestler " << tmp_pos[w2] << std::endl;
+                                //std::cout << "Collision between: Wrestler " << tmp_pos[w1] << " and Wrestler " << tmp_pos[w2] << std::endl;
                             }
                         }
                     }
@@ -277,56 +244,3 @@ void calcCollision(LocationalMap& loc_map, std::vector<Wrestler>& wrestlers)
         }
     }
 }
-
-/*bool calcCollision(std::vector<long int> ids, std::vector<Wrestler>& wrestlers, bool have_collided)
-{
-    if (!have_collided){
-        int w1, w2;
-        long int tmp_id = ids[0];
-        for (unsigned int i=0; i<wrestlers.size(); i++) {
-            if (wrestlers[i].getId() == tmp_id) {
-                w1 = i;
-            }
-        }
-        tmp_id = ids[1];
-        for (unsigned int i=0; i<wrestlers.size(); i++) {
-            if (wrestlers[i].getId() == tmp_id) {
-                w2 = i;
-            }
-        }
-
-        // create rectangle shapes to detect collisions
-        sf::RectangleShape
-        wrest_box1(sf::Vector2f(wrestlers[w1].getWidth(),wrestlers[w1].getHeight()));
-        wrest_box1.setPosition(wrestlers[w1].getX(),wrestlers[w1].getY());
-
-        sf::RectangleShape
-        wrest_box2(sf::Vector2f(wrestlers[w2].getWidth(),wrestlers[w2].getWidth()));
-        wrest_box2.setPosition(wrestlers[w2].getX(),wrestlers[w2].getY());
-
-        sf::FloatRect w1_bounds = wrest_box1.getGlobalBounds();
-        sf::FloatRect w2_bounds = wrest_box2.getGlobalBounds();
-
-        if (w1_bounds.intersects(w2_bounds)) {
-            // v1 = (u1(m1-m2)+2m2u2)/m1+m2
-            // v2 = (u2(m2-m1)+2m1u1)/m1+m2
-            sf::Vector2f
-            u1(wrestlers[w1].getXSpd(),wrestlers[w1].getYSpd());
-
-            sf::Vector2f
-            u2(wrestlers[w2].getXSpd(),wrestlers[w2].getYSpd());
-
-            // using equal mass temporarily
-            sf::Vector2f v1 = u2;
-            sf::Vector2f v2 = u1;
-
-            wrestlers[w1].setXSpd(v1.x);
-            wrestlers[w1].setYSpd(v1.y);
-            wrestlers[w2].setXSpd(v2.x);
-            wrestlers[w2].setYSpd(v2.y);
-
-            return true;
-        }
-    }
-    return false;
-}*/

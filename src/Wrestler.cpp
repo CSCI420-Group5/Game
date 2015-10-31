@@ -74,17 +74,17 @@ void Wrestler::moveWrestler(float friction)
     float fin_y = getMovedY();
 
     //Check for walls and reverse speed inelastically if there
-    if (fin_x > 0 && fin_x < (800-getWidth())) {
+    if (fin_x > 0 && fin_x < (800-width)) {
         x = fin_x;
     }
     else{
-        setXSpd((-getXSpd())/2);
+        setXSpd((-x_spd)/2);
     }
-    if (fin_y > 0 && fin_y < (600-getHeight())) {
+    if (fin_y > 0 && fin_y < (600-height)) {
         y = fin_y;
     }
     else{
-        setYSpd((-getYSpd())/2);
+        setYSpd((-y_spd)/2);
     }
 
     //If movement is not zero, move closer to it based on friction
