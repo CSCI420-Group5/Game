@@ -21,7 +21,7 @@ void FumioView::drawWrestlers(sf::RenderWindow *App, std::vector<Wrestler> wrest
     //Draw wrestlers with boxes holding positions for now, green for player and red for ai
     for(unsigned int i = 0; i < wrestlers.size(); i++){
         sf::RectangleShape wrest_box(sf::Vector2f(wrestlers[i].getWidth(), wrestlers[i].getHeight()));
-        wrest_box.setPosition(wrestlers[i].getX(), wrestlers[i].getY());
+        wrest_box.setPosition(wrestlers[i].getPos());
 
         if(wrestlers[i].isHuman()){
             wrest_box.setFillColor(sf::Color::Green);
