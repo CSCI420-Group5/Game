@@ -31,7 +31,7 @@ sf::Vector2f Collidable::getMovedPos()
         mid = velocity.x - 1;
     }
 
-    fin_pos.x = velocity.x + (int)mid;
+    fin_pos.x = position.x + (int)mid;
 
     mid = 0;
     if (velocity.y > 0) {
@@ -41,7 +41,7 @@ sf::Vector2f Collidable::getMovedPos()
         mid = velocity.y - 1;
     }
 
-    fin_pos.y = velocity.y + (int)mid;
+    fin_pos.y = position.y + (int)mid;
 
     return fin_pos;
 }
@@ -52,14 +52,14 @@ void Collidable::move(float friction)
 
     // check for walls and reverse speed inelastically if they hit
     if (fin_pos.x > 0 && fin_pos.x < (800-width)) {
-        velocity.x = fin_pos.x;
+        position.x = fin_pos.x;
     }
     else {
         velocity.x /= -2;
     }
 
     if (fin_pos.y > 0 && fin_pos.y < (600-height)) {
-        velocity.y = fin_pos.y;
+        position.y = fin_pos.y;
     }
     else {
         velocity.y /= -2;

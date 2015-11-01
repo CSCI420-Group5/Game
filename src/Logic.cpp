@@ -1,6 +1,5 @@
 #include "Logic.h"
 #include <cmath>
-#include <iostream>
 #include <set>
 
 void moveWrestlers(std::vector<Wrestler> &wrestlers)
