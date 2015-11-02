@@ -19,6 +19,9 @@ class Collidable
     // setters & getters
     long int getID() const;
 
+    bool isHuman();
+    void setIsHuman(bool val);
+
     int getHeight() const;
     int getWidth() const;
 
@@ -33,9 +36,10 @@ class Collidable
 
     // Used for object depth in drawing
     bool operator<(const Collidable &obj) const;
-        
+
     protected:
     long int id;
+    bool is_human;
 
     // hitbox
     int width;

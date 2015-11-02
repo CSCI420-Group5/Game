@@ -6,12 +6,12 @@
 #include "LocationalMap.h"
 #include "set"
 
-void moveWrestlers(std::vector<Wrestler> &wrestlers);
+void moveActors(std::vector<Collidable> &actors);
 
-void getInputSetSpd(Wrestler& sumo);
+void getInputSetSpd(Collidable& sumo);
 
-void setAISpd(Wrestler& ai_sumo, Wrestler human_sumo);
+void setAISpd(Collidable& ai_sumo, Collidable human_sumo);
 
-std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map, std::vector<Wrestler>& wrestlers);
+std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map, std::vector<Collidable>& actors);
 
 #endif // LOGIC_H

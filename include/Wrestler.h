@@ -28,10 +28,8 @@ class Wrestler: public Collidable
 
         void setStats(int spd, int str, int wgt, int stm);
 
-        bool isHuman();
         int getCurrentState();
 
-        void setIsHuman(bool val);
         void setCurrentState(int num);
 
     protected:
@@ -43,7 +41,6 @@ class Wrestler: public Collidable
         int stamina;
         float acceleration;
 
-        bool is_human;
         int current_state; //0=normal, 1=grabbing, 2=grabbed, 3=thrown, 4=dashing, 5=falling
 };
 

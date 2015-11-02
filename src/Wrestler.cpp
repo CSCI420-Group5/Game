@@ -83,17 +83,9 @@ void Wrestler::setStats(int spd, int str, int wgt, int stm)
     acceleration = float(str) / float(wgt);
 }
 
-bool Wrestler::isHuman()
-{
-    return is_human;
-}
 int Wrestler::getCurrentState()
 {
     return current_state;
-}
-void Wrestler::setIsHuman(bool val)
-{
-    is_human = val;
 }
 void Wrestler::setCurrentState(int num)
 {

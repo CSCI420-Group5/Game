@@ -120,6 +120,16 @@ long int Collidable::getID() const
     return id;
 }
 
+bool Collidable::isHuman()
+{
+    return is_human;
+}
+
+void Collidable::setIsHuman(bool val)
+{
+    is_human = val;
+}
+
 int Collidable::getHeight() const
 {
     return height;

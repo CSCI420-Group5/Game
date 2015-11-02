@@ -6,7 +6,7 @@
 #include "Wrestler.h"
 #include "LocationalMap.h"
 #include "Logic.h"
-#include "FumioView.h"
+#include "PlayerView.h"
 #include "MainMenu.h"
 #include "Terrain.h"
 
@@ -19,7 +19,7 @@ int main(int argc, char** argv)
     sf::RenderWindow App(sf::VideoMode(800,600,32), "Sumo Slammers - SFML");
 
     // TODO when we have more wrestlers, create a vector and loop through them?
-    std::vector<Wrestler> wrestlers;
+    std::vector<Collidable> actors;
     std::vector<std::set<long int> > collision_sets;
 
     // Create menu
@@ -42,11 +42,11 @@ int main(int argc, char** argv)
     ai_sumo3.init(20, 20, 400, 360);
     ai_sumo3.setIsHuman(false);
 
-    wrestlers.push_back(human_sumo);
-    wrestlers.push_back(ai_sumo);
-    wrestlers.push_back(ai_sumo2);
-    wrestlers.push_back(ai_sumo3);
-    FumioView view;
+    actors.push_back(human_sumo);
+    actors.push_back(ai_sumo);
+    actors.push_back(ai_sumo2);
+    actors.push_back(ai_sumo3);
+    PlayerView view;
 
     // create game timer used to keep things synched
     sf::Clock timer;
@@ -99,27 +99,27 @@ int main(int argc, char** argv)
                 timer.restart();
 
                 // set speed for human controlled wrestler
-                getInputSetSpd(wrestlers[0]);
+                getInputSetSpd(actors[0]);
 
                 // set speed for ai controlled wrestler
-                setAISpd(wrestlers[1], wrestlers[0]);
-                setAISpd(wrestlers[2], wrestlers[0]);
-                setAISpd(wrestlers[3], wrestlers[0]);
+                setAISpd(actors[1], actors[0]);
+                setAISpd(actors[2], actors[0]);
+                setAISpd(actors[3], actors[0]);
 
 
                 // add wrestlers to locational map
-                loc_map.add(wrestlers);
+                loc_map.add(actors);
 
                 // check for collisions, need to check if results of collisions cause new collisions and compute again
-                collision_sets = calcCollision(loc_map, wrestlers);
+                collision_sets = calcCollision(loc_map, actors);
                 while (collision_sets.size() > 0){
                     loc_map.clearCells();
-                    loc_map.add(wrestlers);
+                    loc_map.add(actors);
 
-                    collision_sets = calcCollision(loc_map, wrestlers);
+                    collision_sets = calcCollision(loc_map, actors);
                 }
 
-                moveWrestlers(wrestlers);
+                moveActors(actors);
 
                 // clear location map
                 loc_map.clearCells();
@@ -130,8 +130,8 @@ int main(int argc, char** argv)
             App.clear(sf::Color::Blue);
 
             // TODO have basic shape (rectangle?) for WrestlerView objects
-            // associated with created wrestlers and draw them
-            view.drawWrestlers(&App, wrestlers);
+            // associated with created actors and draw them
+            view.drawActors(&App, actors);
         }
 
 
