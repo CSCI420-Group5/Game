@@ -23,6 +23,7 @@ sf::Vector2f Collidable::getMovedPos()
 {
     sf::Vector2f fin_pos;
 
+    //For x
     float mid = 0;
     if (velocity.x > 0) {
         mid = velocity.x + 1;
@@ -37,10 +38,11 @@ sf::Vector2f Collidable::getMovedPos()
     if (fin_pos.x <= 0) {
         fin_pos.x = 1;
     }
-    if (fin_pos.x >= (800-width)) {
+    else if (fin_pos.x >= (800-width)) {
         fin_pos.x = 799 - width;
     }
 
+    //For y
     mid = 0;
     if (velocity.y > 0) {
         mid = velocity.y + 1;
@@ -55,7 +57,7 @@ sf::Vector2f Collidable::getMovedPos()
     if (fin_pos.y <= 0) {
         fin_pos.y = 1;
     }
-    if (fin_pos.y >= (600-height)) {
+    else if (fin_pos.y >= (600-height)) {
         fin_pos.y = 599 - height;
     }
 
@@ -159,13 +161,14 @@ void Collidable::setVelocity(float x, float y)
     velocity.x = x;
     velocity.y = y;
 
-
     //Reflect if moving off screen
-    if(getMovedPos().x == x && velocity.x != 0){
-        velocity.x = (-velocity.x)/2;
+    sf::Vector2f moved_pos = getMovedPos();
+
+    if(moved_pos.x == position.x && velocity.x != 0){
+        velocity.x /= -2;
     }
-    if(getMovedPos().y == y && velocity.y != 0){
-        velocity.y = (-velocity.y)/2;
+    if(moved_pos.y == position.y && velocity.y != 0){
+        velocity.y /= -2;
     }
 }
 
