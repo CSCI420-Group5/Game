@@ -21,6 +21,7 @@ int main(int argc, char** argv)
 
     // TODO when we have more wrestlers, create a vector and loop through them?
     std::vector<Wrestler> wrestlers;
+    std::vector<std::set<long int> > collision_sets;
 
     // Create menu
     MainMenu menu(800, 600);
@@ -102,24 +103,28 @@ int main(int argc, char** argv)
                 getInputSetSpd(wrestlers[0]);
 
                 // set speed for ai controlled wrestler
-                //setAISpd(wrestlers[1], wrestlers[0]);
-                //setAISpd(wrestlers[2], wrestlers[0]);
-                //setAISpd(wrestlers[3], wrestlers[0]);
+                setAISpd(wrestlers[1], wrestlers[0]);
+                setAISpd(wrestlers[2], wrestlers[0]);
+                setAISpd(wrestlers[3], wrestlers[0]);
 
 
                 // add wrestlers to locational map
-                loc_map.add(wrestlers[0]);
-                loc_map.add(wrestlers[1]);
-                loc_map.add(wrestlers[2]);
-                loc_map.add(wrestlers[3]);
+                loc_map.add(wrestlers);
 
-                // check for collisions
-                calcCollision(loc_map, wrestlers);
+                // check for collisions, need to check if results of collisions cause new collisions and compute again
+                collision_sets = calcCollision(loc_map, wrestlers);
+                while (collision_sets.size() > 0){
+                    loc_map.clearCells();
+                    loc_map.add(wrestlers);
+
+                    collision_sets = calcCollision(loc_map, wrestlers);
+                }
 
                 moveWrestlers(wrestlers);
 
                 // clear location map
                 loc_map.clearCells();
+                collision_sets.clear();
             }
 
             // clear screen and fill with blue

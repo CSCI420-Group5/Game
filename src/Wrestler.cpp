@@ -35,6 +35,14 @@ float Wrestler::getMovedX()
 
     float fin_x = x + (int)mid;
 
+    //Cannot move off screen
+    if (fin_x <= 0) {
+        fin_x = 1;
+    }
+    if (fin_x >= (800-width)) {
+        fin_x = 799 - width;
+    }
+
     return fin_x;
 }
 
@@ -49,6 +57,14 @@ float Wrestler::getMovedY()
     }
 
     float fin_y = y + (int)mid;
+
+    //Cannot move off screen
+    if (fin_y <= 0) {
+        fin_y = 1;
+    }
+    if (fin_y >= (600-height)) {
+        fin_y = 599 - height;
+    }
 
     return fin_y;
 }
@@ -70,22 +86,20 @@ sf::ConvexShape Wrestler::getPath()
 
 void Wrestler::moveWrestler(float friction)
 {
+    //Speeds now reflected in the setSpd methods
     float fin_x = getMovedX();
     float fin_y = getMovedY();
 
     //Check for walls and reverse speed inelastically if there
-    if (fin_x > 0 && fin_x < (800-width)) {
-        x = fin_x;
-    }
-    else{
+    if (fin_x == x && x_spd != 0) {
         setXSpd((-x_spd)/2);
     }
-    if (fin_y > 0 && fin_y < (600-height)) {
-        y = fin_y;
-    }
-    else{
+    if (fin_y == y && y_spd != 0) {
         setYSpd((-y_spd)/2);
     }
+
+    x = fin_x;
+    y = fin_y;
 
     //If movement is not zero, move closer to it based on friction
     if(x_spd < 0){
@@ -96,7 +110,7 @@ void Wrestler::moveWrestler(float friction)
             x_spd = x_spd + friction;
         }
     }
-    else if(x > 0){
+    else if(x_spd > 0){
         if(x_spd < friction){
             x_spd = 0;
         }
@@ -236,10 +250,20 @@ void Wrestler::setY(float num)
 void Wrestler::setXSpd(float num)
 {
     x_spd = num;
+
+    //Reflect if moving off screen
+    if(getMovedX() == x && x_spd != 0){
+        x_spd = (-x_spd)/2;
+    }
 }
 void Wrestler::setYSpd(float num)
 {
     y_spd = num;
+
+    //Reflect if moving off screen
+    if(getMovedY() == y && y_spd != 0){
+        y_spd = (-y_spd)/2;
+    }
 }
 
 bool Wrestler::operator < (const Wrestler &wrest) const

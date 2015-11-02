@@ -77,7 +77,7 @@ void setAISpd(Wrestler& ai_sumo, Wrestler human_sumo)
         setWrestlerSpd(ai_sumo, 2);
 }
 
-void calcCollision(LocationalMap& loc_map, std::vector<Wrestler>& wrestlers)
+std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map, std::vector<Wrestler>& wrestlers)
 {
     std::vector<std::set<long int> > collision_sets;
     std::vector<long int> tmp;
@@ -142,76 +142,6 @@ void calcCollision(LocationalMap& loc_map, std::vector<Wrestler>& wrestlers)
 
                                 sf::Vector2f
                                 u2(wrestlers[tmp_pos[w2]].getXSpd(),wrestlers[tmp_pos[w2]].getYSpd());
-
-                                //Set positions so they aren't overlapping
-                                int mid_x = (wrestlers[tmp_pos[w1]].getMovedX() + wrestlers[tmp_pos[w2]].getMovedX() + wrestlers[tmp_pos[w2]].getWidth()) / 2;
-                                int mid_y = (wrestlers[tmp_pos[w1]].getMovedY() + wrestlers[tmp_pos[w2]].getMovedY() + wrestlers[tmp_pos[w2]].getHeight()) / 2;
-
-                                //Don't allow the wrestlers to move outside of the collision path
-                                //Set the mid position to the edge of the one being hit
-                                if (u1.x >= 0 && u2.x >= 0){
-                                    if (u1.x > u2.x){
-                                        mid_x = wrestlers[tmp_pos[w2]].getMovedX();
-                                    }
-                                    else{
-                                        mid_x = wrestlers[tmp_pos[w1]].getMovedX();
-                                    }
-                                }
-                                else if(u1.x <= 0 && u2.x <= 0){
-                                    if (u1.x < u2.x){
-                                        mid_x = wrestlers[tmp_pos[w2]].getMovedX() + wrestlers[tmp_pos[w2]].getWidth();
-                                    }
-                                    else{
-                                        mid_x = wrestlers[tmp_pos[w1]].getMovedX() + wrestlers[tmp_pos[w1]].getWidth();
-                                    }
-                                }
-                                if (u1.y >= 0 && u2.y >= 0){
-                                    if (u1.y > u2.y){
-                                        mid_y = wrestlers[tmp_pos[w2]].getMovedY();
-                                    }
-                                    else{
-                                        mid_y = wrestlers[tmp_pos[w1]].getMovedY();
-                                    }
-                                }
-                                else if(u1.y <= 0 && u2.y <= 0){
-                                    if (u1.y < u2.y){
-                                        mid_y = wrestlers[tmp_pos[w2]].getMovedY() + wrestlers[tmp_pos[w2]].getHeight();
-                                    }
-                                    else{
-                                        mid_y = wrestlers[tmp_pos[w1]].getMovedY() + wrestlers[tmp_pos[w1]].getHeight();
-                                    }
-                                }
-
-                                //Readjust position on x-axis if mostly colliding on x or y-axis if mostly colliding on y. Both if same.
-                                if (std::abs(wrestlers[tmp_pos[w1]].getX() - wrestlers[tmp_pos[w2]].getX()) >=
-                                    std::abs(wrestlers[tmp_pos[w1]].getY() - wrestlers[tmp_pos[w2]].getY())){
-
-                                    //w1 is starts on the left
-                                    if (wrestlers[tmp_pos[w1]].getX() < wrestlers[tmp_pos[w2]].getX()){
-                                        wrestlers[tmp_pos[w1]].setX(mid_x - wrestlers[tmp_pos[w1]].getWidth());
-                                        wrestlers[tmp_pos[w2]].setX(mid_x);
-                                    }
-                                    //w1 is starts on the right
-                                    else if (wrestlers[tmp_pos[w1]].getX() > wrestlers[tmp_pos[w2]].getX()){
-                                        wrestlers[tmp_pos[w1]].setX(mid_x);
-                                        wrestlers[tmp_pos[w2]].setX(mid_x - wrestlers[tmp_pos[w2]].getWidth());
-                                    }
-                                }
-                                if (std::abs(wrestlers[tmp_pos[w1]].getY() - wrestlers[tmp_pos[w2]].getY()) >=
-                                    std::abs(wrestlers[tmp_pos[w1]].getX() - wrestlers[tmp_pos[w2]].getX())){
-
-                                    //w1 is starts on the top
-                                    if (wrestlers[tmp_pos[w1]].getY() < wrestlers[tmp_pos[w2]].getY()){
-                                        wrestlers[tmp_pos[w1]].setY(mid_y - wrestlers[tmp_pos[w1]].getHeight());
-                                        wrestlers[tmp_pos[w2]].setY(mid_y);
-                                    }
-                                    //w1 is starts on the bottom
-                                    else if (wrestlers[tmp_pos[w1]].getY() > wrestlers[tmp_pos[w2]].getY()){
-                                        wrestlers[tmp_pos[w1]].setY(mid_y);
-                                        wrestlers[tmp_pos[w2]].setY(mid_y - wrestlers[tmp_pos[w2]].getHeight());
-                                    }
-                                }
-
                                 // using equal mass temporarily
                                 float m1 = 10.f;
                                 float m2 = 10.f;
@@ -243,4 +173,5 @@ void calcCollision(LocationalMap& loc_map, std::vector<Wrestler>& wrestlers)
             tmp_pos.clear();
         }
     }
+    return collision_sets;
 }

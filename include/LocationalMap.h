@@ -10,7 +10,7 @@ class LocationalMap
         // virtual ~LocationalMap(); commented out due to crashing
 
         void init(int scn_width, int scn_height, int cell_sz);
-        void add(Wrestler sumo);
+        void add(std::vector<Wrestler>& wrestlers);
         std::vector<long int> getCell(int i, int j);
         void clearCells();
         void printCells();
