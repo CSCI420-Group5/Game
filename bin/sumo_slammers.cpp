@@ -9,7 +9,6 @@
 #include "FumioView.h"
 #include "MainMenu.h"
 #include "Terrain.h"
-#include <iostream>
 
 int main(int argc, char** argv)
 {
