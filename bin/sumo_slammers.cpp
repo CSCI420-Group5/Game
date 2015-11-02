@@ -9,6 +9,7 @@
 #include "PlayerView.h"
 #include "MainMenu.h"
 #include "Terrain.h"
+#include "Profile.h"
 
 int main(int argc, char** argv)
 {
@@ -24,6 +25,12 @@ int main(int argc, char** argv)
 
     // Create menu
     MainMenu menu(800, 600);
+
+    // Create profile
+    Profile profile;
+    profile.setLives(3);
+    profile.setCharacter("Fumio");
+    profile.setLevel("Generic Level");
 
     // create wrestlers
     Wrestler human_sumo;
@@ -47,6 +54,7 @@ int main(int argc, char** argv)
     actors.push_back(ai_sumo2);
     actors.push_back(ai_sumo3);
     PlayerView view;
+    view.init();
 
     // create game timer used to keep things synched
     sf::Clock timer;
@@ -131,7 +139,8 @@ int main(int argc, char** argv)
 
             // TODO have basic shape (rectangle?) for WrestlerView objects
             // associated with created actors and draw them
-            view.drawActors(&App, actors);
+            view.drawActors(App, actors);
+            view.drawHUD(App, profile);
         }
 
 
