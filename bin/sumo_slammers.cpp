@@ -86,6 +86,9 @@ int main(int argc, char** argv)
     if (!map.load("resources/roundwalls.png", sf::Vector2u(32, 32), level, 25, 20))
         return -1;
 
+    // create pointer to player so wrestler-specific methods can be used
+    Wrestler *w = dynamic_cast<Wrestler*>(actors[0]);
+
     // start main loop
     while(App.isOpen())
     {
@@ -107,7 +110,6 @@ int main(int argc, char** argv)
                 timer.restart();
 
                 // set speed for human controlled wrestler
-                Wrestler *w = dynamic_cast<Wrestler*>(actors[0]);
                 getInputSetSpd(w);
 
                 // set speed for ai controlled wrestler
