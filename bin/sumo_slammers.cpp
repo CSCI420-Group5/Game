@@ -10,7 +10,6 @@
 #include "MainMenu.h"
 #include "Terrain.h"
 #include "Profile.h"
-#include <iostream>
 
 int main(int argc, char** argv)
 {

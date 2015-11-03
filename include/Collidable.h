@@ -37,20 +37,6 @@ class Collidable
     // Used for object depth in drawing
     bool operator<(const Collidable &obj) const;
 
-    // virtual with no declaration that child classes can implement
-    virtual sf::ConvexShape getPath() {}
-    virtual void useGrab() {}
-    virtual void useThrow() {}
-    virtual void useDash() {}
-    virtual int getSpeed() {}
-    virtual int getStrength() {}
-    virtual int getWeight() {}
-    virtual int getStamina() {}
-    virtual float getAcceleration() {}
-    virtual void setStats() {}
-    virtual int getCurrentState() {}
-    virtual void setCurrentState() {}
-
     protected:
     long int id;
     bool is_human;
