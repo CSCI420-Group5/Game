@@ -10,6 +10,7 @@
 #include "MainMenu.h"
 #include "Terrain.h"
 #include "Profile.h"
+#include <iostream>
 
 int main(int argc, char** argv)
 {
@@ -20,7 +21,7 @@ int main(int argc, char** argv)
     sf::RenderWindow App(sf::VideoMode(800,600,32), "Sumo Slammers - SFML");
 
     // TODO when we have more wrestlers, create a vector and loop through them?
-    std::vector<Collidable> actors;
+    std::vector<Collidable*> actors;
     std::vector<std::set<long int> > collision_sets;
 
     // Create menu
@@ -49,10 +50,10 @@ int main(int argc, char** argv)
     ai_sumo3.init(20, 20, 400, 360);
     ai_sumo3.setIsHuman(false);
 
-    actors.push_back(human_sumo);
-    actors.push_back(ai_sumo);
-    actors.push_back(ai_sumo2);
-    actors.push_back(ai_sumo3);
+    actors.push_back(&human_sumo);
+    actors.push_back(&ai_sumo);
+    actors.push_back(&ai_sumo2);
+    actors.push_back(&ai_sumo3);
     PlayerView view;
     view.init();
 

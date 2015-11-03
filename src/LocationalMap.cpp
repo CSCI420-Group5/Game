@@ -39,7 +39,7 @@ std::vector<long int> LocationalMap::getCell(int i, int j)
     return cells[i*cols+j];
 }
 
-void LocationalMap::add(std::vector<Collidable>& actors)
+void LocationalMap::add(std::vector<Collidable*>& actors)
 //adds the int id of a wrestler object to all cells it resides in
 {
     for (unsigned int w = 0; w < actors.size(); w++){
@@ -51,11 +51,11 @@ void LocationalMap::add(std::vector<Collidable>& actors)
         size_t n;
 
         //Find all of the i rows that the object occupies
-        while((height + cell_size) <= actors[w].getMovedPos().y && height < screen_h){
+        while((height + cell_size) <= actors[w]->getMovedPos().y && height < screen_h){
             height += cell_size;
             i++;
         }
-        while(height < (actors[w].getMovedPos().y + actors[w].getHeight()) && height < screen_h){
+        while(height < (actors[w]->getMovedPos().y + actors[w]->getHeight()) && height < screen_h){
             add_rows.push_back(i);
             height += cell_size;
             i++;
@@ -63,13 +63,13 @@ void LocationalMap::add(std::vector<Collidable>& actors)
 
         //Find all of the j columns that the object occupies
         //And add the object to the cell list for each row for each column
-        while((width + cell_size) <= actors[w].getMovedPos().x && width < screen_w){
+        while((width + cell_size) <= actors[w]->getMovedPos().x && width < screen_w){
             width += cell_size;
             j++;
         }
-        while(width < (actors[w].getMovedPos().x + actors[w].getWidth()) && width < screen_w){
+        while(width < (actors[w]->getMovedPos().x + actors[w]->getWidth()) && width < screen_w){
             for (n = 0; n < add_rows.size(); n++){
-                cells[add_rows[n]*cols+j].push_back(actors[w].getID());
+                cells[add_rows[n]*cols+j].push_back(actors[w]->getID());
             }
 
             width += cell_size;

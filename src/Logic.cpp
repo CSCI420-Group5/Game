@@ -2,37 +2,37 @@
 #include <cmath>
 #include <set>
 
-void moveActors(std::vector<Collidable> &actors)
+void moveActors(std::vector<Collidable*> &actors)
 {
     for (unsigned int i=0; i<actors.size(); i++) {
-        actors[i].move(0.1); //Placeholder for friction
+        actors[i]->move(0.1); //Placeholder for friction
     }
 }
 
-void setActorSpd(Collidable& actor, int dir)
+void setActorSpd(Collidable* actor, int dir)
 {
     float acc = 0.2;
         // move left
         if (dir == 1) {
-            actor.setVelocity(actor.getVelocity().x-acc, actor.getVelocity().y);
+            actor->setVelocity(actor->getVelocity().x-acc, actor->getVelocity().y);
         }
 
         // move right
         else if (dir == 3) {
-            actor.setVelocity(actor.getVelocity().x+acc, actor.getVelocity().y);
+            actor->setVelocity(actor->getVelocity().x+acc, actor->getVelocity().y);
         }
         // move up
         if (dir == 0) {
-            actor.setVelocity(actor.getVelocity().x, actor.getVelocity().y-acc);
+            actor->setVelocity(actor->getVelocity().x, actor->getVelocity().y-acc);
         }
 
         // move down
         else if (dir == 2) {
-            actor.setVelocity(actor.getVelocity().x, actor.getVelocity().y+acc);
+            actor->setVelocity(actor->getVelocity().x, actor->getVelocity().y+acc);
         }
 }
 
-void getInputSetSpd(Collidable& sumo)
+void getInputSetSpd(Collidable* sumo)
 {
 
     // move left
@@ -52,12 +52,12 @@ void getInputSetSpd(Collidable& sumo)
         setActorSpd(sumo, 2);
 }
 
-void setAISpd(Collidable& ai_sumo, Collidable human_sumo)
+void setAISpd(Collidable* ai_sumo, Collidable* human_sumo)
 {
 
     // get player's and ai's locations
-    sf::Vector2f player_pos = human_sumo.getPos();
-    sf::Vector2f ai_pos = ai_sumo.getPos();
+    sf::Vector2f player_pos = human_sumo->getPos();
+    sf::Vector2f ai_pos = ai_sumo->getPos();
 
     // move left
     if (player_pos.x < ai_pos.x)
@@ -76,7 +76,8 @@ void setAISpd(Collidable& ai_sumo, Collidable human_sumo)
         setActorSpd(ai_sumo, 2);
 }
 
-std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map, std::vector<Collidable>& actors)
+std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map,
+std::vector<Collidable*>& actors)
 {
     std::vector<std::set<long int> > collision_sets;
     std::vector<long int> tmp;
@@ -94,7 +95,7 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map, std::vect
                 //Find the wrestlers in the main list from their ids and put the location in main list in vector parallel to tmp
                 for (unsigned int idi=0; idi<tmp.size(); idi++){
                     for (unsigned int w=0; w<actors.size(); w++) {
-                        if (actors[w].getID() == tmp[idi]) {
+                        if (actors[w]->getID() == tmp[idi]) {
 
                             tmp_pos.push_back(w);
                             break;
@@ -108,12 +109,12 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map, std::vect
 
                         // create rectangle shapes to detect collisions from where the object will be next frame
                         sf::RectangleShape
-                        wrest_box1(sf::Vector2f(actors[tmp_pos[w1]].getWidth(),actors[tmp_pos[w1]].getHeight()));
-                        wrest_box1.setPosition(actors[tmp_pos[w1]].getMovedPos());
+                        wrest_box1(sf::Vector2f(actors[tmp_pos[w1]]->getWidth(),actors[tmp_pos[w1]]->getHeight()));
+                        wrest_box1.setPosition(actors[tmp_pos[w1]]->getMovedPos());
 
                         sf::RectangleShape
-                        wrest_box2(sf::Vector2f(actors[tmp_pos[w2]].getWidth(),actors[tmp_pos[w2]].getWidth()));
-                        wrest_box2.setPosition(actors[tmp_pos[w2]].getMovedPos());
+                        wrest_box2(sf::Vector2f(actors[tmp_pos[w2]]->getWidth(),actors[tmp_pos[w2]]->getWidth()));
+                        wrest_box2.setPosition(actors[tmp_pos[w2]]->getMovedPos());
 
                         sf::FloatRect w1_bounds = wrest_box1.getGlobalBounds();
                         sf::FloatRect w2_bounds = wrest_box2.getGlobalBounds();
@@ -136,8 +137,10 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map, std::vect
                                 //Calculate collision
                                 // v1 = (u1(m1-m2)+2m2u2)/m1+m2
                                 // v2 = (u2(m2-m1)+2m1u1)/m1+m2
-                                sf::Vector2f u1(actors[tmp_pos[w1]].getVelocity());
-                                sf::Vector2f u2(actors[tmp_pos[w2]].getVelocity());
+                                sf::Vector2f
+                                u1(actors[tmp_pos[w1]]->getVelocity());
+                                sf::Vector2f
+                                u2(actors[tmp_pos[w2]]->getVelocity());
 
                                 // using equal mass temporarily
                                 float m1 = 10.f;
@@ -147,8 +150,8 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map, std::vect
                                 sf::Vector2f v2 = (u2*(m2-m1)+2.f*m1*u1)/(m1+m2);
 
                                 //Set new speeds
-                                actors[tmp_pos[w1]].setVelocity(v1.x, v1.y);
-                                actors[tmp_pos[w2]].setVelocity(v2.x, v2.y);
+                                actors[tmp_pos[w1]]->setVelocity(v1.x, v1.y);
+                                actors[tmp_pos[w2]]->setVelocity(v2.x, v2.y);
 
                                 //Insert ids for no more collisions this iteration
                                 std::set<long int> new_set;
