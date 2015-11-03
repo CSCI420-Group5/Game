@@ -107,7 +107,8 @@ int main(int argc, char** argv)
                 timer.restart();
 
                 // set speed for human controlled wrestler
-                getInputSetSpd(actors[0]);
+                Wrestler *w = dynamic_cast<Wrestler*>(actors[0]);
+                getInputSetSpd(w);
 
                 // set speed for ai controlled wrestler
                 setAISpd(actors[1], actors[0]);

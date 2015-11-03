@@ -32,8 +32,12 @@ void setActorSpd(Collidable* actor, int dir)
         }
 }
 
-void getInputSetSpd(Collidable* sumo)
+//void getInputSetSpd(Collidable* sumo)
+void getInputSetSpd(Wrestler* sumo)
 {
+    // dash
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+        sumo->useDash();
 
     // move left
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))

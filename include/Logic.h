@@ -8,7 +8,8 @@
 
 void moveActors(std::vector<Collidable*> &actors);
 
-void getInputSetSpd(Collidable* sumo);
+//void getInputSetSpd(Collidable* sumo);
+void getInputSetSpd(Wrestler* sumo);
 
 void setAISpd(Collidable* ai_sumo, Collidable* human_sumo);
 
