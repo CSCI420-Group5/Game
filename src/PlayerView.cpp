@@ -2,6 +2,7 @@
 #include "SFML/Graphics.hpp"
 #include "Wrestler.h"
 #include "iostream"
+#include "tinyxml2.h"
 #include <sstream>
 
 PlayerView::PlayerView()
@@ -11,7 +12,20 @@ PlayerView::PlayerView()
 
 void PlayerView::init()
 {
-    font.loadFromFile("arial.ttf");
+    font.loadFromFile("resources/arial.ttf");
+
+    tinyxml2::XMLDocument doc;
+    bool loadFail = doc.LoadFile("resources/resources.xml");
+    if (!loadFail) {
+        tinyxml2::XMLElement* file_element =
+        doc.FirstChildElement("resources")
+        ->FirstChildElement("wrestlerSpriteSheet");
+
+        std::string file_name = file_element->GetText();
+        sprite_sheet.loadFromFile(file_name);
+        sprite.setTexture(sprite_sheet);
+    }
+
 }
 
 void PlayerView::drawActors(sf::RenderWindow& App, std::vector<Collidable*> actors)
@@ -26,13 +40,16 @@ void PlayerView::drawActors(sf::RenderWindow& App, std::vector<Collidable*> acto
         wrest_box.setPosition(actors[i]->getPos());
 
         if(actors[i]->isHuman()){
-            wrest_box.setFillColor(sf::Color::Green);
+            sprite.setTextureRect(sf::IntRect(0,0,100,100));
+            sprite.setPosition(actors[i]->getPos());
+            //wrest_box.setFillColor(sf::Color::Green);
+            App.draw(sprite);
+//            wrest_box.setTexture(&sprite_sheet);
         }
         else{
             wrest_box.setFillColor(sf::Color::Red);
+            App.draw(wrest_box);
         }
-
-        App.draw(wrest_box);
     }
 }
 

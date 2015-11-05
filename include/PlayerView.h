@@ -17,6 +17,7 @@ class PlayerView
     protected:
     private:
         sf::Texture sprite_sheet;
+        sf::Sprite sprite;
         sf::Font font;
 };
 

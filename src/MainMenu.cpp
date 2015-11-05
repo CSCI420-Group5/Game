@@ -7,7 +7,7 @@ MainMenu::MainMenu(float width, float height)
 	inMenu = 0;
 	selected = 0;
 
-	font.loadFromFile("arial.ttf");
+	font.loadFromFile("resources/arial.ttf");
 
 	text[0].setFont(font);
 	text[0].setColor(sf::Color::White);

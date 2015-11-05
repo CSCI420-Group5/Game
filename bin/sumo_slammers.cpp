@@ -14,7 +14,7 @@
 int main(int argc, char** argv)
 {
     LocationalMap loc_map;
-    loc_map.init(800, 600, 20);
+    loc_map.init(800, 600, 30);
 
     // create main window
     sf::RenderWindow App(sf::VideoMode(800,600,32), "Sumo Slammers - SFML");
@@ -34,19 +34,19 @@ int main(int argc, char** argv)
 
     // create wrestlers
     Wrestler human_sumo;
-    human_sumo.init(20, 20, 200, 290);
+    human_sumo.init(30, 30, 200, 290);
     human_sumo.setIsHuman(true);
 
     Wrestler ai_sumo;
-    ai_sumo.init(20, 20, 400, 300);
+    ai_sumo.init(30, 30, 400, 300);
     ai_sumo.setIsHuman(false);
 
     Wrestler ai_sumo2;
-    ai_sumo2.init(20, 20, 400, 330);
+    ai_sumo2.init(30, 30, 400, 330);
     ai_sumo2.setIsHuman(false);
 
     Wrestler ai_sumo3;
-    ai_sumo3.init(20, 20, 400, 360);
+    ai_sumo3.init(30, 30, 400, 360);
     ai_sumo3.setIsHuman(false);
 
     actors.push_back(&human_sumo);
