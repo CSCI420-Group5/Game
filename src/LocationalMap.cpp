@@ -15,6 +15,15 @@ void LocationalMap::init(int scn_width, int scn_height, int cell_sz)
     screen_h = scn_height;
     cols = scn_width / cell_size;
     rows = scn_height / cell_size;
+
+    //In case cell size is not evenly divisible by the screen
+    if (cols < scn_width*cell_size){
+        cols++;
+    }
+    if (rows < scn_height*cell_size){
+        rows++;
+    }
+
     cells = new std::vector<long int>[rows*cols];
 }
 

@@ -14,7 +14,7 @@
 int main(int argc, char** argv)
 {
     LocationalMap loc_map;
-    loc_map.init(800, 600, 20); //The third argument must be evenly divisible by the first two
+    loc_map.init(800, 600, 30);
 
     // create main window
     sf::RenderWindow App(sf::VideoMode(800,600,32), "Sumo Slammers - SFML");
