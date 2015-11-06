@@ -69,10 +69,10 @@ void Collidable::move(float friction)
     sf::Vector2f fin_pos = getMovedPos();
 
     // check for walls and reverse speed inelastically if they hit
-    if (fin_pos.x == position.x && velocity.x != 0) {
+    if (fin_pos.x == 1 || fin_pos.x == 799 - width) {
         velocity.x /= -2;
     }
-    if (fin_pos.y == position.y && velocity.y != 0) {
+    if (fin_pos.y == 1 || fin_pos.y == 599 - height) {
         velocity.y /= -2;
     }
 
@@ -174,15 +174,16 @@ void Collidable::setVelocity(float x, float y)
     //Reflect if moving off screen
     sf::Vector2f moved_pos = getMovedPos();
 
-    if(moved_pos.x == position.x && velocity.x != 0){
+    if(moved_pos.x == 1 || moved_pos.x == 799 - width){
         velocity.x /= -2;
     }
-    if(moved_pos.y == position.y && velocity.y != 0){
+    if(moved_pos.y == 1 || moved_pos.y == 599 - height){
         velocity.y /= -2;
     }
 }
 
-bool Collidable::operator < (const Collidable &obj) const
+/*bool Collidable::operator < (const Collidable &obj) const
 {
     return (position.y < obj.getPos().y);
 }
+*/

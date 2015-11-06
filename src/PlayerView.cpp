@@ -28,10 +28,15 @@ void PlayerView::init()
 
 }
 
+bool sortByDepth (const Collidable* actor1, const Collidable* actor2)
+{
+    return (actor1->getPos().y < actor2->getPos().y);
+}
+
 void PlayerView::drawActors(sf::RenderWindow& App, std::vector<Collidable*> actors)
 {
     //Sort the list of wrestlers based on their y position (depth)
-    std::sort(actors.begin(), actors.end());
+    std::sort(actors.begin(), actors.end(), sortByDepth);
 
     //Draw wrestlers with boxes holding positions for now, green for player and red for ai
     for(unsigned int i = 0; i < actors.size(); i++){
@@ -41,8 +46,10 @@ void PlayerView::drawActors(sf::RenderWindow& App, std::vector<Collidable*> acto
 
         if(actors[i]->isHuman()){
             sprite.setTextureRect(sf::IntRect(0,0,100,100));
-            sprite.setPosition(actors[i]->getPos());
-            //wrest_box.setFillColor(sf::Color::Green);
+            sf::Vector2f human_pos = actors[i]->getPos();
+            sprite.setPosition(human_pos.x - (100-actors[i]->getWidth())/2, human_pos.y - (80-actors[i]->getHeight()));
+            wrest_box.setFillColor(sf::Color::Green);
+            App.draw(wrest_box);
             App.draw(sprite);
 //            wrest_box.setTexture(&sprite_sheet);
         }

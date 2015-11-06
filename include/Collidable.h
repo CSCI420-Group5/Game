@@ -34,8 +34,8 @@ class Collidable
     void setPos(float x, float y);
     void setVelocity(float x, float y);
 
-    // Used for object depth in drawing
-    bool operator<(const Collidable &obj) const;
+    /*// Used for object depth in drawing
+    bool operator<(const Collidable &obj) const;*/
 
     protected:
     long int id;
