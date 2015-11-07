@@ -201,6 +201,9 @@ void getInputSetSpd(LocationalMap& loc_map, std::vector<Collidable*>& actors)
 {
     Wrestler *w = dynamic_cast<Wrestler*>(actors[0]);
 
+    // increase stamina 
+    w->increaseStamina(); 
+
     //Need to unfreeze the wrestler if enough frames (time) have passed for each special state
     if (w->getCurrentState() == Wrestler::DASH && w->getFrozenFrames() >= 45){
         w->setCurrentState(Wrestler::NORMAL);

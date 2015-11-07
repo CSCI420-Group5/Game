@@ -22,6 +22,8 @@ void Wrestler::init(int hit_height, int hit_width, int x, int y)
 
     velocity.x = 0;
     velocity.y = 0;
+
+    stamina = 100; 
 }
 
 sf::ConvexShape Wrestler::getPath()
@@ -72,67 +74,80 @@ void Wrestler::useThrow(Wrestler* throwee)
     //Not done
 }
 
+void Wrestler::increaseStamina()
+{
+    if (stamina < 100)
+    {
+        stamina += 1;
+    }
+}
+
 void Wrestler::useDash()
 {
-     // up / right
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)
-        && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        {
-            velocity.x = 6;
-            velocity.y = -6;
-        }
+    if (stamina > 49)
+    {
+         // up / right
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) 
+            && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+            {
+                velocity.x = 6;
+                velocity.y = -6;
+            }
 
-    // down / right
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
-        && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        {
-            velocity.x = 6;
-            velocity.y = 6;
-        }
+        // down / right
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) 
+            && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+            {
+                velocity.x = 6;
+                velocity.y = 6;
+            }
 
-    // down / left
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
-        && sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            velocity.x =-6;
-            velocity.y = 6;
-        }
+        // down / left
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) 
+            && sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+            {
+                velocity.x =-6;
+                velocity.y = 6;
+            }
 
-    // up / left
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)
-        && sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            velocity.x = -6;
-            velocity.y = -6;
-        }
+        // up / left
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) 
+            && sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+            {
+                velocity.x = -6;
+                velocity.y = -6;
+            }
 
-        // up
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        {
-            velocity.x = 0;
-            velocity.y = -12;
-        }
+            // up
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+            {
+                velocity.x = 0;
+                velocity.y = -12;
+            }
 
-        // down
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        {
-            velocity.x = 0;
-            velocity.y = 12;
-        }
+            // down
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+            {
+                velocity.x = 0;
+                velocity.y = 12;
+            }
 
-        // left
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            velocity.x = -12;
-            velocity.y = 0;
-        }
+            // left
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+            {
+                velocity.x = -12;
+                velocity.y = 0;
+            }
 
-        // right
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        {
-            velocity.x = 12;
-            velocity.y = 0;
-        }
+            // right
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+            {
+                velocity.x = 12;
+                velocity.y = 0;
+            }
+
+        stamina -= 50;
+    }
 
     current_state = DASH;
     resetFrozenFrames();
