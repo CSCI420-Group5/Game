@@ -87,8 +87,10 @@ void PlayerView::drawHUD(sf::RenderWindow& App, Profile profile)
     App.draw(level_txt);
 }
 
-void PlayerView::drawStaminaBar(sf::RenderWindow& App, Wrestler* w)
+void PlayerView::drawStaminaBar(sf::RenderWindow& App, Collidable* player)
 {
+    Wrestler* w = dynamic_cast<Wrestler*>(player);
+
     std::string stamStr;
     std::stringstream convert;
     convert << w->getStamina();

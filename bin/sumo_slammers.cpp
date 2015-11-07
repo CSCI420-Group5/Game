@@ -141,7 +141,7 @@ int main(int argc, char** argv)
             // associated with created actors and draw them
             view.drawActors(App, actors);
             view.drawHUD(App, profile);
-            view.drawStaminaBar(App, w);
+            view.drawStaminaBar(App, actors[0]);
         }
 
 
