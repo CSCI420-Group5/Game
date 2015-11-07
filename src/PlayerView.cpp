@@ -55,8 +55,14 @@ void PlayerView::drawActors(sf::RenderWindow& App, std::vector<Collidable*> acto
 //            wrest_box.setTexture(&sprite_sheet);
         }
         else{
-            wrest_box.setFillColor(sf::Color::Red);
+            // wrest_box.setFillColor(sf::Color::Red);
+            // App.draw(wrest_box);
+            sprite.setTextureRect(sf::IntRect(0,100,100,200));
+            sf::Vector2f cpu_pos = actors[i]->getPos();
+            sprite.setPosition(cpu_pos.x - (100-actors[i]->getWidth())/2, cpu_pos.y - (80-actors[i]->getHeight()));
+            wrest_box.setFillColor(sf::Color::Green);
             App.draw(wrest_box);
+            App.draw(sprite);
         }
     }
 }
