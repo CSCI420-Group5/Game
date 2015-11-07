@@ -11,7 +11,8 @@ void Wrestler::init(int hit_height, int hit_width, int x, int y)
     //Maybe should be a more unique id
     id = reinterpret_cast<long int>(&id);
 
-    current_state = 0;
+    current_state = NORMAL;
+    frozen_frames = 0;
 
     height = hit_height;
     width = hit_width;
@@ -38,12 +39,35 @@ sf::ConvexShape Wrestler::getPath()
     return path;
 }
 
-void Wrestler::useGrab(Wrestler grabee)
+void Wrestler::useGrab(Wrestler* grabee)
 {
-    //Not done
+    current_state = GRABBING;
+    grabee->setCurrentState(Wrestler::GRABBED);
+
+    int new_x = grabee->getPos().x;
+    int new_y = grabee->getPos().y;
+
+    //Move the grabee toward the grabber
+    if (grabee->getPos().x + grabee->getWidth() < position.x){
+        new_x = position.x - grabee->getWidth() - 1;
+    }
+    else if (grabee->getPos().x > position.x + width){
+        new_x = position.x + width + 1;
+    }
+    if (grabee->getPos().y + grabee->getHeight() < position.y){
+        new_y = position.y - grabee->getHeight() - 1;
+    }
+    else if (grabee->getPos().y > position.y + height){
+        new_y = position.y + height + 1;
+    }
+
+    grabee->setPos(new_x, new_y);
+
+    resetFrozenFrames();
+    grabee->resetFrozenFrames();
 }
 
-void Wrestler::useThrow(Wrestler throwee)
+void Wrestler::useThrow(Wrestler* throwee)
 {
     //Not done
 }
@@ -51,7 +75,7 @@ void Wrestler::useThrow(Wrestler throwee)
 void Wrestler::useDash()
 {
      // up / right
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) 
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)
         && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
             velocity.x = 6;
@@ -59,7 +83,7 @@ void Wrestler::useDash()
         }
 
     // down / right
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) 
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
         && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
             velocity.x = 6;
@@ -67,7 +91,7 @@ void Wrestler::useDash()
         }
 
     // down / left
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) 
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
         && sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
             velocity.x =-6;
@@ -75,7 +99,7 @@ void Wrestler::useDash()
         }
 
     // up / left
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) 
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)
         && sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
             velocity.x = -6;
@@ -109,6 +133,9 @@ void Wrestler::useDash()
             velocity.x = 12;
             velocity.y = 0;
         }
+
+    current_state = DASH;
+    resetFrozenFrames();
 }
 
 int Wrestler::getSpeed()
@@ -141,13 +168,25 @@ void Wrestler::setStats(int spd, int str, int wgt, int stm)
     acceleration = float(str) / float(wgt);
 }
 
-int Wrestler::getCurrentState()
+Wrestler::State Wrestler::getCurrentState()
 {
     return current_state;
 }
-void Wrestler::setCurrentState(int num)
+void Wrestler::setCurrentState(State new_state)
 {
-    current_state = num;
+    current_state = new_state;
+}
+void Wrestler::incFrozenFrames()
+{
+    frozen_frames++;
+}
+void Wrestler::resetFrozenFrames()
+{
+    frozen_frames = 0;
+}
+int Wrestler::getFrozenFrames()
+{
+    return frozen_frames;
 }
 
 Wrestler::~Wrestler()
