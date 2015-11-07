@@ -4,6 +4,7 @@
 #include "iostream"
 #include "tinyxml2.h"
 #include <sstream>
+#include <string>
 
 PlayerView::PlayerView()
 {
@@ -78,6 +79,22 @@ void PlayerView::drawHUD(sf::RenderWindow& App, Profile profile)
 
     App.draw(lives_txt);
     App.draw(level_txt);
+}
+
+void PlayerView::drawStaminaBar(sf::RenderWindow& App, Wrestler* w)
+{
+    std::string stamStr;
+    std::stringstream convert;
+    convert << w->getStamina();
+    stamStr = convert.str();
+
+    sf::Text stam_txt;
+    stam_txt.setString(stamStr);
+    stam_txt.setFont(font);
+    stam_txt.setColor(sf::Color::White);
+    stam_txt.setPosition(sf::Vector2f(100, 100));
+
+    App.draw(stam_txt);
 }
 
 PlayerView::~PlayerView()

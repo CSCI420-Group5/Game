@@ -19,6 +19,8 @@ class Wrestler: public Collidable
         void useThrow(Wrestler throwee);
         void useDash();
 
+        void increaseStamina();
+
         //General getters and setters:
         int getSpeed();
         int getStrength();

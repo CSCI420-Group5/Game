@@ -111,6 +111,8 @@ int main(int argc, char** argv)
 
                 // set speed for human controlled wrestler
                 getInputSetSpd(w);
+                // increase stamina 
+                w->increaseStamina(); 
 
                 // set speed for ai controlled wrestler
                 setAISpd(actors[1], actors[0]);
@@ -144,6 +146,7 @@ int main(int argc, char** argv)
             // associated with created actors and draw them
             view.drawActors(App, actors);
             view.drawHUD(App, profile);
+            view.drawStaminaBar(App, w);
         }
 
 
