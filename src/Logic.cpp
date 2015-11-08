@@ -279,6 +279,20 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
     if (w->getCurrentState() == Wrestler::NORMAL){
         // dash
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && ai_code == ""){
+            if (w->getVelocity().x > 0) {
+                w->setCurSpriteState(Wrestler::DASH_RIGHT);
+            }
+            else if (w->getVelocity().x < 0) {
+                w->setCurSpriteState(Wrestler::DASH_LEFT);
+            }
+            if (w->getVelocity().y > 0 && w->getVelocity().y >
+                abs(w->getVelocity().x)) {
+                w->setCurSpriteState(Wrestler::DASH_DOWN);
+            }
+            else if (w->getVelocity().y < 0 && abs(w->getVelocity().y) >
+                abs(w->getVelocity().x)) {
+                w->setCurSpriteState(Wrestler::DASH_UP);
+            }
             w->useDash();
         }
 
@@ -289,26 +303,61 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
         //Move if doing nothing else
         else{
             // move left
-            if ((sf::Keyboard::isKeyPressed(sf::Keyboard::A) && ai_code == "") ||
-                ai_code == "left"){
+            if ((sf::Keyboard::isKeyPressed(sf::Keyboard::A) && ai_code == "") 
+                || ai_code == "left"){
+                if (w->getCurSpriteState() != Wrestler::RUN_LEFT1)
+                    w->setCurSpriteState(Wrestler::RUN_LEFT1);
+                else
+                    w->setCurSpriteState(Wrestler::RUN_LEFT2);
+
                 setActorSpd(w, 1);
             }
 
             // move right
-            else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::D) && ai_code == "") ||
-                     ai_code == "right"){
+            else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::D) && ai_code == 
+                "") || ai_code == "right") {
+                if (w->getCurSpriteState() != Wrestler::RUN_RIGHT1)
+                    w->setCurSpriteState(Wrestler::RUN_RIGHT1);
+                else
+                    w->setCurSpriteState(Wrestler::RUN_RIGHT2);
+
                 setActorSpd(w, 3);
             }
 
             // move up
-            if ((sf::Keyboard::isKeyPressed(sf::Keyboard::W) && ai_code == "") ||
-                ai_code == "up"){
+            if ((sf::Keyboard::isKeyPressed(sf::Keyboard::W) && ai_code == "") 
+                || ai_code == "up"){
+                // only change the sprite if we're moving faster in this
+                // direction
+                if (abs(w->getVelocity().y) > abs(w->getVelocity().x)) {
+                    if (w->getCurSpriteState() != Wrestler::RUN_UP1 && 
+                        !w->getUpState()) {
+                        w->setCurSpriteState(Wrestler::RUN_UP1);
+                        w->setUpState(true);
+                    }
+                    else {
+                        w->setCurSpriteState(Wrestler::RUN_UP2);
+                        w->setUpState(false);
+                    }
+                }
                 setActorSpd(w, 0);
             }
 
             // move down
-            else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::S) && ai_code == "") ||
-                     ai_code == "down"){
+            else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::S) && ai_code == 
+                "") || ai_code == "down"){
+                // only change sprite if we're going faster in this direction
+                if (w->getVelocity().y > abs(w->getVelocity().x)) {
+                    if (w->getCurSpriteState() != Wrestler::RUN_DOWN1 &&
+                        !w->getDownState()) {
+                        w->setCurSpriteState(Wrestler::RUN_DOWN1);
+                        w->setDownState(true);
+                    }
+                    else {
+                        w->setCurSpriteState(Wrestler::RUN_DOWN2);
+                        w->setDownState(false);
+                    }
+                }
                 setActorSpd(w, 2);
             }
         }

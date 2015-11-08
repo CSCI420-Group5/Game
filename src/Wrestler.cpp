@@ -12,6 +12,7 @@ void Wrestler::init(int hit_height, int hit_width, int x, int y)
     id = reinterpret_cast<long int>(&id);
 
     current_state = NORMAL;
+    sprite_state = STAND_RIGHT;
     frozen_frames = 0;
 
     id_of_grabbed = 0;
@@ -249,6 +250,17 @@ void Wrestler::setCurrentState(State new_state)
 {
     current_state = new_state;
 }
+
+Wrestler::SpriteState Wrestler::getCurSpriteState()
+{
+    return sprite_state;
+}
+
+void Wrestler::setCurSpriteState(SpriteState new_state)
+{
+    sprite_state = new_state;
+}
+
 void Wrestler::incFrozenFrames()
 {
     frozen_frames++;
