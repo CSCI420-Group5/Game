@@ -28,6 +28,8 @@ class Wrestler: public Collidable
         float getAcceleration(); //Currently based on strength/weight
 
         void setStats(int spd, int str, int wgt, int stm);
+        bool isHuman();
+        void setIsHuman(bool val);
 
         void setUpState(bool val);
         void setDownState(bool val);
@@ -62,6 +64,8 @@ class Wrestler: public Collidable
         int weight;
         int stamina;
         float acceleration;
+
+        bool is_human;
 
         // used for properly switching sprite states
         bool first_up_state;

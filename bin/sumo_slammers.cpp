@@ -36,18 +36,22 @@ int main(int argc, char** argv)
     Wrestler human_sumo;
     human_sumo.init(30, 30, 200, 290);
     human_sumo.setIsHuman(true);
+    human_sumo.setIsWrestler(true);
 
     Wrestler ai_sumo;
     ai_sumo.init(30, 30, 400, 300);
     ai_sumo.setIsHuman(false);
+    ai_sumo.setIsWrestler(true);
 
     Wrestler ai_sumo2;
     ai_sumo2.init(30, 30, 400, 330);
     ai_sumo2.setIsHuman(false);
+    ai_sumo2.setIsWrestler(true);
 
     Wrestler ai_sumo3;
     ai_sumo3.init(30, 30, 400, 360);
     ai_sumo3.setIsHuman(false);
+    ai_sumo3.setIsWrestler(true);
 
     actors.push_back(&human_sumo);
     actors.push_back(&ai_sumo);
@@ -110,9 +114,9 @@ int main(int argc, char** argv)
                 getInputSetSpd(actors[0], loc_map, actors, "");
 
                 // set speed for ai controlled wrestler
-                //setAISpd(actors[1], loc_map, actors);
-                //setAISpd(actors[2], loc_map, actors);
-                //setAISpd(actors[3], loc_map, actors);
+                setAISpd(actors[1], loc_map, actors);
+                setAISpd(actors[2], loc_map, actors);
+                setAISpd(actors[3], loc_map, actors);
 
                 // add wrestlers to locational map
                 loc_map.addFuture(actors);

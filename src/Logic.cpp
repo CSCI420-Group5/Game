@@ -230,6 +230,27 @@ void moveActors(std::vector<Collidable*> &actors)
 {
     for (unsigned int i=0; i<actors.size(); i++) {
         actors[i]->move(0.1); //Placeholder for friction
+        if (actors[i]->isWrestler()) {
+            Wrestler *w = dynamic_cast<Wrestler*>(actors[i]);
+            // if we've stopped moving, update to standing sprite
+            if (w->getVelocity().x == 0 && w->getVelocity().y == 0) {
+                Wrestler::SpriteState state = w->getCurSpriteState();
+                if (state == Wrestler::RUN_RIGHT1 || state ==
+                    Wrestler::RUN_RIGHT2 || state == Wrestler::STAND_RIGHT
+                    || state == Wrestler::DASH_RIGHT)
+                    w->setCurSpriteState(Wrestler::STAND_RIGHT);
+                else if (state == Wrestler::RUN_LEFT1 || state ==
+                    Wrestler::RUN_LEFT2 || state == Wrestler::STAND_LEFT || 
+                    state == Wrestler::DASH_LEFT)
+                    w->setCurSpriteState(Wrestler::STAND_LEFT);
+                else if (state == Wrestler::RUN_UP1 || state ==
+                    Wrestler::RUN_UP2 || state == Wrestler::STAND_UP || state 
+                    == Wrestler::DASH_UP)
+                    w->setCurSpriteState(Wrestler::STAND_UP);
+                else
+                    w->setCurSpriteState(Wrestler::STAND_DOWN);
+            }
+        }
     }
 }
 

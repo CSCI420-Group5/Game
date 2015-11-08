@@ -119,14 +119,14 @@ long int Collidable::getID() const
     return id;
 }
 
-bool Collidable::isHuman()
+bool Collidable::isWrestler()
 {
-    return is_human;
+    return is_wrestler;
 }
 
-void Collidable::setIsHuman(bool val)
+void Collidable::setIsWrestler(bool val)
 {
-    is_human = val;
+    is_wrestler = val;
 }
 
 int Collidable::getHeight() const

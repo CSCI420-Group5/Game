@@ -19,8 +19,8 @@ class Collidable
     // setters & getters
     long int getID() const;
 
-    bool isHuman();
-    void setIsHuman(bool val);
+    bool isWrestler();
+    void setIsWrestler(bool val);
 
     int getHeight() const;
     int getWidth() const;
@@ -43,7 +43,7 @@ class Collidable
     protected:
     int current_state;
     long int id;
-    bool is_human;
+    bool is_wrestler;
 
     // hitbox
     int width;
