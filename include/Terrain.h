@@ -9,6 +9,6 @@ private:
 	sf::VertexArray m_vertices;
     sf::Texture m_tileset;
     //bool accessable = true;
-    int accessable[]; //0 and 1 indicates whether it's accessable
+    //int accessible[]; //0 and 1 indicates whether a tile is accessable
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

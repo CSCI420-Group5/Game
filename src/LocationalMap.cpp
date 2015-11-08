@@ -7,7 +7,7 @@ LocationalMap::LocationalMap()
     //ctor
 }
 
-void LocationalMap::init(int scn_width, int scn_height, int cell_sz)
+void LocationalMap::init(int scn_width, int scn_height, int cell_sz, const int* a)
 {
     //cell_size should be divisible by screen width and height to work correctly
     cell_size = cell_sz;
@@ -16,6 +16,17 @@ void LocationalMap::init(int scn_width, int scn_height, int cell_sz)
     cols = scn_width / cell_size;
     rows = scn_height / cell_size;
     cells = new std::vector<long int>[rows*cols];
+    std::cout << "cells: " << rows*cols << std::endl;
+    std::cout << "rows: " << rows << std::endl;
+    std::cout << "cols: " << cols << std::endl;
+    //assert (sizeof(a) == sizeof(cells));
+    //this->accessible = malloc(sizeof(int) * sizeof(a));
+    this->accessible = a;
+
+    int i;
+    for(i = 0; i < 30; i++){
+        std::cout << accessible[i] << std::endl;
+    }
 }
 
 void LocationalMap::printCells()
@@ -97,6 +108,7 @@ int LocationalMap::getRows()
 {
     return rows;
 }
+
 
 /* LocationalMap::~LocationalMap()
 {
