@@ -16,6 +16,7 @@ class PlayerView
         void drawHUD(sf::RenderWindow& App, Profile profile);
     protected:
     private:
+        void setSprite(Collidable* actor);
         sf::Texture sprite_sheet;
         sf::Sprite sprite;
         sf::Font font;

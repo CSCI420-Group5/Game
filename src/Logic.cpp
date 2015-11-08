@@ -36,24 +36,70 @@ void setActorSpd(Collidable* actor, int dir)
 void getInputSetSpd(Wrestler* sumo)
 {
     // dash
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
+        sf::Vector2f v = sumo->getVelocity();
+        // dash right
+        if (v.x > 0 && v.x > abs(v.y))
+            sumo->setCurrentState(12);
+        // dash left
+        else if (v.x < 0 && v.x > abs(v.y))
+            sumo->setCurrentState(13);
+        // dash down
+        else if (v.y > 0)
+            sumo->setCurrentState(14);
+        // dash up
+        else
+            sumo->setCurrentState(15);
         sumo->useDash();
+     }
 
     // move left
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+        if (sumo->getCurrentState() != 4)
+            sumo->setCurrentState(4);
+        else
+            sumo->setCurrentState(5);
         setActorSpd(sumo, 1);
+    }
 
     // move right
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        if (sumo->getCurrentState() != 2)
+            sumo->setCurrentState(2);
+        else
+            sumo->setCurrentState(3);
         setActorSpd(sumo, 3);
+    }
 
     // move up
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+        if (abs(sumo->getVelocity().y) > abs(sumo->getVelocity().x)) {
+            if (sumo->getCurrentState() != 7 && !sumo->getUpState()) {
+                sumo->setCurrentState(7);
+                sumo->setUpState(true);
+            }
+            else {
+                sumo->setCurrentState(8);
+                sumo->setUpState(false);
+            }
+        }
         setActorSpd(sumo, 0);
+    }
 
     // move down
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+        if (sumo->getVelocity().y > abs(sumo->getVelocity().x)) {
+            if (sumo->getCurrentState() != 10 && !sumo->getDownState()) {
+                sumo->setCurrentState(10);
+                sumo->setDownState(true);
+            }
+            else {
+                sumo->setCurrentState(11);
+                sumo->setDownState(false);
+            }
+        }
         setActorSpd(sumo, 2);
+    }
 }
 
 void setAISpd(Collidable* ai_sumo, Collidable* human_sumo)

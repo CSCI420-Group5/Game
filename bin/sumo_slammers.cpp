@@ -113,9 +113,9 @@ int main(int argc, char** argv)
                 getInputSetSpd(w);
 
                 // set speed for ai controlled wrestler
-                setAISpd(actors[1], actors[0]);
-                setAISpd(actors[2], actors[0]);
-                setAISpd(actors[3], actors[0]);
+                //setAISpd(actors[1], actors[0]);
+                //setAISpd(actors[2], actors[0]);
+                //setAISpd(actors[3], actors[0]);
 
 
                 // add wrestlers to locational map

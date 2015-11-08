@@ -28,9 +28,11 @@ class Wrestler: public Collidable
 
         void setStats(int spd, int str, int wgt, int stm);
 
-        int getCurrentState();
+        void setUpState(bool val);
+        void setDownState(bool val);
 
-        void setCurrentState(int num);
+        bool getUpState();
+        bool getDownState();
 
     protected:
     private:
@@ -41,7 +43,10 @@ class Wrestler: public Collidable
         int stamina;
         float acceleration;
 
-        int current_state; //0=normal, 1=grabbing, 2=grabbed, 3=thrown, 4=dashing, 5=falling
+        // used for properly switching sprite states
+        bool first_up_state;
+        bool first_down_state;
+
 };
 
 #endif // WRESTLER_H

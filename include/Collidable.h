@@ -28,6 +28,9 @@ class Collidable
     void setHeight(int num);
     void setWidth(int num);
 
+    void setCurrentState(int num);
+    int getCurrentState();
+
     sf::Vector2f getPos() const;
     sf::Vector2f getVelocity() const;
 
@@ -38,6 +41,7 @@ class Collidable
     bool operator<(const Collidable &obj) const;*/
 
     protected:
+    int current_state;
     long int id;
     bool is_human;
 

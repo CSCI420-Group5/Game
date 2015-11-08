@@ -141,13 +141,24 @@ void Wrestler::setStats(int spd, int str, int wgt, int stm)
     acceleration = float(str) / float(wgt);
 }
 
-int Wrestler::getCurrentState()
+void Wrestler::setUpState(bool val)
 {
-    return current_state;
+    first_up_state = val;
 }
-void Wrestler::setCurrentState(int num)
+
+void Wrestler::setDownState(bool val)
 {
-    current_state = num;
+    first_down_state = val;
+}
+
+bool Wrestler::getUpState()
+{
+    return first_up_state;
+}
+
+bool Wrestler::getDownState()
+{
+    return first_down_state;
 }
 
 Wrestler::~Wrestler()

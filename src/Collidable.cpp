@@ -81,9 +81,8 @@ void Collidable::move(float friction)
 
     // if movement is not zero, slow down based on friction
     if (velocity.x < 0) {
-        if (velocity.x > (-friction)) {
+        if (velocity.x > (-friction))
             velocity.x = 0;
-        }
         else {
             velocity.x = velocity.x + friction;
         }
@@ -148,6 +147,16 @@ void Collidable::setHeight(int num)
 void Collidable::setWidth(int num)
 {
     width = num;
+}
+
+void Collidable::setCurrentState(int num)
+{
+    current_state = num;
+}
+
+int Collidable::getCurrentState()
+{
+    return current_state;
 }
 
 sf::Vector2f Collidable::getPos() const
