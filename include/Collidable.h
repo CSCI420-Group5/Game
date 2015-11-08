@@ -19,8 +19,11 @@ class Collidable
     // setters & getters
     long int getID() const;
 
-    bool isHuman();
-    void setIsHuman(bool val);
+    bool isWrestler();
+    void setIsWrestler(bool val);
+
+    bool hasProjectile();
+    void setHasProjectile(bool val);
 
     int getHeight() const;
     int getWidth() const;
@@ -28,18 +31,23 @@ class Collidable
     void setHeight(int num);
     void setWidth(int num);
 
+    void setCurrentState(int num);
+    int getCurrentState();
+
     sf::Vector2f getPos() const;
     sf::Vector2f getVelocity() const;
 
     void setPos(float x, float y);
     void setVelocity(float x, float y);
 
-    // Used for object depth in drawing
-    bool operator<(const Collidable &obj) const;
+    /*// Used for object depth in drawing
+    bool operator<(const Collidable &obj) const;*/
 
     protected:
+    int current_state;
     long int id;
-    bool is_human;
+    bool is_wrestler;
+    bool has_projectile;
 
     // hitbox
     int width;

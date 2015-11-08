@@ -69,10 +69,10 @@ void Collidable::move(float friction)
     sf::Vector2f fin_pos = getMovedPos();
 
     // check for walls and reverse speed inelastically if they hit
-    if (fin_pos.x == position.x && velocity.x != 0) {
+    if (fin_pos.x == 1 || fin_pos.x == 799 - width) {
         velocity.x /= -2;
     }
-    if (fin_pos.y == position.y && velocity.y != 0) {
+    if (fin_pos.y == 1 || fin_pos.y == 599 - height) {
         velocity.y /= -2;
     }
 
@@ -81,9 +81,8 @@ void Collidable::move(float friction)
 
     // if movement is not zero, slow down based on friction
     if (velocity.x < 0) {
-        if (velocity.x > (-friction)) {
+        if (velocity.x > (-friction))
             velocity.x = 0;
-        }
         else {
             velocity.x = velocity.x + friction;
         }
@@ -120,14 +119,24 @@ long int Collidable::getID() const
     return id;
 }
 
-bool Collidable::isHuman()
+bool Collidable::isWrestler()
 {
-    return is_human;
+    return is_wrestler;
 }
 
-void Collidable::setIsHuman(bool val)
+void Collidable::setIsWrestler(bool val)
 {
-    is_human = val;
+    is_wrestler = val;
+}
+
+bool Collidable::hasProjectile()
+{
+    return has_projectile;
+}
+
+void Collidable::setHasProjectile(bool val)
+{
+    has_projectile = val;
 }
 
 int Collidable::getHeight() const
@@ -148,6 +157,16 @@ void Collidable::setHeight(int num)
 void Collidable::setWidth(int num)
 {
     width = num;
+}
+
+void Collidable::setCurrentState(int num)
+{
+    current_state = num;
+}
+
+int Collidable::getCurrentState()
+{
+    return current_state;
 }
 
 sf::Vector2f Collidable::getPos() const
@@ -174,15 +193,16 @@ void Collidable::setVelocity(float x, float y)
     //Reflect if moving off screen
     sf::Vector2f moved_pos = getMovedPos();
 
-    if(moved_pos.x == position.x && velocity.x != 0){
+    if(moved_pos.x == 1 || moved_pos.x == 799 - width){
         velocity.x /= -2;
     }
-    if(moved_pos.y == position.y && velocity.y != 0){
+    if(moved_pos.y == 1 || moved_pos.y == 599 - height){
         velocity.y /= -2;
     }
 }
 
-bool Collidable::operator < (const Collidable &obj) const
+/*bool Collidable::operator < (const Collidable &obj) const
 {
     return (position.y < obj.getPos().y);
 }
+*/

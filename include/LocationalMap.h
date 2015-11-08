@@ -8,9 +8,11 @@ class LocationalMap
     public:
         LocationalMap();
         // virtual ~LocationalMap(); commented out due to crashing
-
         void init(int scn_width, int scn_height, int cell_sz, const int *a);
-        void add(std::vector<Collidable*>& actors);
+
+        void addFuture(std::vector<Collidable*>& actors);
+        void addCurrent(std::vector<Collidable*>& actors);
+
         std::vector<long int> getCell(int i, int j);
         void clearCells();
         void printCells();
