@@ -166,6 +166,66 @@ std::vector<std::set<long int> > findFutureCollisions(LocationalMap& loc_map,
     return collision_sets;
 }
 
+void grabProcedure(Wrestler* w, LocationalMap& loc_map, std::vector<Collidable*>& actors)
+{
+    //How far away the wrestler can grab
+    int range = 20;
+
+    int w_height = w->getHeight();
+    int w_width = w->getWidth();
+    sf::Vector2f w_pos = w->getPos();
+
+    //Make the wrestler bigger so can grab objects that aren't immediately next to it
+    w->setHeight(w_height + range*2);
+    w->setWidth(w_width + range*2);
+    w->setPos(w_pos.x - range, w_pos.y - range);
+
+    //Check the current locations to find intersections
+    loc_map.addCurrent(actors);
+
+    Wrestler* other = findNearestCollidingWrestler(loc_map, actors, w);
+
+    loc_map.clearCells();
+
+    //Return wrestler to its initial size
+    w->setHeight(w_height);
+    w->setWidth(w_width);
+    w->setPos(w_pos.x, w_pos.y);
+
+    if (other){
+        sf::Vector2f old_pos = other->getPos();
+
+        //Move the grabee toward the grabber
+        int new_x = old_pos.x;
+        int new_y = old_pos.y;
+
+        if (old_pos.x + other->getWidth() < w_pos.x){
+            new_x = w_pos.x - other->getWidth() - 1;
+        }
+        else if (old_pos.x > w_pos.x + w_width){
+            new_x = w_pos.x + w_width + 1;
+        }
+        if (old_pos.y + other->getHeight() < w_pos.y){
+            new_y = w_pos.y - other->getHeight() - 1;
+        }
+        else if (old_pos.y > w_pos.y + w_height){
+            new_y = w_pos.y + w_height + 1;
+        }
+
+        other->setPos(new_x, new_y);
+
+        //This shouldn't happen very often, but don't allow the grab if repositioning the wrestler causes a graphical overlap
+        loc_map.addCurrent(actors);
+        if (findNearestCollidingWrestler(loc_map, actors, other)){
+            other->setPos(old_pos.x, old_pos.y);
+        }
+        else if(w->getStamina() > 24){
+            w->useGrab(other);
+        }
+        loc_map.clearCells();
+    }
+}
+
 void moveActors(std::vector<Collidable*> &actors)
 {
     for (unsigned int i=0; i<actors.size(); i++) {
@@ -196,115 +256,101 @@ void setActorSpd(Collidable* actor, int dir)
         }
 }
 
-void getInputSetSpd(LocationalMap& loc_map, std::vector<Collidable*>& actors)
+void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Collidable*>& actors, std::string ai_code)
 //void getInputSetSpd(Wrestler* sumo)
 {
-    Wrestler *w = dynamic_cast<Wrestler*>(actors[0]);
+    Wrestler *w = dynamic_cast<Wrestler*>(wrestler);
 
-    // increase stamina 
-    w->increaseStamina(); 
+    // increase stamina
+    w->increaseStamina();
 
     //Need to unfreeze the wrestler if enough frames (time) have passed for each special state
     if (w->getCurrentState() == Wrestler::DASH && w->getFrozenFrames() >= 45){
         w->setCurrentState(Wrestler::NORMAL);
     }
-
     if ((w->getCurrentState() == Wrestler::GRABBING || w->getCurrentState() == Wrestler::GRABBED) && w->getFrozenFrames() >= 240){
+        w->setCurrentState(Wrestler::NORMAL);
+    }
+    if (w->getCurrentState() == Wrestler::THROWN && w->getFrozenFrames() >= 45){
         w->setCurrentState(Wrestler::NORMAL);
     }
 
     //Can't move, dash, or grab if in a special state
     if (w->getCurrentState() == Wrestler::NORMAL){
         // dash
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)){
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && ai_code == ""){
             w->useDash();
         }
 
-        // grab
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)){
-            //How far away the wrestler can grab
-            int range = 20;
-
-            int w_height = w->getHeight();
-            int w_width = w->getWidth();
-            sf::Vector2f w_pos = w->getPos();
-
-            //Make the wrestler bigger so can grab objects that aren't immediately next to it
-            w->setHeight(w_height + range+2);
-            w->setWidth(w_width + range*2);
-            w->setPos(w_pos.x - range, w_pos.y - range);
-
-            //Check the current locations to find intersections
-            loc_map.addCurrent(actors);
-
-            Wrestler* other = findNearestCollidingWrestler(loc_map, actors, w);
-
-            loc_map.clearCells();
-
-            //Return wrestler to its initial size
-            w->setHeight(w_height);
-            w->setWidth(w_width);
-            w->setPos(w_pos.x, w_pos.y);
-
-            if (other){
-                w->useGrab(other);
+        // grab: dash will have precedence over this
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::K) && ai_code == ""){
+            grabProcedure(w, loc_map, actors);
+        }
+        //Move if doing nothing else
+        else{
+            // move left
+            if ((sf::Keyboard::isKeyPressed(sf::Keyboard::A) && ai_code == "") ||
+                ai_code == "left"){
+                setActorSpd(w, 1);
             }
-        }
 
-        // move left
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-            setActorSpd(w, 1);
-        }
+            // move right
+            else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::D) && ai_code == "") ||
+                     ai_code == "right"){
+                setActorSpd(w, 3);
+            }
 
-        // move right
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-            setActorSpd(w, 3);
-        }
+            // move up
+            if ((sf::Keyboard::isKeyPressed(sf::Keyboard::W) && ai_code == "") ||
+                ai_code == "up"){
+                setActorSpd(w, 0);
+            }
 
-        // move up
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
-            setActorSpd(w, 0);
-        }
-
-        // move down
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
-            setActorSpd(w, 2);
+            // move down
+            else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::S) && ai_code == "") ||
+                     ai_code == "down"){
+                setActorSpd(w, 2);
+            }
         }
     }
 
     //Can only use throws if grabbing
-    else if (w->getCurrentState() == Wrestler::GRABBING){
-     //WRITE
+    else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::W) ||
+             sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) &&
+             w->getCurrentState() == Wrestler::GRABBING && ai_code == ""){
+        Wrestler* grabee = dynamic_cast<Wrestler*>(getActorById(w->getIDOfGrabbed(), actors));
+        w->useThrow(grabee);
     }
 
     w->incFrozenFrames();
 }
 
-void setAISpd(Collidable* ai_sumo, Collidable* human_sumo)
+void setAISpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors)
 {
 
     // get player's and ai's locations
-    sf::Vector2f player_pos = human_sumo->getPos();
+    sf::Vector2f player_pos = actors[0]->getPos();
     sf::Vector2f ai_pos = ai_sumo->getPos();
+    Wrestler* ai_wrest = dynamic_cast<Wrestler*>(ai_sumo);
 
     // move left
     if (player_pos.x < ai_pos.x){
-        setActorSpd(ai_sumo, 1);
+        getInputSetSpd(ai_wrest, loc_map, actors, "left");
     }
 
     // move right
     else if (player_pos.x > ai_pos.x){
-        setActorSpd(ai_sumo, 3);
+        getInputSetSpd(ai_wrest, loc_map, actors, "right");
     }
 
     // move up
     if (player_pos.y < ai_pos.y){
-        setActorSpd(ai_sumo, 0);
+        getInputSetSpd(ai_wrest, loc_map, actors, "up");
     }
 
     // move down
     else if (player_pos.y > ai_pos.y){
-        setActorSpd(ai_sumo, 2);
+        getInputSetSpd(ai_wrest, loc_map, actors, "down");
     }
 }
 

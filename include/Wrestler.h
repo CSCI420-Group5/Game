@@ -37,6 +37,9 @@ class Wrestler: public Collidable
         void incFrozenFrames();
         void resetFrozenFrames();
 
+        long int getIDOfGrabbed();
+        void setIDOfGrabbed(long int id);
+
     protected:
     private:
         //attributes
@@ -48,6 +51,8 @@ class Wrestler: public Collidable
 
         State current_state;
         int frozen_frames;
+
+        long int id_of_grabbed;
 };
 
 #endif // WRESTLER_H

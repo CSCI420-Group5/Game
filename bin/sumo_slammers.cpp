@@ -107,12 +107,12 @@ int main(int argc, char** argv)
                 timer.restart();
 
                 // set speed for human controlled wrestler
-                getInputSetSpd(loc_map, actors);
+                getInputSetSpd(actors[0], loc_map, actors, "");
 
                 // set speed for ai controlled wrestler
-//                setAISpd(actors[1], actors[0]);
-//                setAISpd(actors[2], actors[0]);
-//                setAISpd(actors[3], actors[0]);
+                setAISpd(actors[1], loc_map, actors);
+                setAISpd(actors[2], loc_map, actors);
+                setAISpd(actors[3], loc_map, actors);
 
 
                 // add wrestlers to locational map

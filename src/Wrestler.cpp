@@ -14,6 +14,8 @@ void Wrestler::init(int hit_height, int hit_width, int x, int y)
     current_state = NORMAL;
     frozen_frames = 0;
 
+    id_of_grabbed = 0;
+
     height = hit_height;
     width = hit_width;
 
@@ -23,7 +25,7 @@ void Wrestler::init(int hit_height, int hit_width, int x, int y)
     velocity.x = 0;
     velocity.y = 0;
 
-    stamina = 100; 
+    stamina = 100;
 }
 
 sf::ConvexShape Wrestler::getPath()
@@ -46,32 +48,67 @@ void Wrestler::useGrab(Wrestler* grabee)
     current_state = GRABBING;
     grabee->setCurrentState(Wrestler::GRABBED);
 
-    int new_x = grabee->getPos().x;
-    int new_y = grabee->getPos().y;
+    //Stop actors' movement
+    grabee->setVelocity(0, 0);
+    setVelocity(0, 0);
 
-    //Move the grabee toward the grabber
-    if (grabee->getPos().x + grabee->getWidth() < position.x){
-        new_x = position.x - grabee->getWidth() - 1;
-    }
-    else if (grabee->getPos().x > position.x + width){
-        new_x = position.x + width + 1;
-    }
-    if (grabee->getPos().y + grabee->getHeight() < position.y){
-        new_y = position.y - grabee->getHeight() - 1;
-    }
-    else if (grabee->getPos().y > position.y + height){
-        new_y = position.y + height + 1;
-    }
-
-    grabee->setPos(new_x, new_y);
+    id_of_grabbed = grabee->getID();
 
     resetFrozenFrames();
     grabee->resetFrozenFrames();
+
+    stamina -= 25;
 }
 
 void Wrestler::useThrow(Wrestler* throwee)
 {
-    //Not done
+    // up / right
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)
+        && sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+        throwee->setVelocity(6, -6);
+    }
+
+    // down / right
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
+        && sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+        throwee->setVelocity(6, 6);
+    }
+
+    // down / left
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
+        && sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+        throwee->setVelocity(-6, 6);
+    }
+
+    // up / left
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)
+        && sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+        throwee->setVelocity(-6, -6);
+    }
+
+    // up
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
+        throwee->setVelocity(0, -12);
+    }
+
+    // down
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+        throwee->setVelocity(0, 12);
+    }
+
+    // left
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+        throwee->setVelocity(-12, 0);
+    }
+
+    // right
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+        throwee->setVelocity(12, 0);
+    }
+
+    current_state = NORMAL;
+    throwee->setCurrentState(Wrestler::THROWN);
+    throwee->resetFrozenFrames();
 }
 
 void Wrestler::increaseStamina()
@@ -87,7 +124,7 @@ void Wrestler::useDash()
     if (stamina > 49)
     {
          // up / right
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)
             && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
             {
                 velocity.x = 6;
@@ -95,7 +132,7 @@ void Wrestler::useDash()
             }
 
         // down / right
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) 
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
             && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
             {
                 velocity.x = 6;
@@ -103,7 +140,7 @@ void Wrestler::useDash()
             }
 
         // down / left
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) 
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
             && sf::Keyboard::isKeyPressed(sf::Keyboard::A))
             {
                 velocity.x =-6;
@@ -111,7 +148,7 @@ void Wrestler::useDash()
             }
 
         // up / left
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) 
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)
             && sf::Keyboard::isKeyPressed(sf::Keyboard::A))
             {
                 velocity.x = -6;
@@ -202,6 +239,14 @@ void Wrestler::resetFrozenFrames()
 int Wrestler::getFrozenFrames()
 {
     return frozen_frames;
+}
+long int Wrestler::getIDOfGrabbed()
+{
+    return id_of_grabbed;
+}
+void Wrestler::setIDOfGrabbed(long int id)
+{
+    id_of_grabbed = id;
 }
 
 Wrestler::~Wrestler()
