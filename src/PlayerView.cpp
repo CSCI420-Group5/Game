@@ -4,6 +4,7 @@
 #include "iostream"
 #include "tinyxml2.h"
 #include <sstream>
+#include <string>
 
 void PlayerView::setSprite(Collidable* actor)
 {
@@ -158,8 +159,14 @@ void PlayerView::drawActors(sf::RenderWindow& App, std::vector<Collidable*> acto
             App.draw(sprite);
         }
         else{
-            wrest_box.setFillColor(sf::Color::Red);
+            // wrest_box.setFillColor(sf::Color::Red);
+            // App.draw(wrest_box);
+            sprite.setTextureRect(sf::IntRect(0,100,100,200));
+            sf::Vector2f cpu_pos = actors[i]->getPos();
+            sprite.setPosition(cpu_pos.x - (100-actors[i]->getWidth())/2, cpu_pos.y - (80-actors[i]->getHeight()));
+            wrest_box.setFillColor(sf::Color::Green);
             App.draw(wrest_box);
+            App.draw(sprite);
         }
     }
 }
@@ -182,6 +189,24 @@ void PlayerView::drawHUD(sf::RenderWindow& App, Profile profile)
 
     App.draw(lives_txt);
     App.draw(level_txt);
+}
+
+void PlayerView::drawStaminaBar(sf::RenderWindow& App, Collidable* player)
+{
+    Wrestler* w = dynamic_cast<Wrestler*>(player);
+
+    std::string stamStr;
+    std::stringstream convert;
+    convert << w->getStamina();
+    stamStr = convert.str();
+
+    sf::Text stam_txt;
+    stam_txt.setString(stamStr);
+    stam_txt.setFont(font);
+    stam_txt.setColor(sf::Color::White);
+    stam_txt.setPosition(sf::Vector2f(100, 100));
+
+    App.draw(stam_txt);
 }
 
 PlayerView::~PlayerView()

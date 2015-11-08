@@ -86,9 +86,6 @@ int main(int argc, char** argv)
     if (!map.load("resources/roundwalls.png", sf::Vector2u(32, 32), level, 25, 20))
         return -1;
 
-    // create pointer to player so wrestler-specific methods can be used
-    Wrestler *w = dynamic_cast<Wrestler*>(actors[0]);
-
     // start main loop
     while(App.isOpen())
     {
@@ -110,22 +107,21 @@ int main(int argc, char** argv)
                 timer.restart();
 
                 // set speed for human controlled wrestler
-                getInputSetSpd(w);
+                getInputSetSpd(actors[0], loc_map, actors, "");
 
                 // set speed for ai controlled wrestler
-                //setAISpd(actors[1], actors[0]);
-                //setAISpd(actors[2], actors[0]);
-                //setAISpd(actors[3], actors[0]);
-
+                setAISpd(actors[1], loc_map, actors);
+                setAISpd(actors[2], loc_map, actors);
+                setAISpd(actors[3], loc_map, actors);
 
                 // add wrestlers to locational map
-                loc_map.add(actors);
+                loc_map.addFuture(actors);
 
                 // check for collisions, need to check if results of collisions cause new collisions and compute again
                 collision_sets = calcCollision(loc_map, actors);
                 while (collision_sets.size() > 0){
                     loc_map.clearCells();
-                    loc_map.add(actors);
+                    loc_map.addFuture(actors);
 
                     collision_sets = calcCollision(loc_map, actors);
                 }
@@ -144,6 +140,7 @@ int main(int argc, char** argv)
             // associated with created actors and draw them
             view.drawActors(App, actors);
             view.drawHUD(App, profile);
+            view.drawStaminaBar(App, actors[0]);
         }
 
 

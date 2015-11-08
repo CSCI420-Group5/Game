@@ -4,7 +4,6 @@
 
 #include "Collidable.h"
 
-
 class Wrestler: public Collidable
 {
     public:
@@ -15,9 +14,11 @@ class Wrestler: public Collidable
 
         sf::ConvexShape getPath(); //Returns the intermediate shape a wrestler will move through this frame (to avoid clipping)
 
-        void useGrab(Wrestler grabee);
-        void useThrow(Wrestler throwee);
+        void useGrab(Wrestler* grabee);
+        void useThrow(Wrestler* throwee);
         void useDash();
+
+        void increaseStamina();
 
         //General getters and setters:
         int getSpeed();
@@ -33,6 +34,16 @@ class Wrestler: public Collidable
 
         bool getUpState();
         bool getDownState();
+        enum State{NORMAL = 0, GRABBING = 1, GRABBED = 2, THROWN = 3, DASH = 4};
+        State getCurrentState();
+        void setCurrentState(State new_state);
+
+        int getFrozenFrames();
+        void incFrozenFrames();
+        void resetFrozenFrames();
+
+        long int getIDOfGrabbed();
+        void setIDOfGrabbed(long int id);
 
     protected:
     private:
@@ -47,6 +58,10 @@ class Wrestler: public Collidable
         bool first_up_state;
         bool first_down_state;
 
+        State current_state;
+        int frozen_frames;
+
+        long int id_of_grabbed;
 };
 
 #endif // WRESTLER_H

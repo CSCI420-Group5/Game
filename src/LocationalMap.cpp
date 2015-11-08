@@ -48,7 +48,7 @@ std::vector<long int> LocationalMap::getCell(int i, int j)
     return cells[i*cols+j];
 }
 
-void LocationalMap::add(std::vector<Collidable*>& actors)
+void LocationalMap::addFuture(std::vector<Collidable*>& actors)
 //adds the int id of a wrestler object to all cells it resides in
 {
     for (unsigned int w = 0; w < actors.size(); w++){
@@ -77,6 +77,45 @@ void LocationalMap::add(std::vector<Collidable*>& actors)
             j++;
         }
         while(width < (actors[w]->getMovedPos().x + actors[w]->getWidth()) && width <= screen_w){
+            for (n = 0; n < add_rows.size(); n++){
+                cells[add_rows[n]*cols+j].push_back(actors[w]->getID());
+            }
+
+            width += cell_size;
+            j++;
+        }
+    }
+}
+
+void LocationalMap::addCurrent(std::vector<Collidable*>& actors)
+//adds the int id of a wrestler object to all cells it resides in
+{
+    for (unsigned int w = 0; w < actors.size(); w++){
+        int i = 0; //Index of the cell row
+        int height = 0;
+        std::vector<int> add_rows;
+        int j = 0; //Index of the cell column
+        int width = 0;
+        size_t n;
+
+        //Find all of the i rows that the object occupies
+        while((height + cell_size) <= actors[w]->getPos().y && height <= screen_h){
+            height += cell_size;
+            i++;
+        }
+        while(height < (actors[w]->getPos().y + actors[w]->getHeight()) && height <= screen_h){
+            add_rows.push_back(i);
+            height += cell_size;
+            i++;
+        }
+
+        //Find all of the j columns that the object occupies
+        //And add the object to the cell list for each row for each column
+        while((width + cell_size) <= actors[w]->getPos().x && width <= screen_w){
+            width += cell_size;
+            j++;
+        }
+        while(width < (actors[w]->getPos().x + actors[w]->getWidth()) && width <= screen_w){
             for (n = 0; n < add_rows.size(); n++){
                 cells[add_rows[n]*cols+j].push_back(actors[w]->getID());
             }
