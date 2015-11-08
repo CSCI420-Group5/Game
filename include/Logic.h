@@ -3,6 +3,7 @@
 
 #include "SFML/Graphics.hpp"
 #include "Wrestler.h"
+#include "Projectile.h"
 #include "LocationalMap.h"
 #include "set"
 #include "string"

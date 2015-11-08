@@ -22,6 +22,9 @@ class Collidable
     bool isWrestler();
     void setIsWrestler(bool val);
 
+    bool hasProjectile();
+    void setHasProjectile(bool val);
+
     int getHeight() const;
     int getWidth() const;
 
@@ -44,6 +47,7 @@ class Collidable
     int current_state;
     long int id;
     bool is_wrestler;
+    bool has_projectile;
 
     // hitbox
     int width;

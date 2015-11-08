@@ -102,7 +102,6 @@ std::vector<std::set<long int> > findFutureCollisions(LocationalMap& loc_map,
 
     for (int i=0; i<loc_map.getRows(); i++) {
         for (int j=0; j<loc_map.getCols(); j++) {
-
             tmp = loc_map.getCell(i, j);
 
             // if there's possibly colliding items
@@ -152,8 +151,6 @@ std::vector<std::set<long int> > findFutureCollisions(LocationalMap& loc_map,
 
                                 collision_sets.push_back(new_set);
                                 in_set = false;
-
-                                //std::cout << "Collision between: Wrestler " << tmp_pos[w1] << " and Wrestler " << tmp_pos[w2] << std::endl;
                             }
                         }
                     }
@@ -230,9 +227,10 @@ void moveActors(std::vector<Collidable*> &actors)
 {
     for (unsigned int i=0; i<actors.size(); i++) {
         actors[i]->move(0.1); //Placeholder for friction
+
+        // if a wrestler stopped moving, update to standing sprite
         if (actors[i]->isWrestler()) {
             Wrestler *w = dynamic_cast<Wrestler*>(actors[i]);
-            // if we've stopped moving, update to standing sprite
             if (w->getVelocity().x == 0 && w->getVelocity().y == 0) {
                 Wrestler::SpriteState state = w->getCurSpriteState();
                 if (state == Wrestler::RUN_RIGHT1 || state ==
@@ -250,6 +248,18 @@ void moveActors(std::vector<Collidable*> &actors)
                 else
                     w->setCurSpriteState(Wrestler::STAND_DOWN);
             }
+        }
+        // update projectile ball location
+        else if (actors[i]->hasProjectile()) {
+            Projectile *proj = dynamic_cast<Projectile*>(actors[i]);
+            sf::Vector2f ball_pos = proj->getBallPos();
+            if (!proj->hasShot() || ball_pos.x > 800 || ball_pos.x < 0
+                || ball_pos.y > 600 || ball_pos.y < 0) {
+                proj->shootBall();
+                proj->setHasShot(true);
+            }
+            else
+                proj->moveBall(4,4);
         }
     }
 }

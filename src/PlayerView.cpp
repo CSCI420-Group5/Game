@@ -1,6 +1,7 @@
 #include "PlayerView.h"
 #include "SFML/Graphics.hpp"
 #include "Wrestler.h"
+#include "Projectile.h"
 #include "iostream"
 #include "tinyxml2.h"
 #include <sstream>
@@ -157,13 +158,30 @@ bool sortByDepth (const Collidable* actor1, const Collidable* actor2)
 
 void PlayerView::drawActors(sf::RenderWindow& App, std::vector<Collidable*> actors)
 {
-    //Sort the list of wrestlers based on their y position (depth)
+    //Sort the list of Collidables based on their y position (depth)
     std::sort(actors.begin(), actors.end(), sortByDepth);
 
-    //Draw wrestlers
+    //Draw Collidables
     for(unsigned int i = 0; i < actors.size(); i++){
-        setSprite(actors[i]);
-        App.draw(sprite);
+        if (actors[i]->isWrestler()) {
+            setSprite(actors[i]);
+            App.draw(sprite);
+        }
+        else {
+            Projectile *proj = dynamic_cast<Projectile*>(actors[i]);
+            // draw projectile base
+            sf::RectangleShape
+            proj_box(sf::Vector2f(proj->getWidth(), proj->getHeight()));
+            
+            proj_box.setPosition(proj->getPos());
+            proj_box.setFillColor(sf::Color::Red);
+            App.draw(proj_box);
+
+            // draw projectile ball
+            sf::CircleShape ball(8);
+            ball.setPosition(proj->getBallPos());
+            App.draw(ball);
+        }
     }
 }
 

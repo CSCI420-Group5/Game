@@ -2,6 +2,7 @@
    Main game loop
  */
 
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Wrestler.h"
 #include "LocationalMap.h"
@@ -10,6 +11,7 @@
 #include "MainMenu.h"
 #include "Terrain.h"
 #include "Profile.h"
+#include "Projectile.h"
 
 int main(int argc, char** argv)
 {
@@ -19,7 +21,7 @@ int main(int argc, char** argv)
     // create main window
     sf::RenderWindow App(sf::VideoMode(800,600,32), "Sumo Slammers - SFML");
 
-    // TODO when we have more wrestlers, create a vector and loop through them?
+    // vectors of collidable objects and set of collisions
     std::vector<Collidable*> actors;
     std::vector<std::set<long int> > collision_sets;
 
@@ -37,26 +39,39 @@ int main(int argc, char** argv)
     human_sumo.init(30, 30, 200, 290);
     human_sumo.setIsHuman(true);
     human_sumo.setIsWrestler(true);
+    human_sumo.setHasProjectile(false);
 
     Wrestler ai_sumo;
     ai_sumo.init(30, 30, 400, 300);
     ai_sumo.setIsHuman(false);
     ai_sumo.setIsWrestler(true);
+    ai_sumo.setHasProjectile(false);
 
     Wrestler ai_sumo2;
     ai_sumo2.init(30, 30, 400, 330);
     ai_sumo2.setIsHuman(false);
     ai_sumo2.setIsWrestler(true);
+    ai_sumo2.setHasProjectile(false);
 
     Wrestler ai_sumo3;
     ai_sumo3.init(30, 30, 400, 360);
     ai_sumo3.setIsHuman(false);
     ai_sumo3.setIsWrestler(true);
+    ai_sumo3.setHasProjectile(false);
+
+    // create a projectile
+    Projectile proj;
+    proj.init(30, 30, 370, 300);
+    proj.setIsWrestler(false);
+    proj.setHasProjectile(true);
 
     actors.push_back(&human_sumo);
     actors.push_back(&ai_sumo);
     actors.push_back(&ai_sumo2);
     actors.push_back(&ai_sumo3);
+    actors.push_back(&proj);
+    
+    // create view object of collidables
     PlayerView view;
     view.init();
 
@@ -110,13 +125,15 @@ int main(int argc, char** argv)
             {
                 timer.restart();
 
-                // set speed for human controlled wrestler
-                getInputSetSpd(actors[0], loc_map, actors, "");
-
-                // set speed for ai controlled wrestler
-                setAISpd(actors[1], loc_map, actors);
-                setAISpd(actors[2], loc_map, actors);
-                setAISpd(actors[3], loc_map, actors);
+                // set speeds of wrestlers
+                for (int i=0; i<actors.size(); i++) {
+                    if (actors[i]->isWrestler()) {
+                        if (dynamic_cast<Wrestler*>(actors[i])->isHuman())
+                            getInputSetSpd(actors[i], loc_map, actors, "");
+                        else
+                            setAISpd(actors[i], loc_map, actors);
+                    }
+                }
 
                 // add wrestlers to locational map
                 loc_map.addFuture(actors);
@@ -146,7 +163,6 @@ int main(int argc, char** argv)
             view.drawHUD(App, profile);
             view.drawStaminaBar(App, actors[0]);
         }
-
 
         // menu status indicating that menu should be up
         else

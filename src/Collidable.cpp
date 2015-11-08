@@ -129,6 +129,16 @@ void Collidable::setIsWrestler(bool val)
     is_wrestler = val;
 }
 
+bool Collidable::hasProjectile()
+{
+    return has_projectile;
+}
+
+void Collidable::setHasProjectile(bool val)
+{
+    has_projectile = val;
+}
+
 int Collidable::getHeight() const
 {
     return height;
