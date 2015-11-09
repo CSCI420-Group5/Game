@@ -2,3 +2,9 @@
 *.layout
 Sumo-Slammers.depend
 *.o
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+sumo_slammers
+CMakeFiles/
+CMakeFiles/*

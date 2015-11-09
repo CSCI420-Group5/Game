@@ -259,7 +259,7 @@ void moveActors(std::vector<Collidable*> &actors)
                 proj->setHasShot(true);
             }
             else
-                proj->moveBall(4,4);
+                proj->moveBall(4,0);
         }
     }
 }
