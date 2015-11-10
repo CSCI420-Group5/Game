@@ -15,7 +15,7 @@
 
 int main(int argc, char** argv)
 {
-    const int a[] = 
+    const int a[] =
         {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         };
@@ -75,7 +75,7 @@ int main(int argc, char** argv)
     actors.push_back(&ai_sumo2);
     actors.push_back(&ai_sumo3);
     actors.push_back(&proj);
-    
+
     // create view object of collidables
     PlayerView view;
     view.init();
@@ -170,7 +170,7 @@ int main(int argc, char** argv)
             167, 168, 169, 14, 167, 168, 169, 14, 167, 168, 169, 14, 167, 168, 169, 298, 298, 298, 298, 298, 298, 298, 298, 298, 298, 298, 298,
             197, 198, 199, 44, 198, 199, 44, 198, 199, 44, 198, 199, 198, 44, 199, 198, 199, 44, 198, 44, 199, 198, 199, 198, 199,
         };
-    
+
 
     // create the tilemap from the level definition
     Terrain map;
@@ -190,7 +190,7 @@ int main(int argc, char** argv)
             // Exit
             if(Event.type == sf::Event::Closed)
                 App.close();
-            
+
         }
 
         // Menu status indicating game should be playing
@@ -202,7 +202,7 @@ int main(int argc, char** argv)
                 timer.restart();
 
                 // set speeds of wrestlers
-                for (int i=0; i<actors.size(); i++) {
+                for (unsigned int i=0; i<actors.size(); i++) {
                     if (actors[i]->isWrestler()) {
                         if (dynamic_cast<Wrestler*>(actors[i])->isHuman())
                             getInputSetSpd(actors[i], loc_map, actors, "");
@@ -216,11 +216,13 @@ int main(int argc, char** argv)
 
                 // check for collisions, need to check if results of collisions cause new collisions and compute again
                 collision_sets = calcCollision(loc_map, actors);
-                while (collision_sets.size() > 0){
+                int fail_safe = 0;
+                while (collision_sets.size() > 0 && fail_safe < 100){
                     loc_map.clearCells();
                     loc_map.addFuture(actors);
 
                     collision_sets = calcCollision(loc_map, actors);
+                    fail_safe++;
                 }
 
                 moveActors(actors);

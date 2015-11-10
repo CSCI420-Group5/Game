@@ -8,3 +8,10 @@ cmake_install.cmake
 sumo_slammers
 CMakeFiles/
 CMakeFiles/*
+bin/Debug/resources/ayene.png
+bin/Debug/resources/hyptosis.png
+bin/Debug/resources/resources.xml
+bin/Debug/resources/sprite_sheet.png
+bin/Debug/resources/treetest.png
+bin/Debug/resources/resources.xml
+bin/Debug/Sumo-Slammers.exe

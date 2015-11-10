@@ -216,7 +216,9 @@ void grabProcedure(Wrestler* w, LocationalMap& loc_map, std::vector<Collidable*>
         if (findNearestCollidingWrestler(loc_map, actors, other)){
             other->setPos(old_pos.x, old_pos.y);
         }
-        else if(w->getStamina() > 24){
+
+        //Can't grab with too low stamina or if the other wrestler is dashing
+        else if(w->getStamina() > 24 && other->getCurrentState() != Wrestler::DASH){
             w->useGrab(other);
         }
         loc_map.clearCells();
@@ -238,11 +240,11 @@ void moveActors(std::vector<Collidable*> &actors)
                     || state == Wrestler::DASH_RIGHT)
                     w->setCurSpriteState(Wrestler::STAND_RIGHT);
                 else if (state == Wrestler::RUN_LEFT1 || state ==
-                    Wrestler::RUN_LEFT2 || state == Wrestler::STAND_LEFT || 
+                    Wrestler::RUN_LEFT2 || state == Wrestler::STAND_LEFT ||
                     state == Wrestler::DASH_LEFT)
                     w->setCurSpriteState(Wrestler::STAND_LEFT);
                 else if (state == Wrestler::RUN_UP1 || state ==
-                    Wrestler::RUN_UP2 || state == Wrestler::STAND_UP || state 
+                    Wrestler::RUN_UP2 || state == Wrestler::STAND_UP || state
                     == Wrestler::DASH_UP)
                     w->setCurSpriteState(Wrestler::STAND_UP);
                 else
@@ -310,20 +312,6 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
     if (w->getCurrentState() == Wrestler::NORMAL){
         // dash
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && ai_code == ""){
-            if (w->getVelocity().x > 0) {
-                w->setCurSpriteState(Wrestler::DASH_RIGHT);
-            }
-            else if (w->getVelocity().x < 0) {
-                w->setCurSpriteState(Wrestler::DASH_LEFT);
-            }
-            if (w->getVelocity().y > 0 && w->getVelocity().y >
-                abs(w->getVelocity().x)) {
-                w->setCurSpriteState(Wrestler::DASH_DOWN);
-            }
-            else if (w->getVelocity().y < 0 && abs(w->getVelocity().y) >
-                abs(w->getVelocity().x)) {
-                w->setCurSpriteState(Wrestler::DASH_UP);
-            }
             w->useDash();
         }
 
@@ -334,7 +322,7 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
         //Move if doing nothing else
         else{
             // move left
-            if ((sf::Keyboard::isKeyPressed(sf::Keyboard::A) && ai_code == "") 
+            if ((sf::Keyboard::isKeyPressed(sf::Keyboard::A) && ai_code == "")
                 || ai_code == "left"){
                 if (w->getCurSpriteState() != Wrestler::RUN_LEFT1)
                     w->setCurSpriteState(Wrestler::RUN_LEFT1);
@@ -345,7 +333,7 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
             }
 
             // move right
-            else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::D) && ai_code == 
+            else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::D) && ai_code ==
                 "") || ai_code == "right") {
                 if (w->getCurSpriteState() != Wrestler::RUN_RIGHT1)
                     w->setCurSpriteState(Wrestler::RUN_RIGHT1);
@@ -356,12 +344,12 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
             }
 
             // move up
-            if ((sf::Keyboard::isKeyPressed(sf::Keyboard::W) && ai_code == "") 
+            if ((sf::Keyboard::isKeyPressed(sf::Keyboard::W) && ai_code == "")
                 || ai_code == "up"){
                 // only change the sprite if we're moving faster in this
                 // direction
                 if (abs(w->getVelocity().y) > abs(w->getVelocity().x)) {
-                    if (w->getCurSpriteState() != Wrestler::RUN_UP1 && 
+                    if (w->getCurSpriteState() != Wrestler::RUN_UP1 &&
                         !w->getUpState()) {
                         w->setCurSpriteState(Wrestler::RUN_UP1);
                         w->setUpState(true);
@@ -375,7 +363,7 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
             }
 
             // move down
-            else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::S) && ai_code == 
+            else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::S) && ai_code ==
                 "") || ai_code == "down"){
                 // only change sprite if we're going faster in this direction
                 if (w->getVelocity().y > abs(w->getVelocity().x)) {

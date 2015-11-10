@@ -1,5 +1,6 @@
 #include "Wrestler.h"
 #include "SFML/Graphics.hpp"
+#include <cmath>
 
 Wrestler::Wrestler()
 {
@@ -63,48 +64,50 @@ void Wrestler::useGrab(Wrestler* grabee)
 
 void Wrestler::useThrow(Wrestler* throwee)
 {
+    int str = 12;
+
     // up / right
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)
         && sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-        throwee->setVelocity(6, -6);
+        throwee->setVelocity(str/std::sqrt(2), -str/std::sqrt(2));
     }
 
     // down / right
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
         && sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-        throwee->setVelocity(6, 6);
+        throwee->setVelocity(str/std::sqrt(2), str/std::sqrt(2));
     }
 
     // down / left
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
         && sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-        throwee->setVelocity(-6, 6);
+        throwee->setVelocity(-str/std::sqrt(2), str/std::sqrt(2));
     }
 
     // up / left
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)
         && sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-        throwee->setVelocity(-6, -6);
+        throwee->setVelocity(-str/std::sqrt(2), -str/std::sqrt(2));
     }
 
     // up
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
-        throwee->setVelocity(0, -12);
+        throwee->setVelocity(0, -str);
     }
 
     // down
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
-        throwee->setVelocity(0, 12);
+        throwee->setVelocity(0, str);
     }
 
     // left
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-        throwee->setVelocity(-12, 0);
+        throwee->setVelocity(-str, 0);
     }
 
     // right
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-        throwee->setVelocity(12, 0);
+        throwee->setVelocity(str, 0);
     }
 
     current_state = NORMAL;
@@ -122,66 +125,76 @@ void Wrestler::increaseStamina()
 
 void Wrestler::useDash()
 {
+    int spd = 12;
+
     if (stamina > 49)
     {
          // up / right
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)
             && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
             {
-                velocity.x = 6;
-                velocity.y = -6;
+                velocity.x = spd/std::sqrt(2);
+                velocity.y = -spd/std::sqrt(2);
+                setCurSpriteState(DASH_RIGHT);
             }
 
         // down / right
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
             && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
             {
-                velocity.x = 6;
-                velocity.y = 6;
+                velocity.x = spd/std::sqrt(2);
+                velocity.y = spd/std::sqrt(2);
+                setCurSpriteState(DASH_RIGHT);
             }
 
         // down / left
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
             && sf::Keyboard::isKeyPressed(sf::Keyboard::A))
             {
-                velocity.x =-6;
-                velocity.y = 6;
+                velocity.x = -spd/std::sqrt(2);
+                velocity.y = spd/std::sqrt(2);
+                setCurSpriteState(DASH_LEFT);
             }
 
         // up / left
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)
             && sf::Keyboard::isKeyPressed(sf::Keyboard::A))
             {
-                velocity.x = -6;
-                velocity.y = -6;
+                velocity.x = -spd/std::sqrt(2);
+                velocity.y = -spd/std::sqrt(2);
+                setCurSpriteState(DASH_LEFT);
             }
 
             // up
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
             {
                 velocity.x = 0;
-                velocity.y = -12;
+                velocity.y = -spd;
+                setCurSpriteState(DASH_UP);
             }
 
             // down
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
             {
                 velocity.x = 0;
-                velocity.y = 12;
+                velocity.y = spd;
+                setCurSpriteState(DASH_DOWN);
             }
 
             // left
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
             {
-                velocity.x = -12;
+                velocity.x = -spd;
                 velocity.y = 0;
+                setCurSpriteState(DASH_LEFT);
             }
 
             // right
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
             {
-                velocity.x = 12;
+                velocity.x = spd;
                 velocity.y = 0;
+                setCurSpriteState(DASH_RIGHT);
             }
 
         stamina -= 50;
