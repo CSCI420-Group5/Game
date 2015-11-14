@@ -7,34 +7,32 @@ LocationalMap::LocationalMap()
     //ctor
 }
 
-void LocationalMap::init(int scn_width, int scn_height, int cell_sz, const int* a)
+void LocationalMap::init(int lev_width, int lev_height, int cell_sz, const int tiles[])
 {
     //cell_size should be divisible by screen width and height to work correctly
     cell_size = cell_sz;
-    screen_w = scn_width;
-    screen_h = scn_height;
-    cols = scn_width / cell_size;
-    rows = scn_height / cell_size;
+    level_w = lev_width;
+    level_h = lev_height;
+    cols = lev_width / cell_size;
+    rows = lev_height / cell_size;
 
     //In case cell size is not evenly divisible by the screen
-    if (cols < scn_width*cell_size){
+    if (cols < lev_width*cell_size){
         cols++;
     }
-    if (rows < scn_height*cell_size){
+    if (rows < lev_height*cell_size){
         rows++;
     }
 
-    cells = new std::vector<long int>[rows*cols];
-    std::cout << "cells: " << rows*cols << std::endl;
-    std::cout << "rows: " << rows << std::endl;
-    std::cout << "cols: " << cols << std::endl;
-    //assert (sizeof(a) == sizeof(cells));
-    //this->accessible = malloc(sizeof(int) * sizeof(a));
-    this->accessible = a;
+    cells = new Cell[rows*cols];
 
-    int i;
-    for(i = 0; i < 30; i++){
-        std::cout << accessible[i] << std::endl;
+    for (unsigned int i = 0; i < sizeof(tiles); i++){
+        if (tiles[i] == 207 || tiles[i] == 116){
+            cells[i].setStandable(false);
+        }
+        else{
+            cells[i].setStandable(true);
+        }
     }
 }
 
@@ -46,13 +44,13 @@ void LocationalMap::printCells()
 
     for(i = 0; i < rows; i++){
         for(j = 0; j < cols; j++){
-            std::cout << cells[i*cols+j].size() << " ";
+            std::cout << cells[i*cols+j].getIDs().size() << " ";
         }
         std::cout << std::endl;
     }
 }
 
-std::vector<long int> LocationalMap::getCell(int i, int j)
+Cell LocationalMap::getCell(int i, int j)
 //a cell will return a vector of all actor id's in it.
 //Can then only compare actors in the same cell to find collisions
 {
@@ -71,11 +69,11 @@ void LocationalMap::addFuture(std::vector<Collidable*>& actors)
         size_t n;
 
         //Find all of the i rows that the object occupies
-        while((height + cell_size) <= actors[w]->getMovedPos().y && height <= screen_h){
+        while((height + cell_size) <= actors[w]->getMovedPos().y && height <= level_h){
             height += cell_size;
             i++;
         }
-        while(height < (actors[w]->getMovedPos().y + actors[w]->getHeight()) && height <= screen_h){
+        while(height < (actors[w]->getMovedPos().y + actors[w]->getHeight()) && height <= level_h){
             add_rows.push_back(i);
             height += cell_size;
             i++;
@@ -83,13 +81,13 @@ void LocationalMap::addFuture(std::vector<Collidable*>& actors)
 
         //Find all of the j columns that the object occupies
         //And add the object to the cell list for each row for each column
-        while((width + cell_size) <= actors[w]->getMovedPos().x && width <= screen_w){
+        while((width + cell_size) <= actors[w]->getMovedPos().x && width <= level_w){
             width += cell_size;
             j++;
         }
-        while(width < (actors[w]->getMovedPos().x + actors[w]->getWidth()) && width <= screen_w){
+        while(width < (actors[w]->getMovedPos().x + actors[w]->getWidth()) && width <= level_w){
             for (n = 0; n < add_rows.size(); n++){
-                cells[add_rows[n]*cols+j].push_back(actors[w]->getID());
+                cells[add_rows[n]*cols+j].addID(actors[w]->getID());
             }
 
             width += cell_size;
@@ -110,11 +108,11 @@ void LocationalMap::addCurrent(std::vector<Collidable*>& actors)
         size_t n;
 
         //Find all of the i rows that the object occupies
-        while((height + cell_size) <= actors[w]->getPos().y && height <= screen_h){
+        while((height + cell_size) <= actors[w]->getPos().y && height <= level_h){
             height += cell_size;
             i++;
         }
-        while(height < (actors[w]->getPos().y + actors[w]->getHeight()) && height <= screen_h){
+        while(height < (actors[w]->getPos().y + actors[w]->getHeight()) && height <= level_h){
             add_rows.push_back(i);
             height += cell_size;
             i++;
@@ -122,13 +120,13 @@ void LocationalMap::addCurrent(std::vector<Collidable*>& actors)
 
         //Find all of the j columns that the object occupies
         //And add the object to the cell list for each row for each column
-        while((width + cell_size) <= actors[w]->getPos().x && width <= screen_w){
+        while((width + cell_size) <= actors[w]->getPos().x && width <= level_w){
             width += cell_size;
             j++;
         }
-        while(width < (actors[w]->getPos().x + actors[w]->getWidth()) && width <= screen_w){
+        while(width < (actors[w]->getPos().x + actors[w]->getWidth()) && width <= level_w){
             for (n = 0; n < add_rows.size(); n++){
-                cells[add_rows[n]*cols+j].push_back(actors[w]->getID());
+                cells[add_rows[n]*cols+j].addID(actors[w]->getID());
             }
 
             width += cell_size;
@@ -143,7 +141,7 @@ void LocationalMap::clearCells()
     int j;
     for(i = 0; i < rows; i++){
         for(j = 0; j < cols; j++){
-            cells[i*cols+j].clear();
+            cells[i*cols+j].clearIDs();
         }
     }
 }
@@ -158,7 +156,7 @@ int LocationalMap::getRows()
 }
 
 
-/* LocationalMap::~LocationalMap()
+LocationalMap::~LocationalMap()
 {
     delete cells;
-} */
+}

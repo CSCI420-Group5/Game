@@ -38,8 +38,8 @@ sf::Vector2f Collidable::getMovedPos()
     if (fin_pos.x <= 0) {
         fin_pos.x = 1;
     }
-    else if (fin_pos.x >= (800-width)) {
-        fin_pos.x = 799 - width;
+    else if (fin_pos.x >= (1600-width)) {
+        fin_pos.x = 1599 - width;
     }
 
     //For y
@@ -69,7 +69,7 @@ void Collidable::move(float friction)
     sf::Vector2f fin_pos = getMovedPos();
 
     // check for walls and reverse speed inelastically if they hit
-    if (fin_pos.x == 1 || fin_pos.x == 799 - width) {
+    if (fin_pos.x == 1 || fin_pos.x == 1599 - width) {
         velocity.x /= -2;
     }
     if (fin_pos.y == 1 || fin_pos.y == 599 - height) {
@@ -193,7 +193,7 @@ void Collidable::setVelocity(float x, float y)
     //Reflect if moving off screen
     sf::Vector2f moved_pos = getMovedPos();
 
-    if(moved_pos.x == 1 || moved_pos.x == 799 - width){
+    if(moved_pos.x == 1 || moved_pos.x == 1599 - width){
         velocity.x /= -2;
     }
     if(moved_pos.y == 1 || moved_pos.y == 599 - height){

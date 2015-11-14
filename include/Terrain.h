@@ -1,3 +1,5 @@
+#ifndef TERRAIN_H
+#define TERRAIN_H
 #include <SFML/Graphics.hpp>
 
 class Terrain : public sf::Drawable, public sf::Transformable
@@ -12,3 +14,5 @@ private:
     //int accessible[]; //0 and 1 indicates whether a tile is accessable
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
+
+#endif // LEVELHANDLER_H

@@ -7,28 +7,37 @@
 
     bool Terrain::load(const std::string& tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height)
     {
-        //this.accessible = a;
+        //Find the number of tiles needed for the screen size
+        unsigned int num_tiles_w = width/tileSize.x;
+        if (num_tiles_w*tileSize.x < width){
+            num_tiles_w++;
+        }
+        unsigned int num_tiles_h = height/tileSize.y;
+        if (num_tiles_h*tileSize.y < height){
+            num_tiles_h++;
+        }
+
         // load the tileset texture
         if (!m_tileset.loadFromFile(tileset))
             return false;
 
         // resize the vertex array to fit the level size
         m_vertices.setPrimitiveType(sf::Quads);
-        m_vertices.resize(width * height * 4);
+        m_vertices.resize(num_tiles_w * num_tiles_h * 4);
 
         // populate the vertex array, with one quad per tile
-        for (unsigned int i = 0; i < width; ++i)
-            for (unsigned int j = 0; j < height; ++j)
+        for (unsigned int i = 0; i < num_tiles_w; ++i)
+            for (unsigned int j = 0; j < num_tiles_h; ++j)
             {
                 // get the current tile number
-                int tileNumber = tiles[i + j * width];
+                int tileNumber = tiles[i + j * num_tiles_w];
 
                 // find its position in the tileset texture
                 int tu = tileNumber % (m_tileset.getSize().x / tileSize.x);
                 int tv = tileNumber / (m_tileset.getSize().x / tileSize.x);
 
                 // get a pointer to the current tile's quad
-                sf::Vertex* quad = &m_vertices[(i + j * width) * 4];
+                sf::Vertex* quad = &m_vertices[(i + j * num_tiles_w) * 4];
 
                 // define its 4 corners
                 quad[0].position = sf::Vector2f(i * tileSize.x, j * tileSize.y);
@@ -60,4 +69,4 @@
         target.draw(m_vertices, states);
     }
 
-    
+

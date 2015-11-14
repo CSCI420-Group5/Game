@@ -36,7 +36,7 @@ Wrestler* findNearestCollidingWrestler(LocationalMap& loc_map, std::vector<Colli
     for (int i=0; i<loc_map.getRows(); i++) {
         for (int j=0; j<loc_map.getCols(); j++) {
 
-            tmp = loc_map.getCell(i, j);
+            tmp = loc_map.getCell(i, j).getIDs();
 
             // if there's wrestlers colliding with the one we set (Need to check if the vector contains wrest1)
             if (tmp.size() >= 2 && std::find(tmp.begin(), tmp.end(), wrest1->getID()) != tmp.end()) {
@@ -102,7 +102,7 @@ std::vector<std::set<long int> > findFutureCollisions(LocationalMap& loc_map,
 
     for (int i=0; i<loc_map.getRows(); i++) {
         for (int j=0; j<loc_map.getCols(); j++) {
-            tmp = loc_map.getCell(i, j);
+            tmp = loc_map.getCell(i, j).getIDs();
 
             // if there's possibly colliding items
             if (tmp.size() >= 2) {
