@@ -21,28 +21,28 @@ void PlayerView::setSprite(Collidable* actor)
         else
             sprite.setTextureRect(sf::IntRect(100,100,100,100));
     }
-    // standings still, facing left 
+    // standings still, facing left
     if (state == Wrestler::STAND_LEFT) {
         if (w->isHuman())
             sprite.setTextureRect(sf::IntRect(200,0,-100,100));
         else
             sprite.setTextureRect(sf::IntRect(200,100,-100,100));
     }
-    // running right 1 
+    // running right 1
     if (state == Wrestler::RUN_RIGHT1) {
         if (w->isHuman())
             sprite.setTextureRect(sf::IntRect(0,0,100,100));
         else
             sprite.setTextureRect(sf::IntRect(0,100,100,100));
     }
-    // running right 2 
+    // running right 2
     if (state == Wrestler::RUN_RIGHT2) {
         if (w->isHuman())
             sprite.setTextureRect(sf::IntRect(200,0,100,100));
         else
             sprite.setTextureRect(sf::IntRect(200,100,100,100));
     }
-    // running left 1 
+    // running left 1
     if (state == Wrestler::RUN_LEFT1) {
         if (w->isHuman())
             sprite.setTextureRect(sf::IntRect(100,0,-100,100));
@@ -172,7 +172,7 @@ void PlayerView::drawActors(sf::RenderWindow& App, std::vector<Collidable*> acto
             // draw projectile base
             sf::RectangleShape
             proj_box(sf::Vector2f(proj->getWidth(), proj->getHeight()));
-            
+
             proj_box.setPosition(proj->getPos());
             proj_box.setFillColor(sf::Color::Red);
             App.draw(proj_box);
@@ -193,13 +193,15 @@ void PlayerView::drawHUD(sf::RenderWindow& App, Profile profile)
     lives_txt.setString(profile.getCharacter() + ": Lives x" + lives.str());
     lives_txt.setFont(font);
     lives_txt.setColor(sf::Color::White);
-    lives_txt.setPosition(sf::Vector2f(0, 590 - lives_txt.getGlobalBounds().height));
+    sf::Vector2f lives_level_coords = App.mapPixelToCoords(sf::Vector2i(0, 590 - lives_txt.getGlobalBounds().height));
+    lives_txt.setPosition(lives_level_coords);
 
     sf::Text level_txt;
     level_txt.setString(profile.getLevel());
     level_txt.setFont(font);
     level_txt.setColor(sf::Color::White);
-    level_txt.setPosition(sf::Vector2f(790 - level_txt.getGlobalBounds().width, 0));
+    sf::Vector2f level_level_coords = App.mapPixelToCoords(sf::Vector2i(790 - level_txt.getGlobalBounds().width, 0));
+    level_txt.setPosition(level_level_coords);
 
     App.draw(lives_txt);
     App.draw(level_txt);
@@ -215,10 +217,12 @@ void PlayerView::drawStaminaBar(sf::RenderWindow& App, Collidable* player)
     stamStr = convert.str();
 
     sf::Text stam_txt;
-    stam_txt.setString(stamStr);
+    stam_txt.setString("Stamina: " + stamStr);
     stam_txt.setFont(font);
     stam_txt.setColor(sf::Color::White);
-    stam_txt.setPosition(sf::Vector2f(100, 100));
+    //Adjust coords to follow view
+    sf::Vector2f stam_level_coords = App.mapPixelToCoords(sf::Vector2i(10, 10));
+    stam_txt.setPosition(stam_level_coords);
 
     App.draw(stam_txt);
 }
