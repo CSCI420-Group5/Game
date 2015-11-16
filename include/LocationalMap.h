@@ -10,7 +10,7 @@ class LocationalMap
     public:
         LocationalMap();
         virtual ~LocationalMap();
-        void init(int scn_width, int scn_height, int cell_sz, const int tiles[]);
+        void init(int scn_width, int scn_height, int cell_sz, std::vector<int> tiles);
 
         void addFuture(std::vector<Collidable*>& actors);
         void addCurrent(std::vector<Collidable*>& actors);

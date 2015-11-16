@@ -6,7 +6,7 @@ class Cell
 {
     public:
         Cell();
-        virtual ~Cell();
+        /*virtual ~Cell();*/
 
         void addID(long int new_id);
         void clearIDs();

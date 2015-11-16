@@ -7,7 +7,8 @@ LocationalMap::LocationalMap()
     //ctor
 }
 
-void LocationalMap::init(int lev_width, int lev_height, int cell_sz, const int tiles[])
+void LocationalMap::init(int lev_width, int lev_height, int cell_sz,
+std::vector<int> tiles)
 {
     //cell_size should be divisible by screen width and height to work correctly
     cell_size = cell_sz;
@@ -26,7 +27,7 @@ void LocationalMap::init(int lev_width, int lev_height, int cell_sz, const int t
 
     cells = new Cell[rows*cols];
 
-    for (unsigned int i = 0; i < sizeof(tiles); i++){
+    for (unsigned int i = 0; i < tiles.size(); i++){
         if (tiles[i] == 207 || tiles[i] == 116){
             cells[i].setStandable(false);
         }

@@ -40,7 +40,10 @@ void LevelHandler::loadLevel1(Terrain& level, Terrain& layer, LocationalMap& loc
         throw std::invalid_argument("Could not load the resource file");
     }
 
-    loc_map.init(level_w, level_h, cell_size, level1);
+    // convert to a vector so we can check its size easily
+    std::vector<int> level1_vec (level1, level1+sizeof(level1)/sizeof(int));
+
+    loc_map.init(level_w, level_h, cell_size, level1_vec);
 }
 
 void LevelHandler::loadLevel2(Terrain& level, Terrain& layer, LocationalMap& loc_map)

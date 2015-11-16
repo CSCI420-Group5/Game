@@ -32,7 +32,7 @@ std::vector<long int> Cell::getIDs()
 
 
 
-Cell::~Cell()
+/*Cell::~Cell()
 {
     //dtor
-}
+}*/
