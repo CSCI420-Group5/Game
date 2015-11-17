@@ -17,6 +17,8 @@ void Collidable::init(int hit_height, int hit_width, int x, int y)
 
     velocity.x = 0;
     velocity.y = 0;
+
+    weight = 10;
 }
 
 sf::Vector2f Collidable::getMovedPos()
@@ -199,6 +201,11 @@ void Collidable::setVelocity(float x, float y)
     if(moved_pos.y == 1 || moved_pos.y == 599 - height){
         velocity.y /= -2;
     }
+}
+
+float Collidable::getWeight()
+{
+    return weight;
 }
 
 /*bool Collidable::operator < (const Collidable &obj) const

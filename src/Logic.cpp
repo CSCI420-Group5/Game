@@ -272,7 +272,7 @@ void setActorSpd(Wrestler* actor, int dir)
     float acc = actor->getAcceleration();
 
         // move left
-        if (dir == 1) {s
+        if (dir == 1) {
             actor->setVelocity(actor->getVelocity().x-acc, actor->getVelocity().y);
         }
 
@@ -283,7 +283,7 @@ void setActorSpd(Wrestler* actor, int dir)
         // move up
         if (dir == 0) {
             actor->setVelocity(actor->getVelocity().x, actor->getVelocity().y-acc);
-        }d
+        }
 
         // move down
         else if (dir == 2) {
@@ -446,9 +446,12 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map,
         sf::Vector2f
         u2(sel_actors[1]->getVelocity());
 
-        // using equal mass temporarily
+        // now using weight of actor
         float m1 = 10.f;
         float m2 = 10.f;
+
+        m1 = sel_actors[0]->getWeight();
+        m2 = sel_actors[1]->getWeight();
 
         sf::Vector2f v1 = (u1*(m1-m2)+2.f*m2*u2)/(m1+m2);
         sf::Vector2f v2 = (u2*(m2-m1)+2.f*m1*u1)/(m1+m2);

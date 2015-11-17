@@ -212,10 +212,6 @@ int Wrestler::getStrength()
 {
     return strength;
 }
-int Wrestler::getWeight()
-{
-    return weight;
-}
 int Wrestler::getStamina()
 {
     return stamina;
@@ -225,7 +221,7 @@ float Wrestler::getAcceleration()
     return acceleration;
 }
 
-void Wrestler::setStats(float spd, int str, int wgt, int stm)
+void Wrestler::setStats(float spd, int str, float wgt, int stm)
 {
     speed = spd;
     strength = str;
@@ -311,8 +307,8 @@ void Wrestler::setCharacter(int characterNum)
     // setStats(spd str wgt stm);
     switch(characterNum)
     {
-        case 1: setStats(0.5, 1, 5, 100); break;
-        case 2: setStats(0, 1, 5, 50); break;
+        case 1: setStats(0.5, 1, 10, 100); break;
+        case 2: setStats(0.5, 1, 15, 50); break;
     }
 }
 

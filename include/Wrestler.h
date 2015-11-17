@@ -23,13 +23,12 @@ class Wrestler: public Collidable
         //General getters and setters:
         int getSpeed();
         int getStrength();
-        int getWeight();
         int getStamina();
         float getAcceleration(); //Currently based on strength/weight
 
         void setCharacter(int characterNum);
 
-        void setStats(float spd, int str, int wgt, int stm);
+        void setStats(float spd, int str, float wgt, int stm);
         bool isHuman();
         void setIsHuman(bool val);
 
@@ -63,7 +62,6 @@ class Wrestler: public Collidable
         //attributes
         float speed;
         int strength;
-        int weight;
         int stamina;
         float acceleration;
 

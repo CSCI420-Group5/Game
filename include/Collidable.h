@@ -31,6 +31,8 @@ class Collidable
     void setHeight(int num);
     void setWidth(int num);
 
+    float getWeight();
+
     void setCurrentState(int num);
     int getCurrentState();
 
@@ -52,6 +54,8 @@ class Collidable
     // hitbox
     int width;
     int height;
+
+    float weight;
 
     // position kept as the top-left corner of the hitbox
     sf::Vector2f position;
