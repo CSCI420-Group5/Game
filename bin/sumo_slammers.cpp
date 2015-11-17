@@ -42,24 +42,29 @@ int main(int argc, char** argv)
     human_sumo.setIsHuman(true);
     human_sumo.setIsWrestler(true);
     human_sumo.setHasProjectile(false);
+    human_sumo.setCharacter(1);
 
     Wrestler ai_sumo;
     ai_sumo.init(30, 30, 400, 300);
     ai_sumo.setIsHuman(false);
     ai_sumo.setIsWrestler(true);
     ai_sumo.setHasProjectile(false);
+    ai_sumo.setCharacter(2);
+
 
     Wrestler ai_sumo2;
     ai_sumo2.init(30, 30, 400, 330);
     ai_sumo2.setIsHuman(false);
     ai_sumo2.setIsWrestler(true);
     ai_sumo2.setHasProjectile(false);
+    ai_sumo2.setCharacter(2);
 
     Wrestler ai_sumo3;
     ai_sumo3.init(30, 30, 400, 360);
     ai_sumo3.setIsHuman(false);
     ai_sumo3.setIsWrestler(true);
     ai_sumo3.setHasProjectile(false);
+    ai_sumo3.setCharacter(2);
 
     // create a projectile
     Projectile proj;

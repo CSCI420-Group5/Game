@@ -225,13 +225,13 @@ float Wrestler::getAcceleration()
     return acceleration;
 }
 
-void Wrestler::setStats(int spd, int str, int wgt, int stm)
+void Wrestler::setStats(float spd, int str, int wgt, int stm)
 {
     speed = spd;
     strength = str;
     weight = wgt;
     stamina = stm;
-    acceleration = float(str) / float(wgt);
+    acceleration = float(str) / float(wgt) + float(speed);
 }
 
 bool Wrestler::isHuman()
@@ -303,6 +303,17 @@ long int Wrestler::getIDOfGrabbed()
 void Wrestler::setIDOfGrabbed(long int id)
 {
     id_of_grabbed = id;
+}
+
+void Wrestler::setCharacter(int characterNum)
+{
+    // acceleration = float(str) / float(wgt); (0.2)
+    // setStats(spd str wgt stm);
+    switch(characterNum)
+    {
+        case 1: setStats(0.5, 1, 5, 100); break;
+        case 2: setStats(0, 1, 5, 50); break;
+    }
 }
 
 Wrestler::~Wrestler()

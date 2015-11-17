@@ -266,11 +266,13 @@ void moveActors(std::vector<Collidable*> &actors)
     }
 }
 
-void setActorSpd(Collidable* actor, int dir)
+void setActorSpd(Wrestler* actor, int dir)
 {
-    float acc = 0.2;
+    //float acc = 0.2;
+    float acc = actor->getAcceleration();
+
         // move left
-        if (dir == 1) {
+        if (dir == 1) {s
             actor->setVelocity(actor->getVelocity().x-acc, actor->getVelocity().y);
         }
 
@@ -281,7 +283,7 @@ void setActorSpd(Collidable* actor, int dir)
         // move up
         if (dir == 0) {
             actor->setVelocity(actor->getVelocity().x, actor->getVelocity().y-acc);
-        }
+        }d
 
         // move down
         else if (dir == 2) {
