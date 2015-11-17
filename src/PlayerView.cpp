@@ -216,15 +216,32 @@ void PlayerView::drawStaminaBar(sf::RenderWindow& App, Collidable* player)
     convert << w->getStamina();
     stamStr = convert.str();
 
-    sf::Text stam_txt;
-    stam_txt.setString("Stamina: " + stamStr);
-    stam_txt.setFont(font);
-    stam_txt.setColor(sf::Color::White);
     //Adjust coords to follow view
-    sf::Vector2f stam_level_coords = App.mapPixelToCoords(sf::Vector2i(10, 10));
-    stam_txt.setPosition(stam_level_coords);
+    sf::Vector2f stam_level_coords = App.mapPixelToCoords(sf::Vector2i(0, 565));
+    sf::Vector2f stam_level_coords2 = App.mapPixelToCoords(sf::Vector2i(230, 575));
 
-    App.draw(stam_txt);
+    stamBack.setSize(sf::Vector2f(390, 40));
+    stamBack.setFillColor(sf::Color(0, 0, 0));
+    stamBack.setPosition(stam_level_coords);
+
+    stamBar.setSize(sf::Vector2f((w->getStamina() * 1.5), 20));
+    stamBar.setFillColor(sf::Color(250, 50, 50));
+    stamBar.setPosition(stam_level_coords2);
+
+    mid.setSize(sf::Vector2f(3,28));
+    mid.setFillColor(sf::Color(100, 100, 250));
+
+    App.draw(stamBack);
+    App.draw(stamBar);
+
+    mid.setPosition(App.mapPixelToCoords(sf::Vector2i(230, 570)));
+    App.draw(mid);
+    mid.setPosition(App.mapPixelToCoords(sf::Vector2i(305, 570)));
+    App.draw(mid);
+    mid.setPosition(App.mapPixelToCoords(sf::Vector2i(380, 570)));
+    App.draw(mid);
+
+    //App.draw(stam_txt);
 }
 
 PlayerView::~PlayerView()

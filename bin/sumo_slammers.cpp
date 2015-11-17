@@ -151,8 +151,8 @@ int main(int argc, char** argv)
 
             //Draw things
             view.drawActors(App, actors);
-            view.drawHUD(App, profile);
             view.drawStaminaBar(App, actors[0]);
+            view.drawHUD(App, profile);
 
             sf_view.setCenter(actors[0]->getPos().x, sf_view.getCenter().y);
             App.setView(sf_view);

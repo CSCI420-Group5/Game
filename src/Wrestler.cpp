@@ -308,7 +308,7 @@ void Wrestler::setCharacter(int characterNum)
     switch(characterNum)
     {
         case 1: setStats(0.5, 1, 10, 100); break;
-        case 2: setStats(0.5, 1, 15, 50); break;
+        case 2: setStats(0, 1, 5, 50); break;
     }
 }
 

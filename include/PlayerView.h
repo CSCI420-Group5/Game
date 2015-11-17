@@ -23,6 +23,9 @@ class PlayerView
         sf::Texture sprite_sheet;
         sf::Sprite sprite;
         sf::Font font;
+        sf::RectangleShape stamBar;
+        sf::RectangleShape stamBack;
+        sf::RectangleShape mid;
 };
 
 #endif // PLAYERVIEW_H
