@@ -2,6 +2,7 @@
 #define LEVELHANDLER_H
 #include "Terrain.h"
 #include "LocationalMap.h"
+#include "string"
 
 
 class LevelHandler
@@ -10,7 +11,7 @@ class LevelHandler
         LevelHandler();
         virtual ~LevelHandler();
 
-        void loadLevel1(Terrain& level, Terrain& layer, LocationalMap& loc_map);
+        void loadLevel(Terrain& level, Terrain& layer, LocationalMap& loc_map, std::string file_name);
         void loadLevel2(Terrain& level, Terrain& layer, LocationalMap& loc_map);
     protected:
     private:

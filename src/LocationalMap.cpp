@@ -8,7 +8,7 @@ LocationalMap::LocationalMap()
 }
 
 void LocationalMap::init(int lev_width, int lev_height, int cell_sz,
-std::vector<int> tiles)
+std::vector<int>& tiles)
 {
     //cell_size should be divisible by screen width and height to work correctly
     cell_size = cell_sz;
@@ -156,8 +156,8 @@ int LocationalMap::getRows()
     return rows;
 }
 
-
-LocationalMap::~LocationalMap()
-{
-    delete cells;
-}
+//
+//LocationalMap::~LocationalMap()
+//{
+//    delete cells;
+//}

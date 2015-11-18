@@ -90,7 +90,7 @@ int main(int argc, char** argv)
     // create the tilemap from the level definition
     Terrain level;
     Terrain layer;
-    lev_handler.loadLevel1(level, layer, loc_map);
+    lev_handler.loadLevel(level, layer, loc_map, "resources/level1.csv");
 
     // start main loop
     while(App.isOpen())

@@ -5,7 +5,7 @@
     }
 
 
-    bool Terrain::load(const std::string& tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height)
+    bool Terrain::load(const std::string& tileset, sf::Vector2u tileSize, std::vector<int>& tiles, unsigned int width, unsigned int height)
     {
         //Find the number of tiles needed for the screen size
         unsigned int num_tiles_w = width/tileSize.x;
