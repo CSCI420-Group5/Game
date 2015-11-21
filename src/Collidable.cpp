@@ -59,8 +59,8 @@ sf::Vector2f Collidable::getMovedPos()
     if (fin_pos.y <= 0) {
         fin_pos.y = 1;
     }
-    else if (fin_pos.y >= (600-height)) {
-        fin_pos.y = 599 - height;
+    else if (fin_pos.y >= (1600-height)) {
+        fin_pos.y = 1599 - height;
     }
 
     return fin_pos;
@@ -74,7 +74,7 @@ void Collidable::move(float friction)
     if (fin_pos.x == 1 || fin_pos.x == 1599 - width) {
         velocity.x /= -2;
     }
-    if (fin_pos.y == 1 || fin_pos.y == 599 - height) {
+    if (fin_pos.y == 1 || fin_pos.y == 1599 - height) {
         velocity.y /= -2;
     }
 
@@ -198,7 +198,7 @@ void Collidable::setVelocity(float x, float y)
     if(moved_pos.x == 1 || moved_pos.x == 1599 - width){
         velocity.x /= -2;
     }
-    if(moved_pos.y == 1 || moved_pos.y == 599 - height){
+    if(moved_pos.y == 1 || moved_pos.y == 1599 - height){
         velocity.y /= -2;
     }
 }

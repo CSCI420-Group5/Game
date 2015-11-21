@@ -19,8 +19,8 @@ int main(int argc, char** argv)
     LocationalMap loc_map;
 
     // create main window
-    sf::RenderWindow App(sf::VideoMode(800,600,32), "Sumo Slammers - SFML");
-    sf::View sf_view(sf::Vector2f(400, 300), sf::Vector2f(800, 600));
+    sf::RenderWindow App(sf::VideoMode(800,608,32), "Sumo Slammers - SFML");
+    sf::View sf_view(sf::Vector2f(400, 304), sf::Vector2f(800, 608));
     App.setView(sf_view);
 
     // vectors of collidable objects and set of collisions
@@ -28,13 +28,12 @@ int main(int argc, char** argv)
     std::vector<std::set<long int> > collision_sets;
 
     // Create menu
-    MainMenu menu(800, 600);
+    MainMenu menu(800, 608);
 
     // Create profile
     Profile profile;
     profile.setLives(3);
     profile.setCharacter("Fumio");
-    profile.setLevel("Generic Level");
 
     // create wrestlers
     Wrestler human_sumo;
@@ -90,7 +89,8 @@ int main(int argc, char** argv)
     // create the tilemap from the level definition
     Terrain level;
     Terrain layer;
-    lev_handler.loadLevel(level, layer, loc_map, "resources/level1.csv");
+    lev_handler.loadLevel(level, layer, loc_map, "resources/levelS.csv");
+    profile.setLevel("Level S");
 
     // start main loop
     while(App.isOpen())
@@ -154,7 +154,17 @@ int main(int argc, char** argv)
             view.drawStaminaBar(App, actors[0]);
             view.drawHUD(App, profile);
 
-            sf_view.setCenter(actors[0]->getPos().x, sf_view.getCenter().y);
+            //recenter view if this will not move it outside of the map
+            if ((actors[0]->getPos().x - sf_view.getSize().x/2 >= 0) &&
+                (actors[0]->getPos().x + sf_view.getSize().x/2 <= loc_map.getLevelWidth())){
+
+                sf_view.setCenter(actors[0]->getPos().x, sf_view.getCenter().y);
+            }
+            if ((actors[0]->getPos().y - sf_view.getSize().y/2 >= 0) &&
+                (actors[0]->getPos().y + sf_view.getSize().y/2 <= loc_map.getLevelHeight())){
+
+                sf_view.setCenter(sf_view.getCenter().x, actors[0]->getPos().y);
+            }
             App.setView(sf_view);
         }
 

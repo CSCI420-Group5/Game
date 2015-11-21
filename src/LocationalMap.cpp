@@ -155,6 +155,14 @@ int LocationalMap::getRows()
 {
     return rows;
 }
+int LocationalMap::getLevelWidth()
+{
+    return level_w;
+}
+int LocationalMap::getLevelHeight()
+{
+    return level_h;
+}
 
 //
 //LocationalMap::~LocationalMap()

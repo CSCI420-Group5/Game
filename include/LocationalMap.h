@@ -20,6 +20,8 @@ class LocationalMap
         void printCells();
         int getCols();
         int getRows();
+        int getLevelWidth();
+        int getLevelHeight();
     protected:
     private:
         int cell_size;
