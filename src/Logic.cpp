@@ -225,7 +225,8 @@ void grabProcedure(Wrestler* w, LocationalMap& loc_map, std::vector<Collidable*>
     }
 }
 
-void moveActors(std::vector<Collidable*> &actors)
+void moveActors(std::vector<Collidable*> &actors, LocationalMap& loc_map,
+Profile& profile, sf::View& sf_view)
 {
     for (unsigned int i=0; i<actors.size(); i++) {
         actors[i]->move(0.1); //Placeholder for friction
@@ -255,13 +256,44 @@ void moveActors(std::vector<Collidable*> &actors)
         else if (actors[i]->hasProjectile()) {
             Projectile *proj = dynamic_cast<Projectile*>(actors[i]);
             sf::Vector2f ball_pos = proj->getBallPos();
-            if (!proj->hasShot() || ball_pos.x > 800 || ball_pos.x < 0
-                || ball_pos.y > 600 || ball_pos.y < 0) {
+            if (!proj->hasShot() || ball_pos.x > 1600 || ball_pos.x < 0
+                || ball_pos.y > 1600 || ball_pos.y < 0) {
                 proj->shootBall();
                 proj->setHasShot(true);
             }
             else
                 proj->moveBall(4,0);
+        }
+    }
+
+    // check if actor is still on the stage
+    std::vector<long int> tmp;
+    Collidable* tmp_actor;
+    for (int i=0; i<loc_map.getRows(); i++) {
+        for (int j=0; j<loc_map.getCols(); j++) {
+            if (!(loc_map.getCell(i,j).isStandable())) {
+                tmp = loc_map.getCell(i,j).getIDs();
+                for (int k=0; k<tmp.size(); k++) {
+                    tmp_actor = getActorById(tmp[k], actors);
+                    if (tmp_actor->isWrestler()) {
+                        Wrestler* tmp_wrestler =
+                        dynamic_cast<Wrestler*>(tmp_actor);
+                        if (tmp_wrestler->isHuman()) {
+                            profile.setLives(profile.livesRemaining()-1);
+                            tmp_wrestler->reset(sf_view.getCenter());
+                        }
+                        else { // delete ai
+                            // find correct ai
+                            for (int l=0; l<actors.size(); l++) {
+                                if (actors[l]->getID() == tmp[k]) {
+                                    actors.erase(actors.begin()+l);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

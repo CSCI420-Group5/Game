@@ -12,6 +12,8 @@ class Wrestler: public Collidable
 
         void init(int hit_height, int hit_width, int x, int y);
 
+        void reset(sf::Vector2f pos);
+
         sf::ConvexShape getPath(); //Returns the intermediate shape a wrestler will move through this frame (to avoid clipping)
 
         void useGrab(Wrestler* grabee);
@@ -32,6 +34,7 @@ class Wrestler: public Collidable
         bool isHuman();
         void setIsHuman(bool val);
 
+        // used for properly alternating sprites
         void setUpState(bool val);
         void setDownState(bool val);
 

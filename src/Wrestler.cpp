@@ -30,6 +30,26 @@ void Wrestler::init(int hit_height, int hit_width, int x, int y)
     stamina = 100;
 }
 
+void Wrestler::reset(sf::Vector2f pos)
+{
+    // should only ever be human
+    if (isHuman()) {
+        current_state = NORMAL;
+        sprite_state = STAND_RIGHT;
+        frozen_frames = 0;
+
+        id_of_grabbed = 0;
+
+        position.x = pos.x;
+        position.y = pos.y;
+
+        velocity.x = 0;
+        velocity.y = 0;
+
+        stamina = 100;
+    }
+}
+
 sf::ConvexShape Wrestler::getPath()
 {
     int fin_x = getMovedPos().x;

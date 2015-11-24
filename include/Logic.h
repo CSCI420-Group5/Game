@@ -5,12 +5,13 @@
 #include "Wrestler.h"
 #include "Projectile.h"
 #include "LocationalMap.h"
+#include "Profile.h"
 #include "set"
 #include "string"
 
-void moveActors(std::vector<Collidable*> &actors);
+void moveActors(std::vector<Collidable*> &actors, LocationalMap& loc_map,
+Profile& profile, sf::View& sf_view);
 
-//void getInputSetSpd(Collidable* sumo);
 void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Collidable*>& actors, std::string ai_code);
 
 void setAISpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors);
