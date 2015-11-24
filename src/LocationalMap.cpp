@@ -18,12 +18,12 @@ std::vector<int>& tiles)
     rows = lev_height / cell_size;
 
     //In case cell size is not evenly divisible by the screen
-    if (cols < lev_width*cell_size){
+    /*if (cols < lev_width*cell_size){
         cols++;
     }
     if (rows < lev_height*cell_size){
         rows++;
-    }
+    }*/
 
     cells = new Cell[rows*cols];
 

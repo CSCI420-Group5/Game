@@ -13,7 +13,8 @@ Collidable* getActorById(long int id, std::vector<Collidable*>& actors)
             return actors[w];
         }
     }
-    throw std::invalid_argument("No such ID in actor vector");
+    //throw std::invalid_argument("No such ID in actor vector");
+    return NULL;
 }
 
 float findCurrentDistance(Wrestler* wrest1, Wrestler* wrest2)
@@ -269,18 +270,27 @@ Profile& profile, sf::View& sf_view)
     // check if actor is still on the stage
     std::vector<long int> tmp;
     Collidable* tmp_actor;
+    // bool for checking if the human wrestler has died so we don't kill him
+    // more than once
+    bool has_died = false;
     for (int i=0; i<loc_map.getRows(); i++) {
         for (int j=0; j<loc_map.getCols(); j++) {
             if (!(loc_map.getCell(i,j).isStandable())) {
                 tmp = loc_map.getCell(i,j).getIDs();
                 for (int k=0; k<tmp.size(); k++) {
                     tmp_actor = getActorById(tmp[k], actors);
+                    if (tmp_actor == NULL) {
+                        continue; // in case we've already removed the actor 
+                    }
                     if (tmp_actor->isWrestler()) {
                         Wrestler* tmp_wrestler =
                         dynamic_cast<Wrestler*>(tmp_actor);
                         if (tmp_wrestler->isHuman()) {
-                            profile.setLives(profile.livesRemaining()-1);
-                            tmp_wrestler->reset(sf_view.getCenter());
+                            if (!has_died) {
+                                profile.setLives(profile.livesRemaining()-1);
+                                tmp_wrestler->reset(sf_view.getCenter());
+                                has_died = true;
+                            }
                         }
                         else { // delete ai
                             // find correct ai
@@ -291,6 +301,7 @@ Profile& profile, sf::View& sf_view)
                                 }
                             }
                         }
+                        // TODO handle projectile actors
                     }
                 }
             }
