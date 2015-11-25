@@ -117,8 +117,8 @@ int main(int argc, char** argv)
                     if (actors[i]->isWrestler()) {
                         if (dynamic_cast<Wrestler*>(actors[i])->isHuman())
                             getInputSetSpd(actors[i], loc_map, actors, "");
-                        //else
-                            //setAISpd(actors[i], loc_map, actors);
+                        else
+                            setAISpd(actors[i], loc_map, actors);
                     }
                 }
 
@@ -136,7 +136,7 @@ int main(int argc, char** argv)
                     fail_safe++;
                 }
 
-                moveActors(actors, loc_map, profile, sf_view);
+                moveActors(actors, loc_map, profile);
 
                 // clear location map
                 loc_map.clearCells();

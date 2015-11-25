@@ -227,7 +227,7 @@ void grabProcedure(Wrestler* w, LocationalMap& loc_map, std::vector<Collidable*>
 }
 
 void moveActors(std::vector<Collidable*> &actors, LocationalMap& loc_map,
-Profile& profile, sf::View& sf_view)
+Profile& profile)
 {
     for (unsigned int i=0; i<actors.size(); i++) {
         actors[i]->move(0.1); //Placeholder for friction
@@ -288,7 +288,7 @@ Profile& profile, sf::View& sf_view)
                         if (tmp_wrestler->isHuman()) {
                             if (!has_died) {
                                 profile.setLives(profile.livesRemaining()-1);
-                                tmp_wrestler->reset(sf_view.getCenter(), actors);
+                                tmp_wrestler->reset(actors);
                                 has_died = true;
                             }
                         }

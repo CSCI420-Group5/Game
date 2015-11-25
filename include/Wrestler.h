@@ -12,7 +12,7 @@ class Wrestler: public Collidable
 
         void init(int hit_height, int hit_width, int x, int y);
 
-        void reset(sf::Vector2f pos, std::vector<Collidable*> &actors);
+        void reset(std::vector<Collidable*> &actors);
 
         sf::ConvexShape getPath(); //Returns the intermediate shape a wrestler will move through this frame (to avoid clipping)
 

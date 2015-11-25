@@ -30,7 +30,7 @@ void Wrestler::init(int hit_height, int hit_width, int x, int y)
     stamina = 100;
 }
 
-void Wrestler::reset(sf::Vector2f pos, std::vector<Collidable*> &actors)
+void Wrestler::reset(std::vector<Collidable*> &actors)
 {
     // should only ever be human
     if (isHuman()) {
@@ -39,9 +39,17 @@ void Wrestler::reset(sf::Vector2f pos, std::vector<Collidable*> &actors)
         frozen_frames = 0;
 
         id_of_grabbed = 0;
+        
+        // make sure we don't just reset right next to the edge
+        if (velocity.x > 0)
+            position.x -= 100;
+        else if (velocity.x < 0)
+            position.x += 100;
 
-        position.x = pos.x;
-        position.y = pos.y;
+        if (velocity.y > 0)
+            position.y -= 100;
+        else if (velocity.y < 0)
+            position.y += 100;
 
         sf::RectangleShape human_box(sf::Vector2f(width, height));
         human_box.setPosition(position);

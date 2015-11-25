@@ -10,7 +10,7 @@
 #include "string"
 
 void moveActors(std::vector<Collidable*> &actors, LocationalMap& loc_map,
-Profile& profile, sf::View& sf_view);
+Profile& profile);
 
 void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Collidable*>& actors, std::string ai_code);
 
