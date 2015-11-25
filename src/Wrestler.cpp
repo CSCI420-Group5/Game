@@ -30,7 +30,7 @@ void Wrestler::init(int hit_height, int hit_width, int x, int y)
     stamina = 100;
 }
 
-void Wrestler::reset(sf::Vector2f pos)
+void Wrestler::reset(sf::Vector2f pos, std::vector<Collidable*> &actors)
 {
     // should only ever be human
     if (isHuman()) {
@@ -42,6 +42,28 @@ void Wrestler::reset(sf::Vector2f pos)
 
         position.x = pos.x;
         position.y = pos.y;
+
+        sf::RectangleShape human_box(sf::Vector2f(width, height));
+        human_box.setPosition(position);
+        sf::FloatRect human_bounds = human_box.getGlobalBounds();
+        // make sure we didn't cause a collision with our reset
+        for (int i=0; i<actors.size(); i++) {
+            if (id == actors[i]->getID()) {
+                continue;
+            }
+            else {
+                sf::RectangleShape
+                actor_box(sf::Vector2f(actors[i]->getWidth(),actors[i]->getHeight()));
+                actor_box.setPosition(actors[i]->getPos());
+                sf::FloatRect actor_bounds = actor_box.getGlobalBounds();
+
+                while (human_bounds.intersects(actor_bounds)) {
+                    human_box.setPosition(human_box.getPosition().x+10,human_box.getPosition().y);
+                    human_bounds = human_box.getGlobalBounds();    
+                }
+            }
+        }
+        position.x = human_box.getPosition().x;
 
         velocity.x = 0;
         velocity.y = 0;

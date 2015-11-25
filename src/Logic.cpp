@@ -123,7 +123,7 @@ std::vector<std::set<long int> > findFutureCollisions(LocationalMap& loc_map,
                         wrest_box1.setPosition(sel_actors[w1]->getMovedPos());
 
                         sf::RectangleShape
-                        wrest_box2(sf::Vector2f(sel_actors[w2]->getWidth(),sel_actors[w2]->getWidth()));
+                        wrest_box2(sf::Vector2f(sel_actors[w2]->getWidth(),sel_actors[w2]->getHeight()));
                         wrest_box2.setPosition(sel_actors[w2]->getMovedPos());
 
                         sf::FloatRect w1_bounds = wrest_box1.getGlobalBounds();
@@ -288,7 +288,7 @@ Profile& profile, sf::View& sf_view)
                         if (tmp_wrestler->isHuman()) {
                             if (!has_died) {
                                 profile.setLives(profile.livesRemaining()-1);
-                                tmp_wrestler->reset(sf_view.getCenter());
+                                tmp_wrestler->reset(sf_view.getCenter(), actors);
                                 has_died = true;
                             }
                         }

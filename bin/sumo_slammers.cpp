@@ -102,7 +102,6 @@ int main(int argc, char** argv)
             // Exit
             if(Event.type == sf::Event::Closed)
                 App.close();
-
         }
 
         // Menu status indicating game should be playing
@@ -144,7 +143,7 @@ int main(int argc, char** argv)
                 collision_sets.clear();
             }
 
-            // clear screen and fill with blue
+            // clear screen
             App.clear(sf::Color::Green);
             App.draw(level);
             App.draw(layer);
