@@ -12,6 +12,8 @@ void Collidable::init(int hit_height, int hit_width, int x, int y)
     height = hit_height;
     width = hit_width;
 
+    off_edge = true;
+
     position.x = x;
     position.y = y;
 
@@ -139,6 +141,16 @@ bool Collidable::hasProjectile()
 void Collidable::setHasProjectile(bool val)
 {
     has_projectile = val;
+}
+
+bool Collidable::offEdge()
+{
+    return off_edge;
+}
+
+void Collidable::setOffEdge(bool val)
+{
+    off_edge = val;
 }
 
 int Collidable::getHeight() const

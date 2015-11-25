@@ -39,6 +39,8 @@ void Wrestler::reset(std::vector<Collidable*> &actors)
         frozen_frames = 0;
 
         id_of_grabbed = 0;
+
+        off_edge = true;
         
         // make sure we don't just reset right next to the edge
         if (velocity.x > 0)

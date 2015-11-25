@@ -226,6 +226,46 @@ void grabProcedure(Wrestler* w, LocationalMap& loc_map, std::vector<Collidable*>
     }
 }
 
+void updateDeaths(LocationalMap& loc_map, std::vector<Collidable*> &actors,
+Profile& profile)
+{
+    std::vector<long int> tmp;
+    Collidable* tmp_actor;
+    // loop through map and check if an actor is still on the stage
+    for (int row=0; row<loc_map.getRows(); row++) {
+        for (int col=0; col<loc_map.getCols(); col++) {
+            if (loc_map.getCell(row,col).isStandable()) {
+                tmp = loc_map.getCell(row, col).getIDs();
+                for (int i=0; i<tmp.size(); i++) {
+                    tmp_actor = getActorById(tmp[i], actors);
+                    tmp_actor->setOffEdge(false);
+                }
+            }
+        }
+    }
+
+    // kill all the actors that are off the stage
+    for (int i=0; i<actors.size(); i++) {
+        if (actors[i]->offEdge()) {
+            if (actors[i]->isWrestler()) {
+                Wrestler* tmp_wrestler = dynamic_cast<Wrestler*>(actors[i]);
+                if (tmp_wrestler->isHuman()) {
+                    profile.setLives(profile.livesRemaining()-1);
+                    tmp_wrestler->reset(actors);
+                }
+                else {
+                    actors.erase(actors.begin()+i);
+                }
+            }
+        }
+    }
+
+    for (int i=0; i<actors.size(); i++) {
+        actors[i]->setOffEdge(true);
+    }
+
+}
+
 void moveActors(std::vector<Collidable*> &actors, LocationalMap& loc_map,
 Profile& profile)
 {
@@ -267,46 +307,7 @@ Profile& profile)
         }
     }
 
-    // check if actor is still on the stage
-    std::vector<long int> tmp;
-    Collidable* tmp_actor;
-    // bool for checking if the human wrestler has died so we don't kill him
-    // more than once
-    bool has_died = false;
-    for (int i=0; i<loc_map.getRows(); i++) {
-        for (int j=0; j<loc_map.getCols(); j++) {
-            if (!(loc_map.getCell(i,j).isStandable())) {
-                tmp = loc_map.getCell(i,j).getIDs();
-                for (int k=0; k<tmp.size(); k++) {
-                    tmp_actor = getActorById(tmp[k], actors);
-                    if (tmp_actor == NULL) {
-                        continue; // in case we've already removed the actor 
-                    }
-                    if (tmp_actor->isWrestler()) {
-                        Wrestler* tmp_wrestler =
-                        dynamic_cast<Wrestler*>(tmp_actor);
-                        if (tmp_wrestler->isHuman()) {
-                            if (!has_died) {
-                                profile.setLives(profile.livesRemaining()-1);
-                                tmp_wrestler->reset(actors);
-                                has_died = true;
-                            }
-                        }
-                        else { // delete ai
-                            // find correct ai
-                            for (int l=0; l<actors.size(); l++) {
-                                if (actors[l]->getID() == tmp[k]) {
-                                    actors.erase(actors.begin()+l);
-                                    break;
-                                }
-                            }
-                        }
-                        // TODO handle projectile actors
-                    }
-                }
-            }
-        }
-    }
+    updateDeaths(loc_map, actors, profile);
 }
 
 void setActorSpd(Wrestler* actor, int dir)

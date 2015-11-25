@@ -25,6 +25,9 @@ class Collidable
     bool hasProjectile();
     void setHasProjectile(bool val);
 
+    bool offEdge();
+    void setOffEdge(bool val);
+
     int getHeight() const;
     int getWidth() const;
 
@@ -50,6 +53,9 @@ class Collidable
     long int id;
     bool is_wrestler;
     bool has_projectile;
+
+    // used to check if actor is completely off the stage or not
+    bool off_edge;
 
     // hitbox
     int width;
