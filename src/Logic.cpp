@@ -257,6 +257,9 @@ Profile& profile)
                     actors.erase(actors.begin()+i);
                 }
             }
+            else {
+                actors.erase(actors.begin()+i);
+            }
         }
     }
 

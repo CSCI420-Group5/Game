@@ -159,10 +159,22 @@ int main(int argc, char** argv)
 
                 sf_view.setCenter(actors[0]->getPos().x, sf_view.getCenter().y);
             }
+            else if(actors[0]->getPos().x < sf_view.getSize().x/2){
+                sf_view.setCenter(sf_view.getSize().x/2, sf_view.getCenter().y);
+            }
+            else if(actors[0]->getPos().x > loc_map.getLevelWidth() - sf_view.getSize().x/2){
+                sf_view.setCenter(loc_map.getLevelWidth() - sf_view.getSize().x/2, sf_view.getCenter().y);
+            }
             if ((actors[0]->getPos().y - sf_view.getSize().y/2 >= 0) &&
                 (actors[0]->getPos().y + sf_view.getSize().y/2 <= loc_map.getLevelHeight())){
 
                 sf_view.setCenter(sf_view.getCenter().x, actors[0]->getPos().y);
+            }
+            else if(actors[0]->getPos().y < sf_view.getSize().y/2){
+                sf_view.setCenter(sf_view.getCenter().x, sf_view.getSize().y/2);
+            }
+            else if(actors[0]->getPos().y > loc_map.getLevelHeight() - sf_view.getSize().y/2){
+                sf_view.setCenter(sf_view.getCenter().x, loc_map.getLevelHeight() - sf_view.getSize().y/2);
             }
             App.setView(sf_view);
         }
