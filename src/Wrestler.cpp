@@ -41,7 +41,7 @@ void Wrestler::reset(std::vector<Collidable*> &actors)
         id_of_grabbed = 0;
 
         off_edge = true;
-        
+
         // make sure we don't just reset right next to the edge
         if (velocity.x > 0)
             position.x -= 100;
@@ -57,7 +57,7 @@ void Wrestler::reset(std::vector<Collidable*> &actors)
         human_box.setPosition(position);
         sf::FloatRect human_bounds = human_box.getGlobalBounds();
         // make sure we didn't cause a collision with our reset
-        for (int i=0; i<actors.size(); i++) {
+        for (unsigned int i=0; i<actors.size(); i++) {
             if (id == actors[i]->getID()) {
                 continue;
             }
@@ -69,7 +69,7 @@ void Wrestler::reset(std::vector<Collidable*> &actors)
 
                 while (human_bounds.intersects(actor_bounds)) {
                     human_box.setPosition(human_box.getPosition().x+10,human_box.getPosition().y);
-                    human_bounds = human_box.getGlobalBounds();    
+                    human_bounds = human_box.getGlobalBounds();
                 }
             }
         }

@@ -236,7 +236,7 @@ Profile& profile)
         for (int col=0; col<loc_map.getCols(); col++) {
             if (loc_map.getCell(row,col).isStandable()) {
                 tmp = loc_map.getCell(row, col).getIDs();
-                for (int i=0; i<tmp.size(); i++) {
+                for (unsigned int i=0; i<tmp.size(); i++) {
                     tmp_actor = getActorById(tmp[i], actors);
                     tmp_actor->setOffEdge(false);
                 }
@@ -245,7 +245,7 @@ Profile& profile)
     }
 
     // kill all the actors that are off the stage
-    for (int i=0; i<actors.size(); i++) {
+    for (unsigned int i=0; i<actors.size(); i++) {
         if (actors[i]->offEdge()) {
             if (actors[i]->isWrestler()) {
                 Wrestler* tmp_wrestler = dynamic_cast<Wrestler*>(actors[i]);
@@ -260,7 +260,7 @@ Profile& profile)
         }
     }
 
-    for (int i=0; i<actors.size(); i++) {
+    for (unsigned int i=0; i<actors.size(); i++) {
         actors[i]->setOffEdge(true);
     }
 

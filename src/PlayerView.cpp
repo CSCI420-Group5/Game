@@ -12,7 +12,7 @@ void PlayerView::setSprite(Collidable* actor)
     Wrestler *w = dynamic_cast<Wrestler*>(actor);
     Wrestler::SpriteState state = w->getCurSpriteState();
     sf::Vector2f pos = w->getPos();
-    sprite.setPosition(pos.x-(100-w->getWidth())/2,pos.y-(80-w->getHeight()));
+    sprite.setPosition(pos.x-(100-w->getWidth())/2,pos.y-(90-w->getHeight()));
 
     // standings still, facing right
     if (state == Wrestler::STAND_RIGHT) {

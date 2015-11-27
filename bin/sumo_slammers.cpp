@@ -37,14 +37,14 @@ int main(int argc, char** argv)
 
     // create wrestlers
     Wrestler human_sumo;
-    human_sumo.init(30, 30, 200, 290);
+    human_sumo.init(30, 30, 20, 800);
     human_sumo.setIsHuman(true);
     human_sumo.setIsWrestler(true);
     human_sumo.setHasProjectile(false);
     human_sumo.setCharacter(1);
 
     Wrestler ai_sumo;
-    ai_sumo.init(30, 30, 400, 300);
+    ai_sumo.init(30, 30, 400, 800);
     ai_sumo.setIsHuman(false);
     ai_sumo.setIsWrestler(true);
     ai_sumo.setHasProjectile(false);
@@ -52,14 +52,14 @@ int main(int argc, char** argv)
 
 
     Wrestler ai_sumo2;
-    ai_sumo2.init(30, 30, 400, 330);
+    ai_sumo2.init(30, 30, 400, 830);
     ai_sumo2.setIsHuman(false);
     ai_sumo2.setIsWrestler(true);
     ai_sumo2.setHasProjectile(false);
     ai_sumo2.setCharacter(2);
 
     Wrestler ai_sumo3;
-    ai_sumo3.init(30, 30, 400, 360);
+    ai_sumo3.init(30, 30, 400, 860);
     ai_sumo3.setIsHuman(false);
     ai_sumo3.setIsWrestler(true);
     ai_sumo3.setHasProjectile(false);
@@ -67,7 +67,7 @@ int main(int argc, char** argv)
 
     // create a projectile
     Projectile proj;
-    proj.init(30, 30, 370, 300);
+    proj.init(30, 30, 370, 800);
     proj.setIsWrestler(false);
     proj.setHasProjectile(true);
 
@@ -89,8 +89,8 @@ int main(int argc, char** argv)
     // create the tilemap from the level definition
     Terrain level;
     Terrain layer;
-    lev_handler.loadLevel(level, layer, loc_map, "resources/levelS.csv");
-    profile.setLevel("Level S");
+    lev_handler.loadLevel(level, layer, loc_map, "resources/GavinsLevel");
+    profile.setLevel("Level G");
 
     // start main loop
     while(App.isOpen())

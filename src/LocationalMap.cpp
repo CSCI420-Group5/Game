@@ -8,27 +8,20 @@ LocationalMap::LocationalMap()
 }
 
 void LocationalMap::init(int lev_width, int lev_height, int cell_sz,
-std::vector<int>& tiles)
+std::vector<int>& layer1, std::vector<int>& layer2)
 {
-    //cell_size should be divisible by screen width and height to work correctly
+    //cell_size should be divisible by level width and height to work correctly
     cell_size = cell_sz;
     level_w = lev_width;
     level_h = lev_height;
     cols = lev_width / cell_size;
     rows = lev_height / cell_size;
 
-    //In case cell size is not evenly divisible by the screen
-    /*if (cols < lev_width*cell_size){
-        cols++;
-    }
-    if (rows < lev_height*cell_size){
-        rows++;
-    }*/
-
     cells = new Cell[rows*cols];
 
-    for (unsigned int i = 0; i < tiles.size(); i++){
-        if (tiles[i] == 207 || tiles[i] == 116){
+    for (unsigned int i = 0; i < layer1.size(); i++){
+        if ((layer1[i] == 207 || layer1[i] == 116 || layer1[i] == 176 || layer1[i] == -1) &&
+            (layer2[i] == 207 || layer2[i] == 116 || layer2[i] == 176 || layer2[i] == -1)){
             cells[i].setStandable(false);
         }
         else{

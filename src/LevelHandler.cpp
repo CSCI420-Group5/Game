@@ -15,10 +15,14 @@ void LevelHandler::loadLevel(Terrain& level, Terrain& layer, LocationalMap& loc_
     int level_h = 0;
     int cell_size = 32;
 
+    std::string file1_name = file_name + "_Tile Layer 1.csv";
+    std::string file2_name = file_name + "_Tile Layer 2.csv";
+
+    //For the level's first layer
     std::vector<int> level_vec;
 
     //Populate vector by csv file
-    std::ifstream infile(file_name.c_str());
+    std::ifstream infile(file1_name.c_str());
     std::string line;
     while (std::getline(infile, line))
     {
@@ -39,13 +43,34 @@ void LevelHandler::loadLevel(Terrain& level, Terrain& layer, LocationalMap& loc_
         //Find level height by how many rows there are
         level_h += cell_size;
     }
-
-
     if (!level.load("resources/hyptosis.png", sf::Vector2u(cell_size, cell_size), level_vec, level_w, level_h)){
         throw std::invalid_argument("Could not load the resource file");
     }
 
-    loc_map.init(level_w, level_h, cell_size, level_vec);
+
+    //For the level's second layer
+    std::vector<int> layer_vec;
+
+    //Populate vector by csv file
+    std::ifstream infile2(file2_name.c_str());
+    std::string line2;
+    while (std::getline(infile2, line2))
+    {
+        std::stringstream ss2(line2);
+        int i2;
+        while (ss2 >> i2){
+            layer_vec.push_back(i2);
+
+            if (ss2.peek() == ',' || ss2.peek() == ' '){
+                ss2.ignore();
+            }
+        }
+    }
+    if (!layer.load("resources/hyptosis.png", sf::Vector2u(cell_size, cell_size), layer_vec, level_w, level_h)){
+        throw std::invalid_argument("Could not load the resource file");
+    }
+
+    loc_map.init(level_w, level_h, cell_size, level_vec, layer_vec);
 }
 
 void LevelHandler::loadLevel2(Terrain& level, Terrain& layer, LocationalMap& loc_map)
