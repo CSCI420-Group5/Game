@@ -35,6 +35,16 @@ int Profile::livesRemaining()
     return lives;
 }
 
+void Profile::setCheckpoint(unsigned int checkpoint_num)
+{
+    cur_checkpoint_num = checkpoint_num;
+}
+
+unsigned int Profile::getCheckpoint()
+{
+    return cur_checkpoint_num;
+}
+
 Profile::~Profile()
 {
     //dtor

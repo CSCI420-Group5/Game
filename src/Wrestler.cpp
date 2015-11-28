@@ -30,7 +30,7 @@ void Wrestler::init(int hit_height, int hit_width, int x, int y)
     stamina = 100;
 }
 
-void Wrestler::reset(std::vector<Collidable*> &actors)
+void Wrestler::reset(std::vector<Collidable*> &actors, sf::Vector2f checkpoint)
 {
     // should only ever be human
     if (isHuman()) {
@@ -43,37 +43,38 @@ void Wrestler::reset(std::vector<Collidable*> &actors)
         off_edge = true;
 
         // make sure we don't just reset right next to the edge
-        if (velocity.x > 0)
-            position.x -= 100;
-        else if (velocity.x < 0)
-            position.x += 100;
-
-        if (velocity.y > 0)
-            position.y -= 100;
-        else if (velocity.y < 0)
-            position.y += 100;
-
-        sf::RectangleShape human_box(sf::Vector2f(width, height));
-        human_box.setPosition(position);
-        sf::FloatRect human_bounds = human_box.getGlobalBounds();
-        // make sure we didn't cause a collision with our reset
-        for (unsigned int i=0; i<actors.size(); i++) {
-            if (id == actors[i]->getID()) {
-                continue;
-            }
-            else {
-                sf::RectangleShape
-                actor_box(sf::Vector2f(actors[i]->getWidth(),actors[i]->getHeight()));
-                actor_box.setPosition(actors[i]->getPos());
-                sf::FloatRect actor_bounds = actor_box.getGlobalBounds();
-
-                while (human_bounds.intersects(actor_bounds)) {
-                    human_box.setPosition(human_box.getPosition().x+10,human_box.getPosition().y);
-                    human_bounds = human_box.getGlobalBounds();
-                }
-            }
-        }
-        position.x = human_box.getPosition().x;
+//        if (velocity.x > 0)
+//            position.x -= 100;
+//        else if (velocity.x < 0)
+//            position.x += 100;
+//
+//        if (velocity.y > 0)
+//            position.y -= 100;
+//        else if (velocity.y < 0)
+//            position.y += 100;
+//
+//        sf::RectangleShape human_box(sf::Vector2f(width, height));
+//        human_box.setPosition(position);
+//        sf::FloatRect human_bounds = human_box.getGlobalBounds();
+//        // make sure we didn't cause a collision with our reset
+//        for (unsigned int i=0; i<actors.size(); i++) {
+//            if (id == actors[i]->getID()) {
+//                continue;
+//            }
+//            else {
+//                sf::RectangleShape
+//                actor_box(sf::Vector2f(actors[i]->getWidth(),actors[i]->getHeight()));
+//                actor_box.setPosition(actors[i]->getPos());
+//                sf::FloatRect actor_bounds = actor_box.getGlobalBounds();
+//
+//                while (human_bounds.intersects(actor_bounds)) {
+//                    human_box.setPosition(human_box.getPosition().x+10,human_box.getPosition().y);
+//                    human_bounds = human_box.getGlobalBounds();
+//                }
+//            }
+//        }
+//        position.x = human_box.getPosition().x;
+        position = checkpoint;
 
         velocity.x = 0;
         velocity.y = 0;
@@ -116,7 +117,7 @@ void Wrestler::useGrab(Wrestler* grabee)
 
 void Wrestler::useThrow(Wrestler* throwee)
 {
-    int str = 12;
+    int str = strength;
 
     // up / right
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)
@@ -177,7 +178,7 @@ void Wrestler::increaseStamina()
 
 void Wrestler::useDash()
 {
-    int spd = 12;
+    int spd = speed;
 
     if (stamina > 49)
     {
@@ -256,10 +257,6 @@ void Wrestler::useDash()
     resetFrozenFrames();
 }
 
-int Wrestler::getSpeed()
-{
-    return speed;
-}
 int Wrestler::getStrength()
 {
     return strength;
@@ -279,7 +276,7 @@ void Wrestler::setStats(float spd, int str, float wgt, int stm)
     strength = str;
     weight = wgt;
     stamina = stm;
-    acceleration = float(str) / float(wgt) + float(speed);
+    acceleration = float(str) / float(wgt);
 }
 
 bool Wrestler::isHuman()
@@ -353,15 +350,21 @@ void Wrestler::setIDOfGrabbed(long int id)
     id_of_grabbed = id;
 }
 
-void Wrestler::setCharacter(int characterNum)
+void Wrestler::setCharacter(std::string character_name)
 {
     // acceleration = float(str) / float(wgt); (0.2)
-    // setStats(spd str wgt stm);
-    switch(characterNum)
-    {
-        case 1: setStats(0.5, 1, 10, 100); break;
-        case 2: setStats(0, 1, 5, 50); break;
+    // setStats(spd str wgt stm)
+    if (character_name == "Fumio"){
+        setStats(15, 10, 20, 100);
     }
+    else if(character_name == "GreyRobot"){
+        setStats(18, 6, 10, 50);
+    }
+    else if(character_name == "Takeshi"){
+        setStats(13, 10, 24, 100);
+    }
+
+    setName(character_name);
 }
 
 Wrestler::~Wrestler()

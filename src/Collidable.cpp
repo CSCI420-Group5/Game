@@ -20,6 +20,7 @@ void Collidable::init(int hit_height, int hit_width, int x, int y)
     velocity.x = 0;
     velocity.y = 0;
 
+    speed = 100;
     weight = 10;
 }
 
@@ -118,6 +119,16 @@ void Collidable::move(float friction)
     }
 }
 
+std::string Collidable::getName()
+{
+    return name;
+}
+
+void Collidable::setName(std::string actor_name)
+{
+    name = actor_name;
+}
+
 long int Collidable::getID() const
 {
     return id;
@@ -201,8 +212,19 @@ void Collidable::setPos(float x, float y)
 
 void Collidable::setVelocity(float x, float y)
 {
-    velocity.x = x;
-    velocity.y = y;
+    //Don't go above the top speed
+    if (x > speed){
+        velocity.x = speed;
+    }
+    else{
+        velocity.x = x;
+    }
+    if (y > speed){
+        velocity.y = speed;
+    }
+    else{
+        velocity.y = y;
+    }
 
     //Reflect if moving off screen
     sf::Vector2f moved_pos = getMovedPos();
@@ -215,13 +237,16 @@ void Collidable::setVelocity(float x, float y)
 //    }
 }
 
+float Collidable::getSpeed()
+{
+    return speed;
+}
 float Collidable::getWeight()
 {
     return weight;
 }
 
-/*bool Collidable::operator < (const Collidable &obj) const
+Collidable::~Collidable()
 {
-    return (position.y < obj.getPos().y);
+    //dtor
 }
-*/

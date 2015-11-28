@@ -12,7 +12,7 @@ class Wrestler: public Collidable
 
         void init(int hit_height, int hit_width, int x, int y);
 
-        void reset(std::vector<Collidable*> &actors);
+        void reset(std::vector<Collidable*> &actors, sf::Vector2f checkpoint);
 
         sf::ConvexShape getPath(); //Returns the intermediate shape a wrestler will move through this frame (to avoid clipping)
 
@@ -23,12 +23,11 @@ class Wrestler: public Collidable
         void increaseStamina();
 
         //General getters and setters:
-        int getSpeed();
         int getStrength();
         int getStamina();
         float getAcceleration(); //Currently based on strength/weight
 
-        void setCharacter(int characterNum);
+        void setCharacter(std::string character_name);
 
         void setStats(float spd, int str, float wgt, int stm);
         bool isHuman();
@@ -63,7 +62,6 @@ class Wrestler: public Collidable
     protected:
     private:
         //attributes
-        float speed;
         int strength;
         int stamina;
         float acceleration;

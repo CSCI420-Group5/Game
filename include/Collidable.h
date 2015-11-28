@@ -7,6 +7,7 @@ class Collidable
 {
     public:
     Collidable();
+    virtual ~Collidable();
 
     // method for initializing attributes of the object
     virtual void init(int hit_height, int hit_width, int x, int y);
@@ -17,6 +18,9 @@ class Collidable
     void move(float friction);
 
     // setters & getters
+    std::string getName();
+    void setName(std::string actor_name);
+
     long int getID() const;
 
     bool isWrestler();
@@ -34,6 +38,7 @@ class Collidable
     void setHeight(int num);
     void setWidth(int num);
 
+    float getSpeed();
     float getWeight();
 
     void setCurrentState(int num);
@@ -49,6 +54,7 @@ class Collidable
     bool operator<(const Collidable &obj) const;*/
 
     protected:
+    std::string name;
     int current_state;
     long int id;
     bool is_wrestler;
@@ -61,6 +67,7 @@ class Collidable
     int width;
     int height;
 
+    float speed;
     float weight;
 
     // position kept as the top-left corner of the hitbox

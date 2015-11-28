@@ -28,54 +28,44 @@ int main(int argc, char** argv)
     std::vector<std::set<long int> > collision_sets;
 
     // Create menu
-    MainMenu menu(800, 608);
+    MainMenu menu(App.getSize().x, App.getSize().y);
 
     // Create profile
     Profile profile;
     profile.setLives(3);
-    profile.setCharacter("Fumio");
 
-    // create wrestlers
-    Wrestler human_sumo;
-    human_sumo.init(30, 30, 20, 800);
-    human_sumo.setIsHuman(true);
-    human_sumo.setIsWrestler(true);
-    human_sumo.setHasProjectile(false);
-    human_sumo.setCharacter(1);
-
-    Wrestler ai_sumo;
-    ai_sumo.init(30, 30, 400, 800);
-    ai_sumo.setIsHuman(false);
-    ai_sumo.setIsWrestler(true);
-    ai_sumo.setHasProjectile(false);
-    ai_sumo.setCharacter(2);
-
-
-    Wrestler ai_sumo2;
-    ai_sumo2.init(30, 30, 400, 830);
-    ai_sumo2.setIsHuman(false);
-    ai_sumo2.setIsWrestler(true);
-    ai_sumo2.setHasProjectile(false);
-    ai_sumo2.setCharacter(2);
-
-    Wrestler ai_sumo3;
-    ai_sumo3.init(30, 30, 400, 860);
-    ai_sumo3.setIsHuman(false);
-    ai_sumo3.setIsWrestler(true);
-    ai_sumo3.setHasProjectile(false);
-    ai_sumo3.setCharacter(2);
-
-    // create a projectile
-    Projectile proj;
-    proj.init(30, 30, 370, 800);
-    proj.setIsWrestler(false);
-    proj.setHasProjectile(true);
-
-    actors.push_back(&human_sumo);
-    actors.push_back(&ai_sumo);
-    actors.push_back(&ai_sumo2);
-    actors.push_back(&ai_sumo3);
-    actors.push_back(&proj);
+//    Wrestler ai_sumo;
+//    ai_sumo.init(30, 30, 400, 800);
+//    ai_sumo.setIsHuman(false);
+//    ai_sumo.setIsWrestler(true);
+//    ai_sumo.setHasProjectile(false);
+//    ai_sumo.setCharacter(2);
+//
+//
+//    Wrestler ai_sumo2;
+//    ai_sumo2.init(30, 30, 400, 830);
+//    ai_sumo2.setIsHuman(false);
+//    ai_sumo2.setIsWrestler(true);
+//    ai_sumo2.setHasProjectile(false);
+//    ai_sumo2.setCharacter(2);
+//
+//    Wrestler ai_sumo3;
+//    ai_sumo3.init(30, 30, 400, 860);
+//    ai_sumo3.setIsHuman(false);
+//    ai_sumo3.setIsWrestler(true);
+//    ai_sumo3.setHasProjectile(false);
+//    ai_sumo3.setCharacter(2);
+//
+//    // create a projectile
+//    Projectile proj;
+//    proj.init(30, 30, 370, 800);
+//    proj.setIsWrestler(false);
+//    proj.setHasProjectile(true);
+//
+//    actors.push_back(&ai_sumo);
+//    actors.push_back(&ai_sumo2);
+//    actors.push_back(&ai_sumo3);
+//    actors.push_back(&proj);
 
     // create view object of collidables
     PlayerView view;
@@ -89,8 +79,17 @@ int main(int argc, char** argv)
     // create the tilemap from the level definition
     Terrain level;
     Terrain layer;
-    lev_handler.loadLevel(level, layer, loc_map, "resources/GavinsLevel");
-    profile.setLevel("Level G");
+    lev_handler.loadLevel(level, layer, loc_map, "resources/GavinsLevel", profile);
+
+    // create human wrestler
+    Wrestler human_sumo;
+    human_sumo.init(30, 30, 20, 800);
+    human_sumo.setIsHuman(true);
+    human_sumo.setIsWrestler(true);
+    human_sumo.setHasProjectile(false);
+    human_sumo.setCharacter("Fumio");
+    profile.setCharacter(human_sumo.getName());
+    actors.push_back(&human_sumo);
 
     // start main loop
     while(App.isOpen())
@@ -136,22 +135,12 @@ int main(int argc, char** argv)
                     fail_safe++;
                 }
 
-                moveActors(actors, loc_map, profile);
+                moveActors(actors, loc_map, profile, lev_handler);
 
                 // clear location map
                 loc_map.clearCells();
                 collision_sets.clear();
             }
-
-            // clear screen
-            App.clear(sf::Color::Green);
-            App.draw(level);
-            App.draw(layer);
-
-            //Draw things
-            view.drawActors(App, actors);
-            view.drawStaminaBar(App, actors[0]);
-            view.drawHUD(App, profile);
 
             //recenter view if this will not move it outside of the map
             if ((actors[0]->getPos().x - sf_view.getSize().x/2 >= 0) &&
@@ -177,6 +166,21 @@ int main(int argc, char** argv)
                 sf_view.setCenter(sf_view.getCenter().x, loc_map.getLevelHeight() - sf_view.getSize().y/2);
             }
             App.setView(sf_view);
+
+            //Add actors to vector if they are just off screen in the positive x direction
+            lev_handler.spawnActors(actors, sf_view.getCenter().x + sf_view.getSize().x/2);
+
+            //Record that player at the next checkpoint when close enough
+            lev_handler.checkCheckpoints(actors[0], profile);
+
+            // clear screen
+            App.clear(sf::Color::Green);
+
+            //Draw things
+            view.drawLevel(App, level, layer);
+            view.drawActors(App, actors);
+            view.drawStaminaBar(App, actors[0]);
+            view.drawHUD(App, profile);
         }
 
         // menu status indicating that menu should be up

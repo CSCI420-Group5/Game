@@ -1,4 +1,4 @@
-#include "MainMenu.h" 
+#include "MainMenu.h"
 #include <iostream>
 #include "SFML/Graphics.hpp"
 
@@ -30,7 +30,7 @@ MainMenu::MainMenu(float width, float height)
 
 void init()
 {
-	
+
 }
 
 void MainMenu::draw(sf::RenderWindow &window)
@@ -44,7 +44,7 @@ void MainMenu::draw(sf::RenderWindow &window)
     	highlight.setPosition(380, 400);
     }
 	window.draw(highlight);
-	
+
 	window.draw(text[0]);
 	window.draw(text[1]);
 	window.draw(text[2]);
@@ -78,7 +78,7 @@ void MainMenu::moveUp()
 	//if (selected == 0)
 	//{
 	//	selected = 1;
-		
+
 	//} else {
 		selected = 0;
 //	}

@@ -227,7 +227,7 @@ void grabProcedure(Wrestler* w, LocationalMap& loc_map, std::vector<Collidable*>
 }
 
 void updateDeaths(LocationalMap& loc_map, std::vector<Collidable*> &actors,
-Profile& profile)
+Profile& profile, LevelHandler& lev_handler)
 {
     std::vector<long int> tmp;
     Collidable* tmp_actor;
@@ -251,13 +251,15 @@ Profile& profile)
                 Wrestler* tmp_wrestler = dynamic_cast<Wrestler*>(actors[i]);
                 if (tmp_wrestler->isHuman()) {
                     profile.setLives(profile.livesRemaining()-1);
-                    tmp_wrestler->reset(actors);
+                    tmp_wrestler->reset(actors, lev_handler.getCheckpoint(profile));
                 }
                 else {
+                    delete actors[i];
                     actors.erase(actors.begin()+i);
                 }
             }
             else {
+                delete actors[i];
                 actors.erase(actors.begin()+i);
             }
         }
@@ -270,7 +272,7 @@ Profile& profile)
 }
 
 void moveActors(std::vector<Collidable*> &actors, LocationalMap& loc_map,
-Profile& profile)
+Profile& profile, LevelHandler& lev_handler)
 {
     for (unsigned int i=0; i<actors.size(); i++) {
         actors[i]->move(0.1); //Placeholder for friction
@@ -310,7 +312,7 @@ Profile& profile)
         }
     }
 
-    updateDeaths(loc_map, actors, profile);
+    updateDeaths(loc_map, actors, profile, lev_handler);
 }
 
 void setActorSpd(Wrestler* actor, int dir)

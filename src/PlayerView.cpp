@@ -156,6 +156,12 @@ bool sortByDepth (const Collidable* actor1, const Collidable* actor2)
     return (actor1->getPos().y < actor2->getPos().y);
 }
 
+void PlayerView::drawLevel(sf::RenderWindow& App, Terrain& level, Terrain& layer)
+{
+    App.draw(level);
+    App.draw(layer);
+}
+
 void PlayerView::drawActors(sf::RenderWindow& App, std::vector<Collidable*> actors)
 {
     //Sort the list of Collidables based on their y position (depth)
@@ -185,7 +191,7 @@ void PlayerView::drawActors(sf::RenderWindow& App, std::vector<Collidable*> acto
     }
 }
 
-void PlayerView::drawHUD(sf::RenderWindow& App, Profile profile)
+void PlayerView::drawHUD(sf::RenderWindow& App, Profile& profile)
 {
     sf::Text lives_txt;
     std::stringstream lives;

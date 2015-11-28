@@ -4,6 +4,7 @@
 #include "Collidable.h"
 #include "Profile.h"
 #include "Wrestler.h"
+#include "Terrain.h"
 
 
 class PlayerView
@@ -13,8 +14,9 @@ class PlayerView
         virtual ~PlayerView();
 
         void init();
+        void drawLevel(sf::RenderWindow& App, Terrain& level, Terrain& layer);
         void drawActors(sf::RenderWindow& App, std::vector<Collidable*> actors);
-        void drawHUD(sf::RenderWindow& App, Profile profile);
+        void drawHUD(sf::RenderWindow& App, Profile& profile);
         void drawStaminaBar(sf::RenderWindow& App, Collidable* player);
 
     protected:
