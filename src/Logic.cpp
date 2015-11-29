@@ -212,7 +212,7 @@ void grabProcedure(Wrestler* w, LocationalMap& loc_map, std::vector<Collidable*>
 
         other->setPos(new_x, new_y);
 
-        //This shouldn't happen very often, but don't allow the grab if repositioning the wrestler causes a graphical overlap
+        //This shouldn't happen very often, but don't allow the grab if repositioning the wrestler causes interpenetration
         loc_map.addCurrent(actors);
         if (findNearestCollidingWrestler(loc_map, actors, other)){
             other->setPos(old_pos.x, old_pos.y);
@@ -358,11 +358,21 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
     if (w->getCurrentState() == Wrestler::THROWN && w->getFrozenFrames() >= 45){
         w->setCurrentState(Wrestler::NORMAL);
     }
+    //The grabber or grabbee may have been hit while in a grab, so the other may need to be broken out
+    Wrestler* grabbed_wres = dynamic_cast<Wrestler*>(getActorById(w->getIDOfGrabbed(), actors));
+    if (grabbed_wres != NULL &&
+        ((w->getCurrentState() == Wrestler::GRABBING && grabbed_wres->getCurrentState() == Wrestler::NORMAL) ||
+        (w->getCurrentState() == Wrestler::NORMAL && grabbed_wres->getCurrentState() == Wrestler::GRABBED))){
+        w->setCurrentState(Wrestler::NORMAL);
+        grabbed_wres->setCurrentState(Wrestler::NORMAL);
+    }
 
     //Can't move, dash, or grab if in a special state
     if (w->getCurrentState() == Wrestler::NORMAL){
         // dash
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && ai_code == ""){
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && ai_code == "" &&
+            (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::S) ||
+             sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))){
             w->useDash();
         }
 
@@ -496,11 +506,8 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map,
         u2(sel_actors[1]->getVelocity());
 
         // now using weight of actor
-        float m1 = 10.f;
-        float m2 = 10.f;
-
-        m1 = sel_actors[0]->getWeight();
-        m2 = sel_actors[1]->getWeight();
+        float m1 = sel_actors[0]->getWeight();
+        float m2 = sel_actors[1]->getWeight();
 
         sf::Vector2f v1 = (u1*(m1-m2)+2.f*m2*u2)/(m1+m2);
         sf::Vector2f v2 = (u2*(m2-m1)+2.f*m1*u1)/(m1+m2);
