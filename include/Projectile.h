@@ -23,16 +23,22 @@ class Projectile: public Collidable
         void shootBall();
         void moveBall(float x, float y);
 
-        enum Dir{NORTH = 1, EAST = 2, SOUTH = 3, WEST = 4};
+        enum Dir{NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3};
         Dir getDir();
         void setDir(Dir d);
         
+        enum SpriteState{UP = 0, RIGHT = 1, DOWN = 2, LEFT = 3};
+        SpriteState getState();
+        void setState(SpriteState s);
+
     private:
         sf::Vector2f ball_pos;
         sf::Vector2f ball_vel;
 
         bool has_shot;
         Dir dir;
+
+        SpriteState state;
 };
 
 #endif // PROJECTILE_H

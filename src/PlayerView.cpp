@@ -9,122 +9,145 @@
 
 void PlayerView::setSprite(Collidable* actor)
 {
-    Wrestler *w = dynamic_cast<Wrestler*>(actor);
-    Wrestler::SpriteState state = w->getCurSpriteState();
-    sf::Vector2f pos = w->getPos();
-    sprite.setPosition(pos.x-(100-w->getWidth())/2,pos.y-(90-w->getHeight()));
+    if (actor->isWrestler()) {
+        Wrestler *w = dynamic_cast<Wrestler*>(actor);
+        Wrestler::SpriteState state = w->getCurSpriteState();
+        sf::Vector2f pos = w->getPos();
+        sprite.setPosition(pos.x-(100-w->getWidth())/2,pos.y-(90-w->getHeight()));
 
-    // standings still, facing right
-    if (state == Wrestler::STAND_RIGHT) {
-        if (w->isHuman())
-            sprite.setTextureRect(sf::IntRect(100,0,100,100));
-        else
-            sprite.setTextureRect(sf::IntRect(100,100,100,100));
+        // standings still, facing right
+        if (state == Wrestler::STAND_RIGHT) {
+            if (w->isHuman())
+                sprite.setTextureRect(sf::IntRect(100,0,100,100));
+            else
+                sprite.setTextureRect(sf::IntRect(100,100,100,100));
+        }
+        // standings still, facing left
+        if (state == Wrestler::STAND_LEFT) {
+            if (w->isHuman())
+                sprite.setTextureRect(sf::IntRect(200,0,-100,100));
+            else
+                sprite.setTextureRect(sf::IntRect(200,100,-100,100));
+        }
+        // running right 1
+        if (state == Wrestler::RUN_RIGHT1) {
+            if (w->isHuman())
+                sprite.setTextureRect(sf::IntRect(0,0,100,100));
+            else
+                sprite.setTextureRect(sf::IntRect(0,100,100,100));
+        }
+        // running right 2
+        if (state == Wrestler::RUN_RIGHT2) {
+            if (w->isHuman())
+                sprite.setTextureRect(sf::IntRect(200,0,100,100));
+            else
+                sprite.setTextureRect(sf::IntRect(200,100,100,100));
+        }
+        // running left 1
+        if (state == Wrestler::RUN_LEFT1) {
+            if (w->isHuman())
+                sprite.setTextureRect(sf::IntRect(100,0,-100,100));
+            else
+                sprite.setTextureRect(sf::IntRect(100,100,-100,100));
+        }
+        // running left 2
+        if (state == Wrestler::RUN_LEFT2) {
+            if (w->isHuman())
+                sprite.setTextureRect(sf::IntRect(300,0,-100,100));
+            else
+                sprite.setTextureRect(sf::IntRect(300,100,-100,100));
+        }
+        // standing up
+        if (state == Wrestler::STAND_UP) {
+            if (w->isHuman())
+                sprite.setTextureRect(sf::IntRect(500,0,100,100));
+            else
+                sprite.setTextureRect(sf::IntRect(500,100,100,100));
+        }
+        // running up 1
+        if (state == Wrestler::RUN_UP1) {
+            if (w->isHuman())
+                sprite.setTextureRect(sf::IntRect(400,0,100,100));
+            else
+                sprite.setTextureRect(sf::IntRect(400,100,100,100));
+        }
+        // running up 2
+        if (state == Wrestler::RUN_UP2) {
+            if (w->isHuman())
+                sprite.setTextureRect(sf::IntRect(600,0,100,100));
+            else
+                sprite.setTextureRect(sf::IntRect(600,100,100,100));
+        }
+        // standing down
+        if (state == Wrestler::STAND_DOWN) {
+            if (w->isHuman())
+                sprite.setTextureRect(sf::IntRect(1100,0,100,100));
+            else
+                sprite.setTextureRect(sf::IntRect(1100,100,100,100));
+        }
+        // running down 1
+        if (state == Wrestler::RUN_DOWN1) {
+            if (w->isHuman())
+                sprite.setTextureRect(sf::IntRect(800,0,100,100));
+            else
+                sprite.setTextureRect(sf::IntRect(800,100,100,100));
+        }
+        // running down 2
+        if (state == Wrestler::RUN_DOWN2) {
+            if (w->isHuman())
+                sprite.setTextureRect(sf::IntRect(1000,0,100,100));
+            else
+                sprite.setTextureRect(sf::IntRect(1000,100,100,100));
+        }
+        // dash right
+        if (state == Wrestler::DASH_RIGHT) {
+            if (w->isHuman())
+                sprite.setTextureRect(sf::IntRect(1200,0,100,100));
+            else
+                sprite.setTextureRect(sf::IntRect(1200,100,100,100));
+        }
+        // dash left
+        if (state == Wrestler::DASH_LEFT) {
+            if (w->isHuman())
+                sprite.setTextureRect(sf::IntRect(1300,0,-100,100));
+            else
+                sprite.setTextureRect(sf::IntRect(1300,100,-100,100));
+        }
+        // dash down
+        if (state == Wrestler::DASH_DOWN) {
+            if (w->isHuman())
+                sprite.setTextureRect(sf::IntRect(1400,0,100,100));
+            else
+                sprite.setTextureRect(sf::IntRect(1400,100,100,100));
+        }
+        // dash up
+        if (state == Wrestler::DASH_UP) {
+            if (w->isHuman())
+                sprite.setTextureRect(sf::IntRect(1300,0,100,100));
+            else
+                sprite.setTextureRect(sf::IntRect(1300,100,100,100));
+        }
     }
-    // standings still, facing left
-    if (state == Wrestler::STAND_LEFT) {
-        if (w->isHuman())
-            sprite.setTextureRect(sf::IntRect(200,0,-100,100));
+
+    // projectile
+    else {
+        Projectile *proj = dynamic_cast<Projectile*>(actor);
+        Projectile::SpriteState state = proj->getState();
+        sf::Vector2f pos = proj->getPos();
+        sprite.setPosition(pos.x,pos.y);
+        
+        if (state == Projectile::UP)
+            sprite.setTextureRect(sf::IntRect(200,700,100,-100));
+
+        else if (state == Projectile::RIGHT)
+            sprite.setTextureRect(sf::IntRect(100,600,100,100));
+
+        else if (state == Projectile::DOWN)
+            sprite.setTextureRect(sf::IntRect(200,600,100,100));
+
         else
-            sprite.setTextureRect(sf::IntRect(200,100,-100,100));
-    }
-    // running right 1
-    if (state == Wrestler::RUN_RIGHT1) {
-        if (w->isHuman())
-            sprite.setTextureRect(sf::IntRect(0,0,100,100));
-        else
-            sprite.setTextureRect(sf::IntRect(0,100,100,100));
-    }
-    // running right 2
-    if (state == Wrestler::RUN_RIGHT2) {
-        if (w->isHuman())
-            sprite.setTextureRect(sf::IntRect(200,0,100,100));
-        else
-            sprite.setTextureRect(sf::IntRect(200,100,100,100));
-    }
-    // running left 1
-    if (state == Wrestler::RUN_LEFT1) {
-        if (w->isHuman())
-            sprite.setTextureRect(sf::IntRect(100,0,-100,100));
-        else
-            sprite.setTextureRect(sf::IntRect(100,100,-100,100));
-    }
-    // running left 2
-    if (state == Wrestler::RUN_LEFT2) {
-        if (w->isHuman())
-            sprite.setTextureRect(sf::IntRect(300,0,-100,100));
-        else
-            sprite.setTextureRect(sf::IntRect(300,100,-100,100));
-    }
-    // standing up
-    if (state == Wrestler::STAND_UP) {
-        if (w->isHuman())
-            sprite.setTextureRect(sf::IntRect(500,0,100,100));
-        else
-            sprite.setTextureRect(sf::IntRect(500,100,100,100));
-    }
-    // running up 1
-    if (state == Wrestler::RUN_UP1) {
-        if (w->isHuman())
-            sprite.setTextureRect(sf::IntRect(400,0,100,100));
-        else
-            sprite.setTextureRect(sf::IntRect(400,100,100,100));
-    }
-    // running up 2
-    if (state == Wrestler::RUN_UP2) {
-        if (w->isHuman())
-            sprite.setTextureRect(sf::IntRect(600,0,100,100));
-        else
-            sprite.setTextureRect(sf::IntRect(600,100,100,100));
-    }
-    // standing down
-    if (state == Wrestler::STAND_DOWN) {
-        if (w->isHuman())
-            sprite.setTextureRect(sf::IntRect(1100,0,100,100));
-        else
-            sprite.setTextureRect(sf::IntRect(1100,100,100,100));
-    }
-    // running down 1
-    if (state == Wrestler::RUN_DOWN1) {
-        if (w->isHuman())
-            sprite.setTextureRect(sf::IntRect(800,0,100,100));
-        else
-            sprite.setTextureRect(sf::IntRect(800,100,100,100));
-    }
-    // running down 2
-    if (state == Wrestler::RUN_DOWN2) {
-        if (w->isHuman())
-            sprite.setTextureRect(sf::IntRect(1000,0,100,100));
-        else
-            sprite.setTextureRect(sf::IntRect(1000,100,100,100));
-    }
-    // dash right
-    if (state == Wrestler::DASH_RIGHT) {
-        if (w->isHuman())
-            sprite.setTextureRect(sf::IntRect(1200,0,100,100));
-        else
-            sprite.setTextureRect(sf::IntRect(1200,100,100,100));
-    }
-    // dash left
-    if (state == Wrestler::DASH_LEFT) {
-        if (w->isHuman())
-            sprite.setTextureRect(sf::IntRect(1300,0,-100,100));
-        else
-            sprite.setTextureRect(sf::IntRect(1300,100,-100,100));
-    }
-    // dash down
-    if (state == Wrestler::DASH_DOWN) {
-        if (w->isHuman())
-            sprite.setTextureRect(sf::IntRect(1400,0,100,100));
-        else
-            sprite.setTextureRect(sf::IntRect(1400,100,100,100));
-    }
-    // dash up
-    if (state == Wrestler::DASH_UP) {
-        if (w->isHuman())
-            sprite.setTextureRect(sf::IntRect(1300,0,100,100));
-        else
-            sprite.setTextureRect(sf::IntRect(1300,100,100,100));
+            sprite.setTextureRect(sf::IntRect(200,600,-100,100));
+
     }
 }
 
@@ -169,24 +192,15 @@ void PlayerView::drawActors(sf::RenderWindow& App, std::vector<Collidable*> acto
 
     //Draw Collidables
     for(unsigned int i = 0; i < actors.size(); i++){
-        if (actors[i]->isWrestler()) {
-            setSprite(actors[i]);
-            App.draw(sprite);
-        }
-        else {
+        setSprite(actors[i]);
+        App.draw(sprite);
+        
+        // draw projectile ball
+        if (actors[i]->hasProjectile()) {
             Projectile *proj = dynamic_cast<Projectile*>(actors[i]);
-            // draw projectile base
-            sf::RectangleShape
-            proj_box(sf::Vector2f(proj->getWidth(), proj->getHeight()));
-
-            proj_box.setPosition(proj->getPos());
-            proj_box.setFillColor(sf::Color::Red);
-            App.draw(proj_box);
-
-            // draw projectile ball
-            sf::CircleShape ball(8);
-            ball.setPosition(proj->getBallPos());
-            App.draw(ball);
+            sprite.setTextureRect(sf::IntRect(0,600,100,100));
+            sprite.setPosition(proj->getBallPos());
+            App.draw(sprite);
         }
     }
 }

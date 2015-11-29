@@ -125,6 +125,7 @@ void LevelHandler::loadLevel(Terrain& level, Terrain& layer, LocationalMap& loc_
                 proj->setHasProjectile(true);
                 proj->setName("Cannon");
                 proj->setDir(Projectile::SOUTH);
+                proj->setState(Projectile::DOWN);
                 future_actors.push_back(proj);
             }
             if (i3 == 509){ //Checkpoint flag

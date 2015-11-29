@@ -94,3 +94,13 @@ void Projectile::setDir(Dir d)
 {
     dir = d;
 }
+
+Projectile::SpriteState Projectile::getState()
+{
+    return state;
+}
+
+void Projectile::setState(Projectile::SpriteState s)
+{
+    state = s;
+}
