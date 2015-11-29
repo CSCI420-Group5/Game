@@ -272,7 +272,7 @@ Profile& profile, LevelHandler& lev_handler)
 }
 
 void moveActors(std::vector<Collidable*> &actors, LocationalMap& loc_map,
-Profile& profile, LevelHandler& lev_handler)
+Profile& profile, LevelHandler& lev_handler, sf::View sf_view)
 {
     for (unsigned int i=0; i<actors.size(); i++) {
         actors[i]->move(0.1); //Placeholder for friction
@@ -302,13 +302,31 @@ Profile& profile, LevelHandler& lev_handler)
         else if (actors[i]->hasProjectile()) {
             Projectile *proj = dynamic_cast<Projectile*>(actors[i]);
             sf::Vector2f ball_pos = proj->getBallPos();
-            if (!proj->hasShot() || ball_pos.x > 1600 || ball_pos.x < 0
-                || ball_pos.y > 1600 || ball_pos.y < 0) {
+            sf::Vector2f player_pos = actors[0]->getPos();
+            sf::Vector2f view_size = sf_view.getSize();
+            Projectile::Dir dir = proj->getDir();
+            if ((dir == Projectile::EAST || dir == Projectile::WEST) && 
+                (!proj->hasShot() || ball_pos.x > player_pos.x+view_size.x/2 || 
+                ball_pos.x < player_pos.x-view_size.x/2)) {
                 proj->shootBall();
                 proj->setHasShot(true);
             }
-            else
-                proj->moveBall(4,0);
+            else if ((dir == Projectile::NORTH || dir == Projectile::SOUTH) &&
+                (!proj->hasShot() || ball_pos.y > player_pos.y+view_size.y/2 ||
+                ball_pos.y < player_pos.y-view_size.y/2)) {
+                proj->shootBall();
+                proj->setHasShot(true);
+            }
+            else {
+                if (dir == Projectile::NORTH)
+                    proj->moveBall(0,-4);
+                else if (dir == Projectile::EAST) 
+                    proj->moveBall(4,0);
+                else if (dir == Projectile::SOUTH)
+                    proj->moveBall(0,4);
+                else
+                    proj->moveBall(-4,0);
+            }
         }
     }
 

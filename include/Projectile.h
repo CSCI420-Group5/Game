@@ -22,11 +22,17 @@ class Projectile: public Collidable
         void setHasShot(bool val);
         void shootBall();
         void moveBall(float x, float y);
+
+        enum Dir{NORTH = 1, EAST = 2, SOUTH = 3, WEST = 4};
+        Dir getDir();
+        void setDir(Dir d);
+        
     private:
         sf::Vector2f ball_pos;
         sf::Vector2f ball_vel;
 
         bool has_shot;
+        Dir dir;
 };
 
 #endif // PROJECTILE_H

@@ -11,7 +11,7 @@
 #include "string"
 
 void moveActors(std::vector<Collidable*> &actors, LocationalMap& loc_map,
-Profile& profile, LevelHandler& lev_handler);
+Profile& profile, LevelHandler& lev_handler, sf::View sf_view);
 
 void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Collidable*>& actors, std::string ai_code);
 

@@ -84,3 +84,13 @@ void Projectile::moveBall(float x, float y)
     ball_pos.x += x;
     ball_pos.y += y;
 }
+
+Projectile::Dir Projectile::getDir()
+{
+    return dir;
+}
+
+void Projectile::setDir(Dir d)
+{
+    dir = d;
+}

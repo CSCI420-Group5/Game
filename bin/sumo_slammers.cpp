@@ -135,7 +135,7 @@ int main(int argc, char** argv)
                     fail_safe++;
                 }
 
-                moveActors(actors, loc_map, profile, lev_handler);
+                moveActors(actors, loc_map, profile, lev_handler, sf_view);
 
                 // clear location map
                 loc_map.clearCells();
