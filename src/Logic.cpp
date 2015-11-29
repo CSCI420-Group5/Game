@@ -63,7 +63,7 @@ Wrestler* findNearestCollidingWrestler(LocationalMap& loc_map, std::vector<Colli
                 for (unsigned int w=0; w<sel_wrests.size(); w++){
 
                     sf::RectangleShape
-                    wrest_box2(sf::Vector2f(sel_wrests[w]->getWidth(),sel_wrests[w]->getWidth()));
+                    wrest_box2(sf::Vector2f(sel_wrests[w]->getWidth(),sel_wrests[w]->getHeight()));
                     wrest_box2.setPosition(sel_wrests[w]->getPos());
 
                     sf::FloatRect w2_bounds = wrest_box2.getGlobalBounds();
@@ -506,6 +506,14 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map,
 {
     std::vector<std::set<long int> > collision_sets = findFutureCollisions(loc_map, actors);
     std::vector<Collidable*> sel_actors;
+    std::vector<Projectile*> projectiles;
+
+    // get separate vector for projectile objects
+    for (int i=0; i<actors.size(); i++) {
+        if (actors[i]->hasProjectile()) {
+            projectiles.push_back(dynamic_cast<Projectile*>(actors[i]));
+        }
+    }
 
     for(unsigned int i = 0; i < collision_sets.size(); i++){
 
@@ -545,6 +553,50 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map,
         }
 
         sel_actors.clear();
+    }
+    
+    // calc projectile collisions
+    for (int i=0; i<actors.size(); i++) {
+        sf::RectangleShape
+        actor_box(sf::Vector2f(actors[i]->getWidth(),actors[i]->getHeight()));
+        actor_box.setPosition(actors[i]->getPos());
+        sf::FloatRect actor_bounds = actor_box.getGlobalBounds();
+
+        for (int j=0; j<projectiles.size(); j++) {
+            sf::CircleShape ball;
+            ball.setRadius(30);
+            ball.setPosition(projectiles[j]->getBallPos());
+            sf::FloatRect ball_bounds = ball.getGlobalBounds();
+
+            if (actors[i]->getID() != projectiles[j]->getID() && actor_bounds.intersects(ball_bounds)) {
+                sf::Vector2f u1(actors[i]->getVelocity());
+                sf::Vector2f u2;
+                // set projectile velocity based on its direction
+                if (projectiles[j]->getDir() == Projectile::NORTH) {
+                    u2.x = 0;
+                    u2.y = -4;
+                }
+                else if (projectiles[j]->getDir() == Projectile::EAST) {
+                    u2.x = 4;
+                    u2.y = 0;
+                }
+                else if (projectiles[j]->getDir() == Projectile::SOUTH) {
+                    u2.x = 0;
+                    u2.y = 4;
+                }
+                else {
+                    u2.x = -4;
+                    u2.y = 0;
+                }
+                float m1 = actors[i]->getWeight();
+                float m2 = 10;
+                sf::Vector2f v1 = (u1*(m1-m2)+2.f*m2*u2)/(m1+m2);
+
+                // update actors velocity and reset projectile
+                actors[i]->setVelocity(v1.x,v1.y);
+                projectiles[j]->shootBall();
+            }
+        }
     }
 
     return collision_sets;
