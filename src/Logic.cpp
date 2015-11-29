@@ -564,8 +564,8 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map,
 
         for (int j=0; j<projectiles.size(); j++) {
             sf::CircleShape ball;
-            ball.setRadius(30);
-            ball.setPosition(projectiles[j]->getBallPos());
+            ball.setRadius(15);
+            ball.setPosition(projectiles[j]->getBallPos().x+30,projectiles[j]->getBallPos().y+30);
             sf::FloatRect ball_bounds = ball.getGlobalBounds();
 
             if (actors[i]->getID() != projectiles[j]->getID() && actor_bounds.intersects(ball_bounds)) {
@@ -595,6 +595,16 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map,
                 // update actors velocity and reset projectile
                 actors[i]->setVelocity(v1.x,v1.y);
                 projectiles[j]->shootBall();
+
+                // add to collision sets if not already there
+                for (int cs=0; cs<collision_sets.size(); cs++) {
+                    if (collision_sets[cs].find(actors[i]->getID()) ==
+                        collision_sets[cs].end()) {
+                        std::set<long int> new_set;
+                        new_set.insert(actors[i]->getID());
+                        collision_sets.push_back(new_set);
+                    }
+                }
             }
         }
     }
