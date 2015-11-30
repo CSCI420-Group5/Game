@@ -224,12 +224,15 @@ int main(int argc, char** argv)
         if (exit_app == false) {
             if (game_won == true) {
                 main_menu.drawWon(App);
+                App.display();
             }
             else {
                 main_menu.drawLose(App);
+                App.display();
             }
             while (timer.getElapsedTime().asSeconds() < 4)
-                App.display();
+                continue;
+            timer.restart();
 
             game_over = false;
             cur_menu = 0;
