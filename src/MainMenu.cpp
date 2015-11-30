@@ -49,7 +49,32 @@ void MainMenu::draw(sf::RenderWindow &window)
 	window.draw(text[2]);
 }
 
-bool MainMenu::navigate(sf::RenderWindow &window, sf::Event &event)
+void MainMenu::drawWon(sf::RenderWindow &window)
+{
+    window.clear(sf::Color::Black);
+
+    sf::Text you_won;
+    you_won.setFont(font);
+    you_won.setString("Congratulations, you won!");
+    sf::Vector2f coords = window.mapPixelToCoords(sf::Vector2i(400, 300));
+    you_won.setPosition(coords);
+    window.draw(you_won);
+}
+
+void MainMenu::drawLose(sf::RenderWindow &window)
+{
+    window.clear(sf::Color::Black);
+
+    sf::Text you_lost;
+    you_lost.setFont(font);
+    you_lost.setString("Sorry, you lost");
+    sf::Vector2f coords = window.mapPixelToCoords(sf::Vector2i(400,300));
+    you_lost.setPosition(coords);
+    window.draw(you_lost);
+}
+
+bool MainMenu::navigate(sf::RenderWindow &window, sf::Event &event, bool&
+exit_app)
 {
 	if (event.key.code == sf::Keyboard::Up)
 	    {
@@ -68,6 +93,7 @@ bool MainMenu::navigate(sf::RenderWindow &window, sf::Event &event)
 	        	return false;
 	        } else {
 	        	window.close();
+                exit_app = true;
 	        }
 	    }
     return true;

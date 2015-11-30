@@ -11,11 +11,14 @@ class MainMenu
         void init(float width, float height);
 
     	void draw(sf::RenderWindow &window);
+        void drawWon(sf::RenderWindow &window);
+        void drawLose(sf::RenderWindow &window);
 
 		void moveUp();
 		void moveDown();
 
-        bool navigate(sf::RenderWindow &window, sf::Event &event);
+        bool navigate(sf::RenderWindow &window, sf::Event &event, bool
+        &exit_app);
 
     protected:
     private:

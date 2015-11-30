@@ -229,7 +229,7 @@ void grabProcedure(Wrestler* w, LocationalMap& loc_map, std::vector<Collidable*>
 }
 
 void updateDeaths(LocationalMap& loc_map, std::vector<Collidable*> &actors,
-Profile& profile, LevelHandler& lev_handler)
+Profile& profile, LevelHandler& lev_handler, int &num_bad_guys)
 {
     std::vector<long int> tmp;
     Collidable* tmp_actor;
@@ -255,12 +255,13 @@ Profile& profile, LevelHandler& lev_handler)
                     profile.setLives(profile.livesRemaining()-1);
                     tmp_wrestler->reset(actors, lev_handler.getCheckpoint(profile));
                 }
-                else {
+                else { // bad guys
                     delete actors[i];
                     actors.erase(actors.begin()+i);
+                    num_bad_guys--;
                 }
             }
-            else {
+            else { // projectiles
                 delete actors[i];
                 actors.erase(actors.begin()+i);
             }
@@ -274,7 +275,7 @@ Profile& profile, LevelHandler& lev_handler)
 }
 
 void moveActors(std::vector<Collidable*> &actors, LocationalMap& loc_map,
-Profile& profile, LevelHandler& lev_handler, sf::View sf_view)
+Profile& profile, LevelHandler& lev_handler, sf::View sf_view, int &num_bad_guys)
 {
     for (unsigned int i=0; i<actors.size(); i++) {
         actors[i]->move(0.1, loc_map.getLevelWidth(),
@@ -356,7 +357,7 @@ Profile& profile, LevelHandler& lev_handler, sf::View sf_view)
         }
     }
 
-    updateDeaths(loc_map, actors, profile, lev_handler);
+    updateDeaths(loc_map, actors, profile, lev_handler, num_bad_guys);
 }
 
 void setActorSpd(Wrestler* actor, int dir, LocationalMap &loc_map)

@@ -22,8 +22,8 @@ bool sortVectorsByXPos (const sf::Vector2f vec1, const sf::Vector2f vec2)
     return (vec1.x < vec2.x);
 }
 
-void LevelHandler::loadLevel(Terrain& level, Terrain& layer, LocationalMap& loc_map,
-                             std::string level_name, Profile& profile)
+void LevelHandler::loadLevel(Terrain& level, Terrain& layer, LocationalMap&
+loc_map, std::string level_name, Profile& profile, int &num_bad_guys)
 {
     int level_w = 0;
     int level_h = 0;
@@ -108,6 +108,7 @@ void LevelHandler::loadLevel(Terrain& level, Terrain& layer, LocationalMap& loc_
                 ai_sumo->setHasProjectile(false);
                 ai_sumo->setCharacter("GreyRobot");
                 future_actors.push_back(ai_sumo);
+                num_bad_guys++;
             }
             if (i3 == 389){ // Blue robot
                 Wrestler* ai_sumo = new Wrestler();
@@ -117,6 +118,7 @@ void LevelHandler::loadLevel(Terrain& level, Terrain& layer, LocationalMap& loc_
                 ai_sumo->setHasProjectile(false);
                 ai_sumo->setCharacter("BlueRobot");
                 future_actors.push_back(ai_sumo);
+                num_bad_guys++;
             }
             if (i3 == 419){ // Green robot
                 Wrestler* ai_sumo = new Wrestler();
@@ -126,6 +128,7 @@ void LevelHandler::loadLevel(Terrain& level, Terrain& layer, LocationalMap& loc_
                 ai_sumo->setHasProjectile(false);
                 ai_sumo->setCharacter("GreenRobot");
                 future_actors.push_back(ai_sumo);
+                num_bad_guys++;
             }
             if (i3 == 449){ // Red robot
                 Wrestler* ai_sumo = new Wrestler();
@@ -135,6 +138,7 @@ void LevelHandler::loadLevel(Terrain& level, Terrain& layer, LocationalMap& loc_
                 ai_sumo->setHasProjectile(false);
                 ai_sumo->setCharacter("RedRobot");
                 future_actors.push_back(ai_sumo);
+                num_bad_guys++;
             }
             if (i3 == 359){ // Takeshi
                 Wrestler* ai_sumo = new Wrestler();
@@ -144,6 +148,7 @@ void LevelHandler::loadLevel(Terrain& level, Terrain& layer, LocationalMap& loc_
                 ai_sumo->setHasProjectile(false);
                 ai_sumo->setCharacter("Takeshi");
                 future_actors.push_back(ai_sumo);
+                num_bad_guys++;
             }
             if (i3 == 479){ // Projectile
                 Projectile* proj = new Projectile();
