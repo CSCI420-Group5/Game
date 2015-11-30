@@ -9,7 +9,7 @@ class Projectile: public Collidable
 {
     public:
         Projectile();
-        
+
         void init(int hit_height, int hit_width, int x, int y);
 
         sf::Vector2f getBallPos() const;
@@ -17,6 +17,8 @@ class Projectile: public Collidable
 
         void setBallPos(float x, float y);
         void setBallVel(float x, float y);
+
+        void setWeightSpeed(float wgt, float spd);
 
         bool hasShot();
         void setHasShot(bool val);
@@ -29,7 +31,7 @@ class Projectile: public Collidable
 
         Dir getBaseDir();
         void setBaseDir(Dir d);
-        
+
         enum SpriteState{UP = 0, RIGHT = 1, DOWN = 2, LEFT = 3};
         SpriteState getState();
         void setState(SpriteState s);

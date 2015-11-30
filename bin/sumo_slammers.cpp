@@ -129,7 +129,7 @@ int main(int argc, char** argv)
             {
                 if (profile.livesRemaining() > 0 && num_bad_guys > 0) {
                     //Don't update the game logic unless a certain amount of time has passed
-                    if(timer.getElapsedTime().asSeconds() > 1.0/60)
+                    if(timer.getElapsedTime().asSeconds() > 1.0/30)
                     {
                         timer.restart();
 
@@ -156,6 +156,8 @@ int main(int argc, char** argv)
                             collision_sets = calcCollision(loc_map, actors);
                             fail_safe++;
                         }
+
+                        calcProjectileCollision(actors, loc_map.getLevelWidth(), loc_map.getLevelHeight());
 
                         moveActors(actors, loc_map, profile, lev_handler, sf_view,
                                 num_bad_guys);
@@ -219,7 +221,7 @@ int main(int argc, char** argv)
         }
 
         // got here if game ended
-        if (exit_app == false) { 
+        if (exit_app == false) {
             if (game_won == true) {
                 main_menu.drawWon(App);
             }
