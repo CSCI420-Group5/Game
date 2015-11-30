@@ -83,10 +83,10 @@ void Wrestler::reset(std::vector<Collidable*> &actors, sf::Vector2f checkpoint)
     }
 }
 
-sf::ConvexShape Wrestler::getPath()
+sf::ConvexShape Wrestler::getPath(int level_w, int level_h)
 {
-    int fin_x = getMovedPos().x;
-    int fin_y = getMovedPos().y;
+    int fin_x = getMovedPos(level_w, level_h).x;
+    int fin_y = getMovedPos(level_w, level_h).y;
 
     sf::ConvexShape path;
     path.setPointCount(4);
@@ -98,14 +98,14 @@ sf::ConvexShape Wrestler::getPath()
     return path;
 }
 
-void Wrestler::useGrab(Wrestler* grabee)
+void Wrestler::useGrab(Wrestler* grabee, int level_w, int level_h)
 {
     current_state = GRABBING;
     grabee->setCurrentState(Wrestler::GRABBED);
 
     //Stop actors' movement
-    grabee->setVelocity(0, 0);
-    setVelocity(0, 0);
+    grabee->setVelocity(0, 0, level_w, level_h);
+    setVelocity(0, 0, level_w, level_h);
 
     id_of_grabbed = grabee->getID();
 
@@ -115,52 +115,56 @@ void Wrestler::useGrab(Wrestler* grabee)
     stamina -= 25;
 }
 
-void Wrestler::useThrow(Wrestler* throwee)
+void Wrestler::useThrow(Wrestler* throwee, int level_w, int level_h)
 {
     int str = strength;
 
     // up / right
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)
         && sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-        throwee->setVelocity(str/std::sqrt(2), -str/std::sqrt(2));
+        throwee->setVelocity(str/std::sqrt(2), -str/std::sqrt(2), level_w,
+        level_h);
     }
 
     // down / right
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
         && sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-        throwee->setVelocity(str/std::sqrt(2), str/std::sqrt(2));
+        throwee->setVelocity(str/std::sqrt(2), str/std::sqrt(2), level_w,
+        level_h);
     }
 
     // down / left
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
         && sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-        throwee->setVelocity(-str/std::sqrt(2), str/std::sqrt(2));
+        throwee->setVelocity(-str/std::sqrt(2), str/std::sqrt(2), level_w,
+        level_h);
     }
 
     // up / left
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)
         && sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-        throwee->setVelocity(-str/std::sqrt(2), -str/std::sqrt(2));
+        throwee->setVelocity(-str/std::sqrt(2), -str/std::sqrt(2), level_w,
+        level_h);
     }
 
     // up
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
-        throwee->setVelocity(0, -str);
+        throwee->setVelocity(0, -str, level_w, level_h);
     }
 
     // down
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
-        throwee->setVelocity(0, str);
+        throwee->setVelocity(0, str, level_w, level_h);
     }
 
     // left
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-        throwee->setVelocity(-str, 0);
+        throwee->setVelocity(-str, 0, level_w, level_h);
     }
 
     // right
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-        throwee->setVelocity(str, 0);
+        throwee->setVelocity(str, 0, level_w, level_h);
     }
 
     current_state = NORMAL;

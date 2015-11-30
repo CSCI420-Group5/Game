@@ -20,8 +20,10 @@ std::vector<int>& layer1, std::vector<int>& layer2)
     cells = new Cell[rows*cols];
 
     for (unsigned int i = 0; i < layer1.size(); i++){
-        if ((layer1[i] == 207 || layer1[i] == 116 || layer1[i] == 176 || layer1[i] == -1) &&
-            (layer2[i] == 207 || layer2[i] == 116 || layer2[i] == 176 || layer2[i] == -1)){
+        if ((layer1[i] == 207 || layer1[i] == 116 || layer1[i] == 176 ||
+            layer1[i] == 146 || layer1[i] == -1) &&
+            (layer2[i] == 207 || layer2[i] == 116 || layer2[i] == 176 ||
+            layer2[i] == 146 || layer2[i] == -1)){
             cells[i].setStandable(false);
         }
         else{
@@ -63,11 +65,11 @@ void LocationalMap::addFuture(std::vector<Collidable*>& actors)
         size_t n;
 
         //Find all of the i rows that the object occupies
-        while((height + cell_size) <= actors[w]->getMovedPos().y && height <= level_h){
+        while((height + cell_size) <= actors[w]->getMovedPos(level_w, level_h).y && height <= level_h){
             height += cell_size;
             i++;
         }
-        while(height < (actors[w]->getMovedPos().y + actors[w]->getHeight()) && height <= level_h){
+        while(height < (actors[w]->getMovedPos(level_w, level_h).y + actors[w]->getHeight()) && height <= level_h){
             add_rows.push_back(i);
             height += cell_size;
             i++;
@@ -75,11 +77,11 @@ void LocationalMap::addFuture(std::vector<Collidable*>& actors)
 
         //Find all of the j columns that the object occupies
         //And add the object to the cell list for each row for each column
-        while((width + cell_size) <= actors[w]->getMovedPos().x && width <= level_w){
+        while((width + cell_size) <= actors[w]->getMovedPos(level_w, level_h).x && width <= level_w){
             width += cell_size;
             j++;
         }
-        while(width < (actors[w]->getMovedPos().x + actors[w]->getWidth()) && width <= level_w){
+        while(width < (actors[w]->getMovedPos(level_w, level_h).x + actors[w]->getWidth()) && width <= level_w){
             for (n = 0; n < add_rows.size(); n++){
                 cells[add_rows[n]*cols+j].addID(actors[w]->getID());
             }

@@ -72,8 +72,8 @@ void Projectile::setHasShot(bool val)
 
 void Projectile::shootBall()
 {
-    ball_pos.x = position.x;
-    ball_pos.y = position.y;
+    ball_pos.x = (position.x-(100-width)/2);
+    ball_pos.y = (position.y-(100-height)/2);
 
     ball_vel = getRandDir();
     moveBall(ball_vel.x+1, ball_vel.y+1);

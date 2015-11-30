@@ -134,7 +134,7 @@ void PlayerView::setSprite(Collidable* actor)
         Projectile *proj = dynamic_cast<Projectile*>(actor);
         Projectile::SpriteState state = proj->getState();
         sf::Vector2f pos = proj->getPos();
-        sprite.setPosition(pos.x,pos.y);
+        sprite.setPosition(pos.x-(100-proj->getWidth())/2,pos.y-(90-proj->getHeight()));
         
         if (state == Projectile::UP)
             sprite.setTextureRect(sf::IntRect(200,700,100,-100));

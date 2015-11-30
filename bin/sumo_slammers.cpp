@@ -124,8 +124,8 @@ int main(int argc, char** argv)
                     if (actors[i]->isWrestler()) {
                         if (dynamic_cast<Wrestler*>(actors[i])->isHuman())
                             getInputSetSpd(actors[i], loc_map, actors, "");
-                        else
-                            setAISpd(actors[i], loc_map, actors);
+                        //else
+                          //  setAISpd(actors[i], loc_map, actors);
                     }
                 }
 

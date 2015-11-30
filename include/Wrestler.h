@@ -14,10 +14,10 @@ class Wrestler: public Collidable
 
         void reset(std::vector<Collidable*> &actors, sf::Vector2f checkpoint);
 
-        sf::ConvexShape getPath(); //Returns the intermediate shape a wrestler will move through this frame (to avoid clipping)
+        sf::ConvexShape getPath(int level_w, int level_h); //Returns the intermediate shape a wrestler will move through this frame (to avoid clipping)
 
-        void useGrab(Wrestler* grabee);
-        void useThrow(Wrestler* throwee);
+        void useGrab(Wrestler* grabee, int level_w, int level_h);
+        void useThrow(Wrestler* throwee, int level_w, int level_h);
         void useDash();
 
         void increaseStamina();
