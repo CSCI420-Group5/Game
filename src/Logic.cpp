@@ -301,7 +301,7 @@ Profile& profile, LevelHandler& lev_handler, sf::View sf_view)
                     w->setCurSpriteState(Wrestler::STAND_DOWN);
             }
         }
-        // update projectile ball location
+        // update projectile ball location and base direction
         else if (actors[i]->hasProjectile()) {
             Projectile *proj = dynamic_cast<Projectile*>(actors[i]);
             sf::Vector2f ball_pos = proj->getBallPos();
@@ -329,6 +329,29 @@ Profile& profile, LevelHandler& lev_handler, sf::View sf_view)
                     proj->moveBall(0,4);
                 else
                     proj->moveBall(-4,0);
+            }
+
+            // check to see if we should change the base direction
+            sf::Vector2f base_pos = proj->getPos();
+            if (abs(player_pos.x-base_pos.x) > abs(player_pos.y-base_pos.y)) {
+                if (player_pos.x > base_pos.x) {
+                    proj->setBaseDir(Projectile::EAST);
+                    proj->setState(Projectile::RIGHT);
+                }
+                else {
+                    proj->setBaseDir(Projectile::WEST);
+                    proj->setState(Projectile::LEFT);
+                }
+            }
+            else {
+                if (player_pos.y > base_pos.y) {
+                    proj->setBaseDir(Projectile::SOUTH);
+                    proj->setState(Projectile::DOWN);
+                }
+                else {
+                    proj->setBaseDir(Projectile::NORTH);
+                    proj->setState(Projectile::UP);
+                }
             }
         }
     }

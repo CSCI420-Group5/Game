@@ -26,6 +26,9 @@ class Projectile: public Collidable
         enum Dir{NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3};
         Dir getDir();
         void setDir(Dir d);
+
+        Dir getBaseDir();
+        void setBaseDir(Dir d);
         
         enum SpriteState{UP = 0, RIGHT = 1, DOWN = 2, LEFT = 3};
         SpriteState getState();
@@ -37,6 +40,7 @@ class Projectile: public Collidable
 
         bool has_shot;
         Dir dir;
+        Dir base_dir;
 
         SpriteState state;
 };

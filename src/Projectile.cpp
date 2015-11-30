@@ -29,6 +29,10 @@ void Projectile::init(int hit_height, int hit_width, int x, int y)
     height = hit_height;
     width = hit_width;
 
+    base_dir = Projectile::SOUTH;
+    dir = base_dir;
+    state = Projectile::DOWN;
+
     position.x = x;
     position.y = y;
 
@@ -72,8 +76,27 @@ void Projectile::setHasShot(bool val)
 
 void Projectile::shootBall()
 {
-    ball_pos.x = (position.x-(100-width)/2);
-    ball_pos.y = (position.y-(100-height)/2);
+    dir = base_dir;
+
+    // set the ball position appropriately so it looks nice
+    if (dir == Projectile::NORTH) {
+        ball_pos.x = (position.x-(100-width)/2);
+        ball_pos.y = (position.y-(160-height)/2);
+    }
+
+    else if (dir == Projectile::SOUTH) {
+        ball_pos.x = (position.x-(100-width)/2);
+        ball_pos.y = (position.y-(110-height)/2);
+    }
+    else if (dir == Projectile::EAST) {
+        ball_pos.x = (position.x-(70-width)/2);
+        ball_pos.y = (position.y-(150-height)/2);
+    }
+
+    else {
+        ball_pos.x = (position.x-(130-width)/2);
+        ball_pos.y = (position.y-(150-height)/2);
+    }
 
     ball_vel = getRandDir();
     moveBall(ball_vel.x+1, ball_vel.y+1);
@@ -93,6 +116,16 @@ Projectile::Dir Projectile::getDir()
 void Projectile::setDir(Dir d)
 {
     dir = d;
+}
+
+Projectile::Dir Projectile::getBaseDir()
+{
+    return base_dir;
+}
+
+void Projectile::setBaseDir(Dir d)
+{
+    base_dir = d;
 }
 
 Projectile::SpriteState Projectile::getState()
