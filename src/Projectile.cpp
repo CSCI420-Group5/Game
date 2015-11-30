@@ -81,7 +81,7 @@ void Projectile::shootBall()
     // set the ball position appropriately so it looks nice
     if (dir == Projectile::NORTH) {
         ball_pos.x = (position.x-(100-width)/2);
-        ball_pos.y = (position.y-(160-height)/2);
+        ball_pos.y = (position.y-(200-height)/2);
     }
 
     else if (dir == Projectile::SOUTH) {

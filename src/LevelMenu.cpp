@@ -12,9 +12,7 @@ void LevelMenu::init(float width, float height)
 	font.loadFromFile("resources/arial.ttf");
 
 	std::vector<std::string> level_names;
-	level_names.push_back("GavinsLevel");
-	level_names.push_back("GavinsLevel");
-	level_names.push_back("GavinsLevel");
+    level_names.push_back("PracticeLevel");
 	level_names.push_back("GavinsLevel");
 
     for (unsigned int i = 0; i < level_names.size(); i++){

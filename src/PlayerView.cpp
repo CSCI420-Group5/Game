@@ -19,6 +19,14 @@ void PlayerView::setSprite(Collidable* actor)
         if (state == Wrestler::STAND_RIGHT) {
             if (w->isHuman())
                 sprite.setTextureRect(sf::IntRect(100,0,100,100));
+            else if (w->getName() == "Takeshi")
+                sprite.setTextureRect(sf::IntRect(100,200,100,100));
+            else if (w->getName() == "BlueRobot")
+                sprite.setTextureRect(sf::IntRect(100,300,100,100));
+            else if (w->getName() == "GreenRobot")
+                sprite.setTextureRect(sf::IntRect(100,400,100,100));
+            else if (w->getName() == "RedRobot")
+                sprite.setTextureRect(sf::IntRect(100,500,100,100));
             else
                 sprite.setTextureRect(sf::IntRect(100,100,100,100));
         }
@@ -26,6 +34,14 @@ void PlayerView::setSprite(Collidable* actor)
         if (state == Wrestler::STAND_LEFT) {
             if (w->isHuman())
                 sprite.setTextureRect(sf::IntRect(200,0,-100,100));
+            else if (w->getName() == "Takeshi")
+                sprite.setTextureRect(sf::IntRect(200,200,-100,100));
+            else if (w->getName() == "BlueRobot")
+                sprite.setTextureRect(sf::IntRect(200,300,-100,100));
+            else if (w->getName() == "GreenRobot")
+                sprite.setTextureRect(sf::IntRect(200,400,-100,100));
+            else if (w->getName() == "RedRobot")
+                sprite.setTextureRect(sf::IntRect(200,500,-100,100));
             else
                 sprite.setTextureRect(sf::IntRect(200,100,-100,100));
         }
@@ -33,6 +49,14 @@ void PlayerView::setSprite(Collidable* actor)
         if (state == Wrestler::RUN_RIGHT1) {
             if (w->isHuman())
                 sprite.setTextureRect(sf::IntRect(0,0,100,100));
+            else if (w->getName() == "Takeshi")
+                sprite.setTextureRect(sf::IntRect(0,200,100,100));
+            else if (w->getName() == "BlueRobot")
+                sprite.setTextureRect(sf::IntRect(0,300,100,100));
+            else if (w->getName() == "GreenRobot")
+                sprite.setTextureRect(sf::IntRect(0,400,100,100));
+            else if (w->getName() == "RedRobot")
+                sprite.setTextureRect(sf::IntRect(0,500,100,100));
             else
                 sprite.setTextureRect(sf::IntRect(0,100,100,100));
         }
@@ -40,6 +64,14 @@ void PlayerView::setSprite(Collidable* actor)
         if (state == Wrestler::RUN_RIGHT2) {
             if (w->isHuman())
                 sprite.setTextureRect(sf::IntRect(200,0,100,100));
+            else if (w->getName() == "Takeshi")
+                sprite.setTextureRect(sf::IntRect(200,200,100,100));
+            else if (w->getName() == "BlueRobot")
+                sprite.setTextureRect(sf::IntRect(200,300,100,100));
+            else if (w->getName() == "GreenRobot")
+                sprite.setTextureRect(sf::IntRect(200,400,100,100));
+            else if (w->getName() == "RedRobot")
+                sprite.setTextureRect(sf::IntRect(200,500,100,100));
             else
                 sprite.setTextureRect(sf::IntRect(200,100,100,100));
         }
@@ -47,6 +79,14 @@ void PlayerView::setSprite(Collidable* actor)
         if (state == Wrestler::RUN_LEFT1) {
             if (w->isHuman())
                 sprite.setTextureRect(sf::IntRect(100,0,-100,100));
+            else if (w->getName() == "Takeshi")
+                sprite.setTextureRect(sf::IntRect(100,200,-100,100));
+            else if (w->getName() == "BlueRobot")
+                sprite.setTextureRect(sf::IntRect(100,300,-100,100));
+            else if (w->getName() == "GreenRobot")
+                sprite.setTextureRect(sf::IntRect(100,400,-100,100));
+            else if (w->getName() == "RedRobot")
+                sprite.setTextureRect(sf::IntRect(100,500,-100,100));
             else
                 sprite.setTextureRect(sf::IntRect(100,100,-100,100));
         }
@@ -54,6 +94,14 @@ void PlayerView::setSprite(Collidable* actor)
         if (state == Wrestler::RUN_LEFT2) {
             if (w->isHuman())
                 sprite.setTextureRect(sf::IntRect(300,0,-100,100));
+            else if (w->getName() == "Takeshi")
+                sprite.setTextureRect(sf::IntRect(300,200,-100,100));
+            else if (w->getName() == "BlueRobot")
+                sprite.setTextureRect(sf::IntRect(300,300,-100,100));
+            else if (w->getName() == "GreenRobot")
+                sprite.setTextureRect(sf::IntRect(300,400,-100,100));
+            else if (w->getName() == "RedRobot")
+                sprite.setTextureRect(sf::IntRect(300,500,-100,100));
             else
                 sprite.setTextureRect(sf::IntRect(300,100,-100,100));
         }
@@ -61,6 +109,14 @@ void PlayerView::setSprite(Collidable* actor)
         if (state == Wrestler::STAND_UP) {
             if (w->isHuman())
                 sprite.setTextureRect(sf::IntRect(500,0,100,100));
+            else if (w->getName() == "Takeshi")
+                sprite.setTextureRect(sf::IntRect(500,200,100,100));
+            else if (w->getName() == "BlueRobot")
+                sprite.setTextureRect(sf::IntRect(500,300,100,100));
+            else if (w->getName() == "GreenRobot")
+                sprite.setTextureRect(sf::IntRect(500,400,100,100));
+            else if (w->getName() == "RedRobot")
+                sprite.setTextureRect(sf::IntRect(500,500,100,100));
             else
                 sprite.setTextureRect(sf::IntRect(500,100,100,100));
         }
@@ -68,6 +124,14 @@ void PlayerView::setSprite(Collidable* actor)
         if (state == Wrestler::RUN_UP1) {
             if (w->isHuman())
                 sprite.setTextureRect(sf::IntRect(400,0,100,100));
+            else if (w->getName() == "Takeshi")
+                sprite.setTextureRect(sf::IntRect(400,200,100,100));
+            else if (w->getName() == "BlueRobot")
+                sprite.setTextureRect(sf::IntRect(400,300,100,100));
+            else if (w->getName() == "GreenRobot")
+                sprite.setTextureRect(sf::IntRect(400,400,100,100));
+            else if (w->getName() == "RedRobot")
+                sprite.setTextureRect(sf::IntRect(400,500,100,100));
             else
                 sprite.setTextureRect(sf::IntRect(400,100,100,100));
         }
@@ -75,6 +139,14 @@ void PlayerView::setSprite(Collidable* actor)
         if (state == Wrestler::RUN_UP2) {
             if (w->isHuman())
                 sprite.setTextureRect(sf::IntRect(600,0,100,100));
+            else if (w->getName() == "Takeshi")
+                sprite.setTextureRect(sf::IntRect(600,200,100,100));
+            else if (w->getName() == "BlueRobot")
+                sprite.setTextureRect(sf::IntRect(600,300,100,100));
+            else if (w->getName() == "GreenRobot")
+                sprite.setTextureRect(sf::IntRect(600,400,100,100));
+            else if (w->getName() == "RedRobot")
+                sprite.setTextureRect(sf::IntRect(600,500,100,100));
             else
                 sprite.setTextureRect(sf::IntRect(600,100,100,100));
         }
@@ -82,6 +154,14 @@ void PlayerView::setSprite(Collidable* actor)
         if (state == Wrestler::STAND_DOWN) {
             if (w->isHuman())
                 sprite.setTextureRect(sf::IntRect(1100,0,100,100));
+            else if (w->getName() == "Takeshi")
+                sprite.setTextureRect(sf::IntRect(1100,200,100,100));
+            else if (w->getName() == "BlueRobot")
+                sprite.setTextureRect(sf::IntRect(1100,300,100,100));
+            else if (w->getName() == "GreenRobot")
+                sprite.setTextureRect(sf::IntRect(1100,400,100,100));
+            else if (w->getName() == "RedRobot")
+                sprite.setTextureRect(sf::IntRect(1100,500,100,100));
             else
                 sprite.setTextureRect(sf::IntRect(1100,100,100,100));
         }
@@ -89,6 +169,14 @@ void PlayerView::setSprite(Collidable* actor)
         if (state == Wrestler::RUN_DOWN1) {
             if (w->isHuman())
                 sprite.setTextureRect(sf::IntRect(800,0,100,100));
+            else if (w->getName() == "Takeshi")
+                sprite.setTextureRect(sf::IntRect(800,200,100,100));
+            else if (w->getName() == "BlueRobot")
+                sprite.setTextureRect(sf::IntRect(800,300,100,100));
+            else if (w->getName() == "GreenRobot")
+                sprite.setTextureRect(sf::IntRect(800,400,100,100));
+            else if (w->getName() == "RedRobot")
+                sprite.setTextureRect(sf::IntRect(800,500,100,100));
             else
                 sprite.setTextureRect(sf::IntRect(800,100,100,100));
         }
@@ -96,6 +184,14 @@ void PlayerView::setSprite(Collidable* actor)
         if (state == Wrestler::RUN_DOWN2) {
             if (w->isHuman())
                 sprite.setTextureRect(sf::IntRect(1000,0,100,100));
+            else if (w->getName() == "Takeshi")
+                sprite.setTextureRect(sf::IntRect(1000,200,100,100));
+            else if (w->getName() == "BlueRobot")
+                sprite.setTextureRect(sf::IntRect(1000,300,100,100));
+            else if (w->getName() == "GreenRobot")
+                sprite.setTextureRect(sf::IntRect(1000,400,100,100));
+            else if (w->getName() == "RedRobot")
+                sprite.setTextureRect(sf::IntRect(1000,500,100,100));
             else
                 sprite.setTextureRect(sf::IntRect(1000,100,100,100));
         }
@@ -103,6 +199,14 @@ void PlayerView::setSprite(Collidable* actor)
         if (state == Wrestler::DASH_RIGHT) {
             if (w->isHuman())
                 sprite.setTextureRect(sf::IntRect(1200,0,100,100));
+            else if (w->getName() == "Takeshi")
+                sprite.setTextureRect(sf::IntRect(1200,200,100,100));
+            else if (w->getName() == "BlueRobot")
+                sprite.setTextureRect(sf::IntRect(1200,300,100,100));
+            else if (w->getName() == "GreenRobot")
+                sprite.setTextureRect(sf::IntRect(1200,400,100,100));
+            else if (w->getName() == "RedRobot")
+                sprite.setTextureRect(sf::IntRect(1200,500,100,100));
             else
                 sprite.setTextureRect(sf::IntRect(1200,100,100,100));
         }
@@ -110,6 +214,14 @@ void PlayerView::setSprite(Collidable* actor)
         if (state == Wrestler::DASH_LEFT) {
             if (w->isHuman())
                 sprite.setTextureRect(sf::IntRect(1300,0,-100,100));
+            else if (w->getName() == "Takeshi")
+                sprite.setTextureRect(sf::IntRect(1300,200,-100,100));
+            else if (w->getName() == "BlueRobot")
+                sprite.setTextureRect(sf::IntRect(1300,300,-100,100));
+            else if (w->getName() == "GreenRobot")
+                sprite.setTextureRect(sf::IntRect(1300,400,-100,100));
+            else if (w->getName() == "RedRobot")
+                sprite.setTextureRect(sf::IntRect(1300,500,-100,100));
             else
                 sprite.setTextureRect(sf::IntRect(1300,100,-100,100));
         }
@@ -117,6 +229,14 @@ void PlayerView::setSprite(Collidable* actor)
         if (state == Wrestler::DASH_DOWN) {
             if (w->isHuman())
                 sprite.setTextureRect(sf::IntRect(1400,0,100,100));
+            else if (w->getName() == "Takeshi")
+                sprite.setTextureRect(sf::IntRect(1400,200,100,100));
+            else if (w->getName() == "BlueRobot")
+                sprite.setTextureRect(sf::IntRect(1400,300,100,100));
+            else if (w->getName() == "GreenRobot")
+                sprite.setTextureRect(sf::IntRect(1400,400,100,100));
+            else if (w->getName() == "RedRobot")
+                sprite.setTextureRect(sf::IntRect(1400,500,100,100));
             else
                 sprite.setTextureRect(sf::IntRect(1400,100,100,100));
         }
@@ -124,6 +244,14 @@ void PlayerView::setSprite(Collidable* actor)
         if (state == Wrestler::DASH_UP) {
             if (w->isHuman())
                 sprite.setTextureRect(sf::IntRect(1300,0,100,100));
+            else if (w->getName() == "Takeshi")
+                sprite.setTextureRect(sf::IntRect(1300,200,100,100));
+            else if (w->getName() == "BlueRobot")
+                sprite.setTextureRect(sf::IntRect(1300,300,100,100));
+            else if (w->getName() == "GreenRobot")
+                sprite.setTextureRect(sf::IntRect(1300,400,100,100));
+            else if (w->getName() == "RedRobot")
+                sprite.setTextureRect(sf::IntRect(1300,500,100,100));
             else
                 sprite.setTextureRect(sf::IntRect(1300,100,100,100));
         }
@@ -137,7 +265,7 @@ void PlayerView::setSprite(Collidable* actor)
         sprite.setPosition(pos.x-(100-proj->getWidth())/2,pos.y-(90-proj->getHeight()));
         
         if (state == Projectile::UP)
-            sprite.setTextureRect(sf::IntRect(200,700,100,-100));
+            sprite.setTextureRect(sf::IntRect(300,600,100,100));
 
         else if (state == Projectile::RIGHT)
             sprite.setTextureRect(sf::IntRect(100,600,100,100));

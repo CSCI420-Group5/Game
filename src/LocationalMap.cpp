@@ -21,9 +21,9 @@ std::vector<int>& layer1, std::vector<int>& layer2)
 
     for (unsigned int i = 0; i < layer1.size(); i++){
         if ((layer1[i] == 207 || layer1[i] == 116 || layer1[i] == 176 ||
-            layer1[i] == 146 || layer1[i] == -1) &&
+            layer1[i] == 146 || layer1[i] == 147 || layer1[i] == -1) &&
             (layer2[i] == 207 || layer2[i] == 116 || layer2[i] == 176 ||
-            layer2[i] == 146 || layer2[i] == -1)){
+            layer2[i] == 146 || layer1[i] == 147 || layer2[i] == -1)){
             cells[i].setStandable(false);
         }
         else{
