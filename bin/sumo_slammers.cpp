@@ -79,7 +79,7 @@ int main(int argc, char** argv)
     // create the tilemap from the level definition
     Terrain level;
     Terrain layer;
-    lev_handler.loadLevel(level, layer, loc_map, "resources/GavinsLevel", profile);
+    lev_handler.loadLevel(level, layer, loc_map, "resources/PracticeLevel", profile);
 
     // create human wrestler
     Wrestler human_sumo;
