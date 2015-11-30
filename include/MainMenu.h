@@ -5,32 +5,25 @@
 class MainMenu
 {
     public:
-        MainMenu(float width, float height);
+        MainMenu();
         virtual ~MainMenu();
 
-        void init();
+        void init(float width, float height);
 
     	void draw(sf::RenderWindow &window);
 
 		void moveUp();
 		void moveDown();
 
-        void navigate(sf::RenderWindow &window);
+        bool navigate(sf::RenderWindow &window, sf::Event &event);
 
-        int getStatus();
-
+    protected:
+    private:
 		int selected;
-        int inMenu;
 
 		sf::Font font;
 		sf::Text text[3];
         sf::RectangleShape highlight;
-
-    protected:
-    private:
-
-
-
 };
 
 #endif // MAINMENU_H

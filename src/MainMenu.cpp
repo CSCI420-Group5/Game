@@ -2,9 +2,13 @@
 #include <iostream>
 #include "SFML/Graphics.hpp"
 
-MainMenu::MainMenu(float width, float height)
+MainMenu::MainMenu()
 {
-	inMenu = 0;
+
+}
+
+void MainMenu::init(float width, float height)
+{
 	selected = 0;
 
 	font.loadFromFile("resources/arial.ttf");
@@ -28,11 +32,6 @@ MainMenu::MainMenu(float width, float height)
   	highlight.setFillColor(sf::Color(150, 0, 35));
 }
 
-void init()
-{
-
-}
-
 void MainMenu::draw(sf::RenderWindow &window)
 {
 	window.clear(sf::Color::Black);
@@ -50,27 +49,28 @@ void MainMenu::draw(sf::RenderWindow &window)
 	window.draw(text[2]);
 }
 
-void MainMenu::navigate(sf::RenderWindow &window)
+bool MainMenu::navigate(sf::RenderWindow &window, sf::Event &event)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	if (event.key.code == sf::Keyboard::Up)
 	    {
 	        moveUp();
 	    }
 
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    else if (event.key.code == sf::Keyboard::Down)
 	    {
 	        moveDown();
 	    }
 
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+	else if (event.key.code == sf::Keyboard::Return)
 	    {
 	        if (selected == 0)
 	        {
-	        	inMenu = 1;
+	        	return false;
 	        } else {
 	        	window.close();
 	        }
 	    }
+    return true;
 }
 
 void MainMenu::moveUp()
@@ -92,11 +92,6 @@ void MainMenu::moveDown()
 //	} else {
 	//	selected = 0;
 	//}
-}
-
-int MainMenu::getStatus()
-{
-	return inMenu;
 }
 
 MainMenu::~MainMenu()

@@ -23,15 +23,15 @@ bool sortVectorsByXPos (const sf::Vector2f vec1, const sf::Vector2f vec2)
 }
 
 void LevelHandler::loadLevel(Terrain& level, Terrain& layer, LocationalMap& loc_map,
-                             std::string file_name, Profile& profile)
+                             std::string level_name, Profile& profile)
 {
     int level_w = 0;
     int level_h = 0;
     int cell_size = 32;
 
-    std::string file1_name = file_name + "_Tile Layer 1.csv";
-    std::string file2_name = file_name + "_Tile Layer 2.csv";
-    std::string file3_name = file_name + "_Tile Layer 3.csv";
+    std::string file1_name = "resources/" + level_name + "_Tile Layer 1.csv";
+    std::string file2_name = "resources/" + level_name + "_Tile Layer 2.csv";
+    std::string file3_name = "resources/" + level_name + "_Tile Layer 3.csv";
 
     //For the level's first layer
     std::vector<int> level_vec;
@@ -145,7 +145,7 @@ void LevelHandler::loadLevel(Terrain& level, Terrain& layer, LocationalMap& loc_
     std::sort(checkpoints.begin(), checkpoints.end(), sortVectorsByXPos);
 
     loc_map.init(level_w, level_h, cell_size, level_vec, layer_vec);
-    profile.setLevel(file_name.substr(10, std::string::npos));
+    profile.setLevel(level_name);
     profile.setCheckpoint(0);
 }
 

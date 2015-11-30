@@ -9,6 +9,7 @@
 #include "Logic.h"
 #include "PlayerView.h"
 #include "MainMenu.h"
+#include "LevelMenu.h"
 #include "Terrain.h"
 #include "Profile.h"
 #include "Projectile.h"
@@ -28,44 +29,16 @@ int main(int argc, char** argv)
     std::vector<std::set<long int> > collision_sets;
 
     // Create menu
-    MainMenu menu(App.getSize().x, App.getSize().y);
+    MainMenu main_menu;
+    main_menu.init(App.getSize().x, App.getSize().y);
+    LevelMenu level_menu;
+    level_menu.init(App.getSize().x, App.getSize().y);
+    int cur_menu = 0;
+    bool main_menu_active = true;
+    std::string level_name = "";
 
     // Create profile
     Profile profile;
-    profile.setLives(3);
-
-//    Wrestler ai_sumo;
-//    ai_sumo.init(30, 30, 400, 800);
-//    ai_sumo.setIsHuman(false);
-//    ai_sumo.setIsWrestler(true);
-//    ai_sumo.setHasProjectile(false);
-//    ai_sumo.setCharacter(2);
-//
-//
-//    Wrestler ai_sumo2;
-//    ai_sumo2.init(30, 30, 400, 830);
-//    ai_sumo2.setIsHuman(false);
-//    ai_sumo2.setIsWrestler(true);
-//    ai_sumo2.setHasProjectile(false);
-//    ai_sumo2.setCharacter(2);
-//
-//    Wrestler ai_sumo3;
-//    ai_sumo3.init(30, 30, 400, 860);
-//    ai_sumo3.setIsHuman(false);
-//    ai_sumo3.setIsWrestler(true);
-//    ai_sumo3.setHasProjectile(false);
-//    ai_sumo3.setCharacter(2);
-//
-//    // create a projectile
-//    Projectile proj;
-//    proj.init(30, 30, 370, 800);
-//    proj.setIsWrestler(false);
-//    proj.setHasProjectile(true);
-//
-//    actors.push_back(&ai_sumo);
-//    actors.push_back(&ai_sumo2);
-//    actors.push_back(&ai_sumo3);
-//    actors.push_back(&proj);
 
     // create view object of collidables
     PlayerView view;
@@ -74,22 +47,13 @@ int main(int argc, char** argv)
     // create game timer used to keep things synched
     sf::Clock timer;
 
+    //Will create the tilemap from the level definition
     LevelHandler lev_handler;
-
-    // create the tilemap from the level definition
     Terrain level;
     Terrain layer;
-    lev_handler.loadLevel(level, layer, loc_map, "resources/GavinsLevel", profile);
 
-    // create human wrestler
+    //Will be initialized after level select
     Wrestler human_sumo;
-    human_sumo.init(30, 30, 20, 800);
-    human_sumo.setIsHuman(true);
-    human_sumo.setIsWrestler(true);
-    human_sumo.setHasProjectile(false);
-    human_sumo.setCharacter("Fumio");
-    profile.setCharacter(human_sumo.getName());
-    actors.push_back(&human_sumo);
 
     // start main loop
     while(App.isOpen())
@@ -101,10 +65,54 @@ int main(int argc, char** argv)
             // Exit
             if(Event.type == sf::Event::Closed)
                 App.close();
+
+            //Menu input
+            else if(Event.type == sf::Event::KeyPressed){
+                switch(cur_menu){
+                    case 0: main_menu_active = main_menu.navigate(App, Event); break;
+                    case 1: level_name = level_menu.navigate(Event); break;
+                }
+
+            }
+        }
+
+        // menu status indicating that main menu should be up
+        if (cur_menu == 0)
+        {
+            if(!main_menu_active){
+                cur_menu = 1;
+            }
+            else{
+                main_menu.draw(App);
+            }
+        }
+
+        // menu status indicating that level select should be up
+        else if (cur_menu == 1)
+        {
+            if(level_name != ""){
+                //Load the level
+                profile.setLives(3);
+                lev_handler.loadLevel(level, layer, loc_map, level_name, profile);
+
+                //Initialize human wrestler
+                human_sumo.init(30, 30, lev_handler.getCheckpoint(profile).x, lev_handler.getCheckpoint(profile).y);
+                human_sumo.setIsHuman(true);
+                human_sumo.setIsWrestler(true);
+                human_sumo.setHasProjectile(false);
+                human_sumo.setCharacter("Fumio");
+                profile.setCharacter(human_sumo.getName());
+                actors.push_back(&human_sumo);
+
+                cur_menu = 2;
+            }
+            else{
+                level_menu.draw(App);
+            }
         }
 
         // Menu status indicating game should be playing
-        if (menu.getStatus() == 1)
+        else if (cur_menu == 2)
         {
             //Don't update the game logic unless a certain amount of time has passed
             if(timer.getElapsedTime().asSeconds() > 1.0/60)
@@ -181,13 +189,6 @@ int main(int argc, char** argv)
             view.drawActors(App, actors);
             view.drawStaminaBar(App, actors[0]);
             view.drawHUD(App, profile);
-        }
-
-        // menu status indicating that menu should be up
-        else
-        {
-            menu.navigate(App);
-            menu.draw(App);
         }
 
         // display

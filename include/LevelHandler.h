@@ -14,7 +14,7 @@ class LevelHandler
         virtual ~LevelHandler();
 
         void loadLevel(Terrain& level, Terrain& layer, LocationalMap& loc_map,
-                       std::string file_name, Profile& profile);
+                       std::string level_name, Profile& profile);
         void spawnActors(std::vector<Collidable*> &actors, int scrn_right_side);
         void checkCheckpoints(Collidable* player, Profile& profile);
         sf::Vector2f getCheckpoint(Profile& profile);
