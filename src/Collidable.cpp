@@ -24,7 +24,7 @@ void Collidable::init(int hit_height, int hit_width, int x, int y)
     weight = 10;
 }
 
-sf::Vector2f Collidable::getMovedPos()
+sf::Vector2f Collidable::getMovedPos(int level_w, int level_h)
 {
     sf::Vector2f fin_pos;
 
@@ -43,8 +43,8 @@ sf::Vector2f Collidable::getMovedPos()
     if (fin_pos.x <= 0) {
         fin_pos.x = 1;
     }
-    else if (fin_pos.x >= (16000-width)) {
-        fin_pos.x = 15999 - width;
+    else if (fin_pos.x >= (level_w-width)) {
+        fin_pos.x = level_w - width;
     }
 
     //For y
@@ -59,27 +59,27 @@ sf::Vector2f Collidable::getMovedPos()
     fin_pos.y = position.y + (int)mid;
 
     //Cannot move y off screen
-//    if (fin_pos.y <= 0) {
-//        fin_pos.y = 1;
-//    }
-//    else if (fin_pos.y >= (1600-height)) {
-//        fin_pos.y = 1599 - height;
-//    }
+    if (fin_pos.y <= 0) {
+        fin_pos.y = 1;
+    }
+    else if (fin_pos.y >= (level_h-height)) {
+        fin_pos.y = level_h - height;
+    }
 
     return fin_pos;
 }
 
-void Collidable::move(float friction)
+void Collidable::move(float friction, int level_w, int level_h)
 {
-    sf::Vector2f fin_pos = getMovedPos();
+    sf::Vector2f fin_pos = getMovedPos(level_w, level_h);
 
     // check for walls and reverse speed inelastically if they hit
-    if (fin_pos.x == 1 || fin_pos.x == 15999 - width) {
+    if (fin_pos.x == 1 || fin_pos.x == level_w - width) {
         velocity.x /= -2;
     }
-//    if (fin_pos.y == 1 || fin_pos.y == 1599 - height) {
-//        velocity.y /= -2;
-//    }
+    if (fin_pos.y == 1 || fin_pos.y == level_h - height) {
+        velocity.y /= -2;
+    }
 
     position.x = fin_pos.x;
     position.y = fin_pos.y;
@@ -210,7 +210,7 @@ void Collidable::setPos(float x, float y)
     position.y = y;
 }
 
-void Collidable::setVelocity(float x, float y)
+void Collidable::setVelocity(float x, float y, int level_w, int level_h)
 {
     //Don't go above the top speed
     if (x > speed){
@@ -227,14 +227,14 @@ void Collidable::setVelocity(float x, float y)
     }
 
     //Reflect if moving off screen
-    sf::Vector2f moved_pos = getMovedPos();
+    sf::Vector2f moved_pos = getMovedPos(level_w, level_h);
 
-    if(moved_pos.x == 1 || moved_pos.x == 15999 - width){
+    if(moved_pos.x == 1 || moved_pos.x == level_w - width){
         velocity.x /= -2;
     }
-//    if(moved_pos.y == 1 || moved_pos.y == 1599 - height){
-//        velocity.y /= -2;
-//    }
+    if(moved_pos.y == 1 || moved_pos.y == level_h - height){
+        velocity.y /= -2;
+    }
 }
 
 float Collidable::getSpeed()

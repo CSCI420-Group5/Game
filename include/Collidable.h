@@ -13,9 +13,9 @@ class Collidable
     virtual void init(int hit_height, int hit_width, int x, int y);
 
     // returns new position after moving
-    sf::Vector2f getMovedPos();
+    sf::Vector2f getMovedPos(int level_w, int level_h);
 
-    void move(float friction);
+    void move(float friction, int level_w, int level_h);
 
     // setters & getters
     std::string getName();
@@ -48,7 +48,7 @@ class Collidable
     sf::Vector2f getVelocity() const;
 
     void setPos(float x, float y);
-    void setVelocity(float x, float y);
+    void setVelocity(float x, float y, int level_w, int level_h);
 
     /*// Used for object depth in drawing
     bool operator<(const Collidable &obj) const;*/

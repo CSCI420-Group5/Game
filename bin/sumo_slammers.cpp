@@ -83,7 +83,7 @@ int main(int argc, char** argv)
 
     // create human wrestler
     Wrestler human_sumo;
-    human_sumo.init(30, 30, 20, 800);
+    human_sumo.init(30, 30, 224, 320);
     human_sumo.setIsHuman(true);
     human_sumo.setIsWrestler(true);
     human_sumo.setHasProjectile(false);
@@ -116,8 +116,8 @@ int main(int argc, char** argv)
                     if (actors[i]->isWrestler()) {
                         if (dynamic_cast<Wrestler*>(actors[i])->isHuman())
                             getInputSetSpd(actors[i], loc_map, actors, "");
-                        else
-                            setAISpd(actors[i], loc_map, actors);
+                        //else
+                          //  setAISpd(actors[i], loc_map, actors);
                     }
                 }
 

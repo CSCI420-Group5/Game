@@ -120,11 +120,13 @@ std::vector<std::set<long int> > findFutureCollisions(LocationalMap& loc_map,
                         // create rectangle shapes to detect collisions from where the object will be next frame
                         sf::RectangleShape
                         wrest_box1(sf::Vector2f(sel_actors[w1]->getWidth(),sel_actors[w1]->getHeight()));
-                        wrest_box1.setPosition(sel_actors[w1]->getMovedPos());
+                        wrest_box1.setPosition(sel_actors[w1]->getMovedPos(loc_map.getLevelWidth(),
+                        loc_map.getLevelHeight()));
 
                         sf::RectangleShape
                         wrest_box2(sf::Vector2f(sel_actors[w2]->getWidth(),sel_actors[w2]->getHeight()));
-                        wrest_box2.setPosition(sel_actors[w2]->getMovedPos());
+                        wrest_box2.setPosition(sel_actors[w2]->getMovedPos(loc_map.getLevelWidth(),
+                        loc_map.getLevelHeight()));
 
                         sf::FloatRect w1_bounds = wrest_box1.getGlobalBounds();
                         sf::FloatRect w2_bounds = wrest_box2.getGlobalBounds();
@@ -220,7 +222,7 @@ void grabProcedure(Wrestler* w, LocationalMap& loc_map, std::vector<Collidable*>
 
         //Can't grab with too low stamina or if the other wrestler is dashing
         else if(w->getStamina() > 24 && other->getCurrentState() != Wrestler::DASH){
-            w->useGrab(other);
+            w->useGrab(other, loc_map.getLevelWidth(), loc_map.getLevelHeight());
         }
         loc_map.clearCells();
     }
@@ -275,7 +277,8 @@ void moveActors(std::vector<Collidable*> &actors, LocationalMap& loc_map,
 Profile& profile, LevelHandler& lev_handler, sf::View sf_view)
 {
     for (unsigned int i=0; i<actors.size(); i++) {
-        actors[i]->move(0.1); //Placeholder for friction
+        actors[i]->move(0.1, loc_map.getLevelWidth(),
+        loc_map.getLevelHeight()); // Placeholder for friction
 
         // if a wrestler stopped moving, update to standing sprite
         if (actors[i]->isWrestler()) {
@@ -333,28 +336,36 @@ Profile& profile, LevelHandler& lev_handler, sf::View sf_view)
     updateDeaths(loc_map, actors, profile, lev_handler);
 }
 
-void setActorSpd(Wrestler* actor, int dir)
+void setActorSpd(Wrestler* actor, int dir, LocationalMap &loc_map)
 {
     //float acc = 0.2;
     float acc = actor->getAcceleration();
 
         // move left
         if (dir == 1) {
-            actor->setVelocity(actor->getVelocity().x-acc, actor->getVelocity().y);
+            actor->setVelocity(actor->getVelocity().x-acc,
+            actor->getVelocity().y, loc_map.getLevelWidth(),
+            loc_map.getLevelHeight());
         }
 
         // move right
         else if (dir == 3) {
-            actor->setVelocity(actor->getVelocity().x+acc, actor->getVelocity().y);
+            actor->setVelocity(actor->getVelocity().x+acc,
+            actor->getVelocity().y, loc_map.getLevelWidth(),
+            loc_map.getLevelHeight());
         }
         // move up
         if (dir == 0) {
-            actor->setVelocity(actor->getVelocity().x, actor->getVelocity().y-acc);
+            actor->setVelocity(actor->getVelocity().x,
+            actor->getVelocity().y-acc, loc_map.getLevelWidth(),
+            loc_map.getLevelHeight());
         }
 
         // move down
         else if (dir == 2) {
-            actor->setVelocity(actor->getVelocity().x, actor->getVelocity().y+acc);
+            actor->setVelocity(actor->getVelocity().x,
+            actor->getVelocity().y+acc, loc_map.getLevelWidth(),
+            loc_map.getLevelHeight());
         }
 }
 
@@ -408,7 +419,7 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
                 else
                     w->setCurSpriteState(Wrestler::RUN_LEFT2);
 
-                setActorSpd(w, 1);
+                setActorSpd(w, 1, loc_map);
             }
 
             // move right
@@ -419,7 +430,7 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
                 else
                     w->setCurSpriteState(Wrestler::RUN_RIGHT2);
 
-                setActorSpd(w, 3);
+                setActorSpd(w, 3, loc_map);
             }
 
             // move up
@@ -438,7 +449,7 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
                         w->setUpState(false);
                     }
                 }
-                setActorSpd(w, 0);
+                setActorSpd(w, 0, loc_map);
             }
 
             // move down
@@ -456,7 +467,7 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
                         w->setDownState(false);
                     }
                 }
-                setActorSpd(w, 2);
+                setActorSpd(w, 2, loc_map);
             }
         }
     }
@@ -466,7 +477,7 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
              sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) &&
              w->getCurrentState() == Wrestler::GRABBING && ai_code == ""){
         Wrestler* grabee = dynamic_cast<Wrestler*>(getActorById(w->getIDOfGrabbed(), actors));
-        w->useThrow(grabee);
+        w->useThrow(grabee, loc_map.getLevelWidth(), loc_map.getLevelHeight());
     }
 
     w->incFrozenFrames();
@@ -539,8 +550,10 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map,
         sf::Vector2f v2 = (u2*(m2-m1)+2.f*m1*u1)/(m1+m2);
 
         //Set new speeds
-        sel_actors[0]->setVelocity(v1.x, v1.y);
-        sel_actors[1]->setVelocity(v2.x, v2.y);
+        sel_actors[0]->setVelocity(v1.x, v1.y, loc_map.getLevelWidth(),
+        loc_map.getLevelHeight());
+        sel_actors[1]->setVelocity(v2.x, v2.y, loc_map.getLevelWidth(),
+        loc_map.getLevelHeight());
 
         //If either of these objects are wrestlers, return its state to NORMAL
         Wrestler* first = dynamic_cast<Wrestler*>(sel_actors[0]);
@@ -593,7 +606,8 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map,
                 sf::Vector2f v1 = (u1*(m1-m2)+2.f*m2*u2)/(m1+m2);
 
                 // update actors velocity and reset projectile
-                actors[i]->setVelocity(v1.x,v1.y);
+                actors[i]->setVelocity(v1.x,v1.y, loc_map.getLevelWidth(),
+                loc_map.getLevelHeight());
                 projectiles[j]->shootBall();
 
                 // add to collision sets if not already there
