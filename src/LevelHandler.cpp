@@ -155,6 +155,7 @@ loc_map, std::string level_name, Profile& profile, int &num_bad_guys)
                 proj->init(30, 30, ai_x, ai_y);
                 proj->setIsWrestler(false);
                 proj->setHasProjectile(true);
+                proj->setWeightSpeed(100, 100);
                 proj->setName("Cannon");
                 future_actors.push_back(proj);
             }

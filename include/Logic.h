@@ -19,5 +19,6 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
 void setAISpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors);
 
 std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map, std::vector<Collidable*>& actors);
+void calcProjectileCollision(std::vector<Collidable*>& actors, int level_w, int level_h);
 
 #endif // LOGIC_H

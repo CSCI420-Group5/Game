@@ -309,8 +309,8 @@ Profile& profile, LevelHandler& lev_handler, sf::View sf_view, int &num_bad_guys
             sf::Vector2f player_pos = actors[0]->getPos();
             sf::Vector2f view_size = sf_view.getSize();
             Projectile::Dir dir = proj->getDir();
-            if ((dir == Projectile::EAST || dir == Projectile::WEST) && 
-                (!proj->hasShot() || ball_pos.x > player_pos.x+view_size.x/2 || 
+            if ((dir == Projectile::EAST || dir == Projectile::WEST) &&
+                (!proj->hasShot() || ball_pos.x > player_pos.x+view_size.x/2 ||
                 ball_pos.x < player_pos.x-view_size.x/2)) {
                 proj->shootBall();
                 proj->setHasShot(true);
@@ -324,7 +324,7 @@ Profile& profile, LevelHandler& lev_handler, sf::View sf_view, int &num_bad_guys
             else {
                 if (dir == Projectile::NORTH)
                     proj->moveBall(0,-4);
-                else if (dir == Projectile::EAST) 
+                else if (dir == Projectile::EAST)
                     proj->moveBall(4,0);
                 else if (dir == Projectile::SOUTH)
                     proj->moveBall(0,4);
@@ -541,14 +541,6 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map,
 {
     std::vector<std::set<long int> > collision_sets = findFutureCollisions(loc_map, actors);
     std::vector<Collidable*> sel_actors;
-    std::vector<Projectile*> projectiles;
-
-    // get separate vector for projectile objects
-    for (int i=0; i<actors.size(); i++) {
-        if (actors[i]->hasProjectile()) {
-            projectiles.push_back(dynamic_cast<Projectile*>(actors[i]));
-        }
-    }
 
     for(unsigned int i = 0; i < collision_sets.size(); i++){
 
@@ -591,15 +583,32 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map,
 
         sel_actors.clear();
     }
-    
+
+
+
+    return collision_sets;
+}
+
+
+void calcProjectileCollision(std::vector<Collidable*>& actors, int level_w, int level_h)
+{
+    std::vector<Projectile*> projectiles;
+
+    // get separate vector for projectile objects
+    for (unsigned int i=0; i<actors.size(); i++) {
+        if (actors[i]->hasProjectile()) {
+            projectiles.push_back(dynamic_cast<Projectile*>(actors[i]));
+        }
+    }
+
     // calc projectile collisions
-    for (int i=0; i<actors.size(); i++) {
+    for (unsigned int i=0; i<actors.size(); i++) {
         sf::RectangleShape
         actor_box(sf::Vector2f(actors[i]->getWidth(),actors[i]->getHeight()));
         actor_box.setPosition(actors[i]->getPos());
         sf::FloatRect actor_bounds = actor_box.getGlobalBounds();
 
-        for (int j=0; j<projectiles.size(); j++) {
+        for (unsigned int j=0; j<projectiles.size(); j++) {
             sf::CircleShape ball;
             ball.setRadius(15);
             ball.setPosition(projectiles[j]->getBallPos().x+30,projectiles[j]->getBallPos().y+30);
@@ -630,22 +639,19 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map,
                 sf::Vector2f v1 = (u1*(m1-m2)+2.f*m2*u2)/(m1+m2);
 
                 // update actors velocity and reset projectile
-                actors[i]->setVelocity(v1.x,v1.y, loc_map.getLevelWidth(),
-                loc_map.getLevelHeight());
+                actors[i]->setVelocity(v1.x,v1.y, level_w, level_h);
                 projectiles[j]->shootBall();
 
-                // add to collision sets if not already there
-                for (int cs=0; cs<collision_sets.size(); cs++) {
-                    if (collision_sets[cs].find(actors[i]->getID()) ==
-                        collision_sets[cs].end()) {
-                        std::set<long int> new_set;
-                        new_set.insert(actors[i]->getID());
-                        collision_sets.push_back(new_set);
-                    }
-                }
+//                // add to collision sets if not already there
+//                for (unsigned int cs=0; cs<collision_sets.size(); cs++) {
+//                    if (collision_sets[cs].find(actors[i]->getID()) ==
+//                        collision_sets[cs].end()) {
+//                        std::set<long int> new_set;
+//                        new_set.insert(actors[i]->getID());
+//                        collision_sets.push_back(new_set);
+//                    }
+//                }
             }
         }
     }
-
-    return collision_sets;
 }

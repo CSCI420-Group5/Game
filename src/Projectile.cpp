@@ -64,6 +64,12 @@ void Projectile::setBallVel(float x, float y)
     ball_vel.y = y;
 }
 
+void Projectile::setWeightSpeed(float wgt, float spd)
+{
+    weight = wgt;
+    speed = spd;
+}
+
 bool Projectile::hasShot()
 {
     return has_shot;
