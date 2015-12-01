@@ -355,9 +355,17 @@ void Wrestler::setCharacter(std::string character_name)
     if (character_name == "Fumio"){
         setStats(15, 10, 20, 100);
     }
-    else if(character_name == "GreyRobot" || character_name == "BlueRobot" ||
-        character_name == "GreenRobot" || character_name == "RedRobot") {
+    else if(character_name == "GreyRobot") {
+        setStats(5, 6, 15, 50);
+    }
+    else if(character_name == "BlueRobot") {
+        setStats(7, 5, 22, 50);
+    }
+    else if(character_name == "GreenRobot") {
         setStats(18, 6, 10, 50);
+    }
+    else if(character_name == "RedRobot") {
+        setStats(15, 5, 9, 50);
     }
     else if(character_name == "Takeshi"){
         setStats(13, 10, 24, 100);

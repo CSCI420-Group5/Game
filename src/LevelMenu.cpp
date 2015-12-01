@@ -14,6 +14,7 @@ void LevelMenu::init(float width, float height)
 	std::vector<std::string> level_names;
     level_names.push_back("PracticeLevel");
 	level_names.push_back("GavinsLevel");
+	level_names.push_back("AlexsLevel");
 
     for (unsigned int i = 0; i < level_names.size(); i++){
         sf::Text text;
