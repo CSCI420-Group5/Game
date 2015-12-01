@@ -84,7 +84,7 @@ void AIView::setAISpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<C
         ai_sumo->getName() == "RedRobot" || ai_sumo->getName() == "BlueRobot"){
         basicSetSpd(ai_sumo, loc_map, actors);
     }
-    else if (ai_sumo->getName() == "Fumio"){
+    else if (ai_sumo->getName() == "Takeshi"){
         fumioSetSpd(ai_sumo, loc_map, actors);
     }
 }
