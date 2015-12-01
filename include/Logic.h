@@ -16,7 +16,7 @@ Profile& profile, LevelHandler& lev_handler, sf::View sf_view, int
 
 void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Collidable*>& actors, std::string ai_code);
 
-void setAISpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors);
+//void setAISpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors);
 
 std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map, std::vector<Collidable*>& actors);
 void calcProjectileCollision(std::vector<Collidable*>& actors, int level_w, int level_h);

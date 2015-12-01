@@ -226,6 +226,12 @@ void grabProcedure(Wrestler* w, LocationalMap& loc_map, std::vector<Collidable*>
         }
         loc_map.clearCells();
     }
+    //Missed the grab, PENALTY
+    else if (w->getStamina() > 24){
+        w->depleteStamina(25);
+        w->setCurrentState(Wrestler::NOGRAB);
+        w->resetFrozenFrames();
+    }
 }
 
 void updateDeaths(LocationalMap& loc_map, std::vector<Collidable*> &actors,
@@ -411,6 +417,9 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
     if (w->getCurrentState() == Wrestler::THROWN && w->getFrozenFrames() >= 45){
         w->setCurrentState(Wrestler::NORMAL);
     }
+    if (w->getCurrentState() == Wrestler::NOGRAB && w->getFrozenFrames() >= 30){
+        w->setCurrentState(Wrestler::NORMAL);
+    }
     //The grabber or grabbee may have been hit while in a grab, so the other may need to be broken out
     Wrestler* grabbed_wres = dynamic_cast<Wrestler*>(getActorById(w->getIDOfGrabbed(), actors));
     if (grabbed_wres != NULL &&
@@ -421,7 +430,7 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
     }
 
     //Can't move, dash, or grab if in a special state
-    if (w->getCurrentState() == Wrestler::NORMAL){
+    if (w->getCurrentState() == Wrestler::NORMAL || w->getCurrentState() == Wrestler::NOGRAB){
         // dash
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && ai_code == "" &&
             (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::S) ||
@@ -430,7 +439,7 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
         }
 
         // grab: dash will have precedence over this
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::K) && ai_code == ""){
+        else if (w->getCurrentState() == Wrestler::NORMAL && sf::Keyboard::isKeyPressed(sf::Keyboard::K) && ai_code == ""){
             grabProcedure(w, loc_map, actors);
         }
         //Move if doing nothing else
@@ -507,34 +516,34 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
     w->incFrozenFrames();
 }
 
-void setAISpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors)
-{
-
-    // get player's and ai's locations
-    sf::Vector2f player_pos = actors[0]->getPos();
-    sf::Vector2f ai_pos = ai_sumo->getPos();
-    Wrestler* ai_wrest = dynamic_cast<Wrestler*>(ai_sumo);
-
-    // move left
-    if (player_pos.x < ai_pos.x){
-        getInputSetSpd(ai_wrest, loc_map, actors, "left");
-    }
-
-    // move right
-    else if (player_pos.x > ai_pos.x){
-        getInputSetSpd(ai_wrest, loc_map, actors, "right");
-    }
-
-    // move up
-    if (player_pos.y < ai_pos.y){
-        getInputSetSpd(ai_wrest, loc_map, actors, "up");
-    }
-
-    // move down
-    else if (player_pos.y > ai_pos.y){
-        getInputSetSpd(ai_wrest, loc_map, actors, "down");
-    }
-}
+//void setAISpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors)
+//{
+//
+//    // get player's and ai's locations
+//    sf::Vector2f player_pos = actors[0]->getPos();
+//    sf::Vector2f ai_pos = ai_sumo->getPos();
+//    Wrestler* ai_wrest = dynamic_cast<Wrestler*>(ai_sumo);
+//
+//    // move left
+//    if (player_pos.x < ai_pos.x){
+//        getInputSetSpd(ai_wrest, loc_map, actors, "left");
+//    }
+//
+//    // move right
+//    else if (player_pos.x > ai_pos.x){
+//        getInputSetSpd(ai_wrest, loc_map, actors, "right");
+//    }
+//
+//    // move up
+//    if (player_pos.y < ai_pos.y){
+//        getInputSetSpd(ai_wrest, loc_map, actors, "up");
+//    }
+//
+//    // move down
+//    else if (player_pos.y > ai_pos.y){
+//        getInputSetSpd(ai_wrest, loc_map, actors, "down");
+//    }
+//}
 
 std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map,
                                                std::vector<Collidable*>& actors)
@@ -574,10 +583,10 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map,
         //If either of these objects are wrestlers, return its state to NORMAL
         Wrestler* first = dynamic_cast<Wrestler*>(sel_actors[0]);
         Wrestler* second = dynamic_cast<Wrestler*>(sel_actors[1]);
-        if (first && first->getCurrentState() != Wrestler::NORMAL){
+        if (first && first->getCurrentState() != Wrestler::NORMAL && first->getCurrentState() != Wrestler::NOGRAB){
             first->setCurrentState(Wrestler::NORMAL);
         }
-        if (second && second->getCurrentState() != Wrestler::NORMAL){
+        if (second && second->getCurrentState() != Wrestler::NORMAL && second->getCurrentState() != Wrestler::NOGRAB){
             second->setCurrentState(Wrestler::NORMAL);
         }
 

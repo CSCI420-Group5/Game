@@ -14,13 +14,12 @@ class Wrestler: public Collidable
 
         void reset(std::vector<Collidable*> &actors, sf::Vector2f checkpoint);
 
-        sf::ConvexShape getPath(int level_w, int level_h); //Returns the intermediate shape a wrestler will move through this frame (to avoid clipping)
-
         void useGrab(Wrestler* grabee, int level_w, int level_h);
         void useThrow(Wrestler* throwee, int level_w, int level_h);
         void useDash();
 
         void increaseStamina();
+        void depleteStamina(int loss);
 
         //General getters and setters:
         int getStrength();
@@ -39,7 +38,7 @@ class Wrestler: public Collidable
 
         bool getUpState();
         bool getDownState();
-        enum State{NORMAL = 0, GRABBING = 1, GRABBED = 2, THROWN = 3, DASH = 4};
+        enum State{NORMAL = 0, GRABBING = 1, GRABBED = 2, THROWN = 3, DASH = 4, NOGRAB = 5};
 
         enum SpriteState{STAND_RIGHT = 0, STAND_LEFT = 1, STAND_UP = 2,
         STAND_DOWN = 3, RUN_RIGHT1 = 4, RUN_RIGHT2 = 5, RUN_LEFT1 = 6,

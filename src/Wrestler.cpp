@@ -83,21 +83,6 @@ void Wrestler::reset(std::vector<Collidable*> &actors, sf::Vector2f checkpoint)
     }
 }
 
-sf::ConvexShape Wrestler::getPath(int level_w, int level_h)
-{
-    int fin_x = getMovedPos(level_w, level_h).x;
-    int fin_y = getMovedPos(level_w, level_h).y;
-
-    sf::ConvexShape path;
-    path.setPointCount(4);
-    path.setPoint(0, sf::Vector2f(fin_x, fin_y));
-    path.setPoint(1, sf::Vector2f(position));
-    path.setPoint(2, sf::Vector2f(position.x+width, position.y+height));
-    path.setPoint(3, sf::Vector2f(fin_x+width, fin_y+height));
-
-    return path;
-}
-
 void Wrestler::useGrab(Wrestler* grabee, int level_w, int level_h)
 {
     current_state = GRABBING;
@@ -167,7 +152,8 @@ void Wrestler::useThrow(Wrestler* throwee, int level_w, int level_h)
         throwee->setVelocity(str, 0, level_w, level_h);
     }
 
-    current_state = NORMAL;
+    current_state = NOGRAB;
+    resetFrozenFrames();
     throwee->setCurrentState(Wrestler::THROWN);
     throwee->resetFrozenFrames();
 }
@@ -177,6 +163,14 @@ void Wrestler::increaseStamina()
     if (stamina < 100)
     {
         stamina += 1;
+    }
+}
+
+void Wrestler::depleteStamina(int loss)
+{
+    stamina -= loss;
+    if (stamina < 0){
+        stamina = 0;
     }
 }
 
