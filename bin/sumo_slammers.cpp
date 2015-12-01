@@ -9,6 +9,7 @@
 #include "LocationalMap.h"
 #include "Logic.h"
 #include "PlayerView.h"
+#include "AIView.h"
 #include "MainMenu.h"
 #include "LevelMenu.h"
 #include "Terrain.h"
@@ -32,6 +33,7 @@ int main(int argc, char** argv)
         LocationalMap loc_map;
         sf::View sf_view(sf::Vector2f(400, 304), sf::Vector2f(800, 608));
         App.setView(sf_view);
+
         // Create menu
         MainMenu main_menu;
         main_menu.init(App.getSize().x, App.getSize().y);
@@ -47,6 +49,7 @@ int main(int argc, char** argv)
         // create view object of collidables
         PlayerView view;
         view.init();
+        AIView ai_view;
 
         // create game timer used to keep things synched
         sf::Clock timer;
@@ -139,7 +142,7 @@ int main(int argc, char** argv)
                                 if (dynamic_cast<Wrestler*>(actors[i])->isHuman())
                                     getInputSetSpd(actors[i], loc_map, actors, "");
                                 else
-                                    setAISpd(actors[i], loc_map, actors);
+                                    ai_view.setAISpd(actors[i], loc_map, actors);
                             }
                         }
 

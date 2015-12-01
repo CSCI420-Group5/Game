@@ -278,7 +278,7 @@ void moveActors(std::vector<Collidable*> &actors, LocationalMap& loc_map,
 Profile& profile, LevelHandler& lev_handler, sf::View sf_view, int &num_bad_guys)
 {
     for (unsigned int i=0; i<actors.size(); i++) {
-        actors[i]->move(0.1, loc_map.getLevelWidth(),
+        actors[i]->move(loc_map.getFriction(), loc_map.getLevelWidth(),
         loc_map.getLevelHeight()); // Placeholder for friction
 
         // if a wrestler stopped moving, update to standing sprite
@@ -583,9 +583,6 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map,
 
         sel_actors.clear();
     }
-
-
-
     return collision_sets;
 }
 

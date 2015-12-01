@@ -15,6 +15,8 @@ class LocationalMap
         void addFuture(std::vector<Collidable*>& actors);
         void addCurrent(std::vector<Collidable*>& actors);
 
+        bool isActorOffEdge(Collidable* actor);
+
         Cell getCell(int i, int j);
         void clearCells();
         void printCells();
@@ -22,6 +24,8 @@ class LocationalMap
         int getRows();
         int getLevelWidth();
         int getLevelHeight();
+
+        float getFriction();
     protected:
     private:
         int cell_size;
@@ -29,6 +33,8 @@ class LocationalMap
         int level_h;
         int cols;
         int rows;
+
+        float friction;
 
         Cell *cells; //Will be a 2D array in row-major order
 };

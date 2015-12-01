@@ -17,6 +17,8 @@ std::vector<int>& layer1, std::vector<int>& layer2)
     cols = lev_width / cell_size;
     rows = lev_height / cell_size;
 
+    friction = 0.1;
+
     cells = new Cell[rows*cols];
 
     for (unsigned int i = 0; i < layer1.size(); i++){
@@ -133,6 +135,49 @@ void LocationalMap::addCurrent(std::vector<Collidable*>& actors)
     }
 }
 
+bool LocationalMap::isActorOffEdge(Collidable* actor)
+{
+    int i = 0; //Index of the cell row
+    int height = 0;
+    std::vector<int> add_rows;
+    int j = 0; //Index of the cell column
+    int width = 0;
+    size_t n;
+    bool off_edge = true;
+
+    //Find all of the i rows that the object occupies
+    while((height + cell_size) <= actor->getPos().y && height <= level_h){
+        height += cell_size;
+        i++;
+    }
+    while(height < (actor->getPos().y + actor->getHeight()) && height <= level_h){
+        add_rows.push_back(i);
+        height += cell_size;
+        i++;
+    }
+
+    //Find all of the j columns that the object occupies
+    while((width + cell_size) <= actor->getPos().x && width <= level_w){
+        width += cell_size;
+        j++;
+    }
+    while(width < (actor->getPos().x + actor->getWidth()) && width <= level_w){
+        for (n = 0; n < add_rows.size(); n++){
+            if (cells[add_rows[n]*cols+j].isStandable()){
+                off_edge = false;
+                break;
+            }
+        }
+        if (!off_edge){
+            break;
+        }
+
+        width += cell_size;
+        j++;
+    }
+    return off_edge;
+}
+
 void LocationalMap::clearCells()
 {
     int i;
@@ -159,6 +204,10 @@ int LocationalMap::getLevelWidth()
 int LocationalMap::getLevelHeight()
 {
     return level_h;
+}
+float LocationalMap::getFriction()
+{
+    return friction;
 }
 
 //
