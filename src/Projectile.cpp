@@ -104,8 +104,8 @@ void Projectile::shootBall()
         ball_pos.y = (position.y-(150-height)/2);
     }
 
-    ball_vel = getRandDir();
-    moveBall(ball_vel.x+1, ball_vel.y+1);
+//    ball_vel = getRandDir();
+//    moveBall(ball_vel.x+1, ball_vel.y+1);
 }
 
 void Projectile::moveBall(float x, float y)
