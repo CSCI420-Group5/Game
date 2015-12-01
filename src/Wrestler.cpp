@@ -353,22 +353,22 @@ void Wrestler::setCharacter(std::string character_name)
     // acceleration = float(str) / float(wgt); (0.2)
     // setStats(spd str wgt stm)
     if (character_name == "Fumio"){
-        setStats(15, 10, 20, 100);
+        setStats(14, 10, 20, 100);
     }
     else if(character_name == "GreyRobot") {
-        setStats(5, 6, 15, 50);
+        setStats(5, 5, 15, 50);
     }
     else if(character_name == "BlueRobot") {
-        setStats(7, 5, 22, 50);
+        setStats(4, 6, 22, 50);
     }
     else if(character_name == "GreenRobot") {
-        setStats(18, 6, 10, 50);
+        setStats(8, 6, 10, 50);
     }
     else if(character_name == "RedRobot") {
         setStats(15, 5, 9, 50);
     }
     else if(character_name == "Takeshi"){
-        setStats(13, 10, 24, 100);
+        setStats(13, 10, 25, 100);
     }
 
     setName(character_name);
