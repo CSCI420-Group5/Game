@@ -38,6 +38,10 @@ class Wrestler: public Collidable
 
         bool getUpState();
         bool getDownState();
+
+        void setStep(bool val);
+        bool getStep();
+
         enum State{NORMAL = 0, GRABBING = 1, GRABBED = 2, THROWN = 3, DASH = 4, NOGRAB = 5};
 
         enum SpriteState{STAND_RIGHT = 0, STAND_LEFT = 1, STAND_UP = 2,
@@ -70,6 +74,7 @@ class Wrestler: public Collidable
         // used for properly switching sprite states
         bool first_up_state;
         bool first_down_state;
+        bool first_step;
 
         State current_state;
         SpriteState sprite_state;

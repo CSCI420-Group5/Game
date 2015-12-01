@@ -192,7 +192,7 @@ void grabProcedure(Wrestler* w, LocationalMap& loc_map, std::vector<Collidable*>
     w->setWidth(w_width);
     w->setPos(w_pos.x, w_pos.y);
 
-    if (other){
+    if (other && other->getName() != "Takeshi"){
         sf::Vector2f old_pos = other->getPos();
 
         //Move the grabee toward the grabber
@@ -329,13 +329,13 @@ Profile& profile, LevelHandler& lev_handler, sf::View sf_view, int &num_bad_guys
             }
             else {
                 if (dir == Projectile::NORTH)
-                    proj->moveBall(0,-4);
+                    proj->moveBall(0,-8);
                 else if (dir == Projectile::EAST)
-                    proj->moveBall(4,0);
+                    proj->moveBall(8,0);
                 else if (dir == Projectile::SOUTH)
-                    proj->moveBall(0,4);
+                    proj->moveBall(0,8);
                 else
-                    proj->moveBall(-4,0);
+                    proj->moveBall(-8,0);
             }
 
             // check to see if we should change the base direction
@@ -408,16 +408,16 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
     w->increaseStamina();
 
     //Need to unfreeze the wrestler if enough frames (time) have passed for each special state
-    if (w->getCurrentState() == Wrestler::DASH && w->getFrozenFrames() >= 45){
+    if (w->getCurrentState() == Wrestler::DASH && w->getFrozenFrames() >= 30){
         w->setCurrentState(Wrestler::NORMAL);
     }
     if ((w->getCurrentState() == Wrestler::GRABBING || w->getCurrentState() == Wrestler::GRABBED) && w->getFrozenFrames() >= 240){
         w->setCurrentState(Wrestler::NORMAL);
     }
-    if (w->getCurrentState() == Wrestler::THROWN && w->getFrozenFrames() >= 45){
+    if (w->getCurrentState() == Wrestler::THROWN && w->getFrozenFrames() >= 35){
         w->setCurrentState(Wrestler::NORMAL);
     }
-    if (w->getCurrentState() == Wrestler::NOGRAB && w->getFrozenFrames() >= 30){
+    if (w->getCurrentState() == Wrestler::NOGRAB && w->getFrozenFrames() >= 35){
         w->setCurrentState(Wrestler::NORMAL);
     }
     //The grabber or grabbee may have been hit while in a grab, so the other may need to be broken out
@@ -444,13 +444,29 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
         }
         //Move if doing nothing else
         else{
+            Wrestler::SpriteState state = w->getCurSpriteState();
             // move left
             if ((sf::Keyboard::isKeyPressed(sf::Keyboard::A) && ai_code == "")
                 || ai_code == "left"){
-                if (w->getCurSpriteState() != Wrestler::RUN_LEFT1)
+                if (state != Wrestler::RUN_LEFT1 && state != Wrestler::RUN_LEFT2
+                    && state != Wrestler::STAND_LEFT)
                     w->setCurSpriteState(Wrestler::RUN_LEFT1);
-                else
-                    w->setCurSpriteState(Wrestler::RUN_LEFT2);
+                else {
+                    if (state == Wrestler::RUN_LEFT1) {
+                        w->setCurSpriteState(Wrestler::STAND_LEFT);
+                        w->setStep(true);
+                    }
+                    else if (state == Wrestler::RUN_LEFT2) {
+                        w->setCurSpriteState(Wrestler::STAND_LEFT);
+                        w->setStep(false);
+                    }
+                    else if (state == Wrestler::STAND_LEFT) {
+                        if (w->getStep())
+                            w->setCurSpriteState(Wrestler::RUN_LEFT2);
+                        else
+                            w->setCurSpriteState(Wrestler::RUN_LEFT1);
+                    }
+                }
 
                 setActorSpd(w, 1, loc_map);
             }
@@ -458,10 +474,25 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
             // move right
             else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::D) && ai_code ==
                 "") || ai_code == "right") {
-                if (w->getCurSpriteState() != Wrestler::RUN_RIGHT1)
+                if (state != Wrestler::RUN_RIGHT1 && state !=
+                    Wrestler::RUN_RIGHT2 && state != Wrestler::STAND_RIGHT)
                     w->setCurSpriteState(Wrestler::RUN_RIGHT1);
-                else
-                    w->setCurSpriteState(Wrestler::RUN_RIGHT2);
+                else {
+                    if (state == Wrestler::RUN_RIGHT1) {
+                        w->setCurSpriteState(Wrestler::STAND_RIGHT);
+                        w->setStep(true);
+                    }
+                    else if (state == Wrestler::RUN_RIGHT2) {
+                        w->setCurSpriteState(Wrestler::STAND_RIGHT);
+                        w->setStep(false);
+                    }
+                    else if (state == Wrestler::STAND_RIGHT) {
+                        if (w->getStep())
+                            w->setCurSpriteState(Wrestler::RUN_RIGHT2);
+                        else
+                            w->setCurSpriteState(Wrestler::RUN_RIGHT1);
+                    }
+                }
 
                 setActorSpd(w, 3, loc_map);
             }
@@ -472,14 +503,25 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
                 // only change the sprite if we're moving faster in this
                 // direction
                 if (abs(w->getVelocity().y) > abs(w->getVelocity().x)) {
-                    if (w->getCurSpriteState() != Wrestler::RUN_UP1 &&
-                        !w->getUpState()) {
+                    if (state != Wrestler::RUN_UP1 && state != Wrestler::RUN_UP2
+                        && state != Wrestler::STAND_UP) {
                         w->setCurSpriteState(Wrestler::RUN_UP1);
-                        w->setUpState(true);
                     }
                     else {
-                        w->setCurSpriteState(Wrestler::RUN_UP2);
-                        w->setUpState(false);
+                        if (state == Wrestler::RUN_UP1) {
+                            w->setCurSpriteState(Wrestler::STAND_UP);
+                            w->setStep(true);
+                        }
+                        else if (state == Wrestler::RUN_UP2) {
+                            w->setCurSpriteState(Wrestler::STAND_UP);
+                            w->setStep(false);
+                        }
+                        else if (state == Wrestler::STAND_UP) {
+                            if (w->getStep())
+                                w->setCurSpriteState(Wrestler::RUN_UP2);
+                            else
+                                w->setCurSpriteState(Wrestler::RUN_UP1);
+                        }
                     }
                 }
                 setActorSpd(w, 0, loc_map);
@@ -490,14 +532,25 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
                 "") || ai_code == "down"){
                 // only change sprite if we're going faster in this direction
                 if (w->getVelocity().y > abs(w->getVelocity().x)) {
-                    if (w->getCurSpriteState() != Wrestler::RUN_DOWN1 &&
-                        !w->getDownState()) {
+                    if (state != Wrestler::RUN_DOWN1 && state !=
+                        Wrestler::RUN_DOWN2 && state != Wrestler::STAND_DOWN) {
                         w->setCurSpriteState(Wrestler::RUN_DOWN1);
-                        w->setDownState(true);
                     }
                     else {
-                        w->setCurSpriteState(Wrestler::RUN_DOWN2);
-                        w->setDownState(false);
+                        if (state == Wrestler::RUN_DOWN1) {
+                            w->setCurSpriteState(Wrestler::STAND_DOWN);
+                            w->setStep(true);
+                        }
+                        else if (state == Wrestler::RUN_DOWN2) {
+                            w->setCurSpriteState(Wrestler::STAND_DOWN);
+                            w->setStep(false);
+                        }
+                        else if (state == Wrestler::STAND_DOWN) {
+                            if (w->getStep())
+                                w->setCurSpriteState(Wrestler::RUN_DOWN2);
+                            else
+                                w->setCurSpriteState(Wrestler::RUN_DOWN1);
+                        }
                     }
                 }
                 setActorSpd(w, 2, loc_map);
@@ -626,22 +679,22 @@ void calcProjectileCollision(std::vector<Collidable*>& actors, int level_w, int 
                 // set projectile velocity based on its direction
                 if (projectiles[j]->getDir() == Projectile::NORTH) {
                     u2.x = 0;
-                    u2.y = -4;
+                    u2.y = -8;
                 }
                 else if (projectiles[j]->getDir() == Projectile::EAST) {
-                    u2.x = 4;
+                    u2.x = 8;
                     u2.y = 0;
                 }
                 else if (projectiles[j]->getDir() == Projectile::SOUTH) {
                     u2.x = 0;
-                    u2.y = 4;
+                    u2.y = 8;
                 }
                 else {
-                    u2.x = -4;
+                    u2.x = -8;
                     u2.y = 0;
                 }
                 float m1 = actors[i]->getWeight();
-                float m2 = 10;
+                float m2 = 15;
                 sf::Vector2f v1 = (u1*(m1-m2)+2.f*m2*u2)/(m1+m2);
 
                 // update actors velocity and reset projectile

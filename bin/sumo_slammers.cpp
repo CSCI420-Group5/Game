@@ -107,7 +107,7 @@ int main(int argc, char** argv)
             {
                 if(level_name != ""){
                     //Load the level
-                    profile.setLives(3);
+                    profile.setLives(5);
                     lev_handler.loadLevel(level, layer, loc_map, level_name,
                             profile, num_bad_guys);
 
