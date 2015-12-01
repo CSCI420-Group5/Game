@@ -23,7 +23,7 @@ bool isSlideOffEdge (Collidable* ai_sumo, LocationalMap& loc_map)
     return off_edge;
 }
 
-void AIView::setAISpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors)
+void basicSetSpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors)
 {
     Wrestler* ai_wrest = dynamic_cast<Wrestler*>(ai_sumo);
 
@@ -68,6 +68,24 @@ void AIView::setAISpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<C
         else if (player_pos.y > ai_pos.y){
             getInputSetSpd(ai_wrest, loc_map, actors, "down");
         }
+    }
+}
+
+void fumioSetSpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors)
+{
+    //Could implement grabbing and dashing here
+
+    basicSetSpd(ai_sumo, loc_map, actors);
+}
+
+void AIView::setAISpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors)
+{
+    if (ai_sumo->getName() == "GreyRobot" || ai_sumo->getName() == "GreenRobot" ||
+        ai_sumo->getName() == "RedRobot" || ai_sumo->getName() == "BlueRobot"){
+        basicSetSpd(ai_sumo, loc_map, actors);
+    }
+    else if (ai_sumo->getName() == "Fumio"){
+        fumioSetSpd(ai_sumo, loc_map, actors);
     }
 }
 
