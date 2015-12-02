@@ -2,8 +2,6 @@
    Main game loop
  */
 
-#include <iostream>
-#include <cstdlib>
 #include <SFML/Graphics.hpp>
 #include "Wrestler.h"
 #include "LocationalMap.h"
@@ -26,6 +24,19 @@ int main(int argc, char** argv)
     // vectors of collidable objects and set of collisions
     std::vector<Collidable*> actors;
     std::vector<std::set<long int> > collision_sets;
+
+    // load sound files
+    sf::SoundBuffer wilhelm_buffer;
+    wilhelm_buffer.loadFromFile("resources/wilhelm.wav");
+
+    sf::Sound *wilhelm_scream = new sf::Sound();
+    wilhelm_scream->setBuffer(wilhelm_buffer);
+
+    sf::SoundBuffer grab_buffer;
+    grab_buffer.loadFromFile("resources/grab.wav");
+
+    sf::Sound *grab_sound = new sf::Sound();
+    grab_sound->setBuffer(grab_buffer);
 
     // start main loop
     while(App.isOpen())
@@ -140,9 +151,12 @@ int main(int argc, char** argv)
                         for (unsigned int i=0; i<actors.size(); i++) {
                             if (actors[i]->isWrestler()) {
                                 if (dynamic_cast<Wrestler*>(actors[i])->isHuman())
-                                    getInputSetSpd(actors[i], loc_map, actors, "");
-                                else
-                                    ai_view.setAISpd(actors[i], loc_map, actors);
+                                    getInputSetSpd(actors[i], loc_map, actors,
+                                    "", grab_sound);
+                                else {
+                                    ai_view.setAISpd(actors[i], loc_map,
+                                    actors, NULL);
+                                }
                             }
                         }
 
@@ -162,8 +176,8 @@ int main(int argc, char** argv)
 
                         calcProjectileCollision(actors, loc_map.getLevelWidth(), loc_map.getLevelHeight());
 
-                        moveActors(actors, loc_map, profile, lev_handler, sf_view,
-                                num_bad_guys);
+                        moveActors(actors, loc_map, profile, lev_handler,
+                        sf_view, num_bad_guys, wilhelm_scream);
 
                         // clear location map
                         loc_map.clearCells();
@@ -246,6 +260,8 @@ int main(int argc, char** argv)
             level_name = "";
         }
     }
+    delete grab_sound;
+    delete wilhelm_scream;
 
     // Done.
     return 0;

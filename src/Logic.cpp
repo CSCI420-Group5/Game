@@ -1,4 +1,5 @@
 #include "Logic.h"
+#include "SFML/Audio.hpp"
 #include <cmath>
 #include <set>
 #include <iostream>
@@ -166,7 +167,8 @@ std::vector<std::set<long int> > findFutureCollisions(LocationalMap& loc_map,
     return collision_sets;
 }
 
-void grabProcedure(Wrestler* w, LocationalMap& loc_map, std::vector<Collidable*>& actors)
+void grabProcedure(Wrestler* w, LocationalMap& loc_map,
+std::vector<Collidable*>& actors, sf::Sound *sound)
 {
     //How far away the wrestler can grab
     int range = 20;
@@ -222,12 +224,14 @@ void grabProcedure(Wrestler* w, LocationalMap& loc_map, std::vector<Collidable*>
 
         //Can't grab with too low stamina or if the other wrestler is dashing
         else if(w->getStamina() > 24 && other->getCurrentState() != Wrestler::DASH){
+            sound->play();
             w->useGrab(other, loc_map.getLevelWidth(), loc_map.getLevelHeight());
         }
         loc_map.clearCells();
     }
     //Missed the grab, PENALTY
     else if (w->getStamina() > 24){
+        sound->play();
         w->depleteStamina(25);
         w->setCurrentState(Wrestler::NOGRAB);
         w->resetFrozenFrames();
@@ -235,7 +239,8 @@ void grabProcedure(Wrestler* w, LocationalMap& loc_map, std::vector<Collidable*>
 }
 
 void updateDeaths(LocationalMap& loc_map, std::vector<Collidable*> &actors,
-Profile& profile, LevelHandler& lev_handler, int &num_bad_guys)
+Profile& profile, LevelHandler& lev_handler, int &num_bad_guys, sf::Sound
+*wilhelm)
 {
     std::vector<long int> tmp;
     Collidable* tmp_actor;
@@ -265,6 +270,7 @@ Profile& profile, LevelHandler& lev_handler, int &num_bad_guys)
                     delete actors[i];
                     actors.erase(actors.begin()+i);
                     num_bad_guys--;
+                    wilhelm->play();
                 }
             }
             else { // projectiles
@@ -281,11 +287,12 @@ Profile& profile, LevelHandler& lev_handler, int &num_bad_guys)
 }
 
 void moveActors(std::vector<Collidable*> &actors, LocationalMap& loc_map,
-Profile& profile, LevelHandler& lev_handler, sf::View sf_view, int &num_bad_guys)
+Profile& profile, LevelHandler& lev_handler, sf::View sf_view, int
+&num_bad_guys, sf::Sound *wilhelm)
 {
     for (unsigned int i=0; i<actors.size(); i++) {
         actors[i]->move(loc_map.getFriction(), loc_map.getLevelWidth(),
-        loc_map.getLevelHeight()); // Placeholder for friction
+        loc_map.getLevelHeight());
 
         // if a wrestler stopped moving, update to standing sprite
         if (actors[i]->isWrestler()) {
@@ -363,7 +370,7 @@ Profile& profile, LevelHandler& lev_handler, sf::View sf_view, int &num_bad_guys
         }
     }
 
-    updateDeaths(loc_map, actors, profile, lev_handler, num_bad_guys);
+    updateDeaths(loc_map, actors, profile, lev_handler, num_bad_guys, wilhelm);
 }
 
 void setActorSpd(Wrestler* actor, int dir, LocationalMap &loc_map)
@@ -399,7 +406,8 @@ void setActorSpd(Wrestler* actor, int dir, LocationalMap &loc_map)
         }
 }
 
-void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Collidable*>& actors, std::string ai_code)
+void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map,
+std::vector<Collidable*>& actors, std::string ai_code, sf::Sound *sound)
 //void getInputSetSpd(Wrestler* sumo)
 {
     Wrestler *w = dynamic_cast<Wrestler*>(wrestler);
@@ -440,7 +448,7 @@ void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Co
 
         // grab: dash will have precedence over this
         else if (w->getCurrentState() == Wrestler::NORMAL && sf::Keyboard::isKeyPressed(sf::Keyboard::K) && ai_code == ""){
-            grabProcedure(w, loc_map, actors);
+            grabProcedure(w, loc_map, actors, sound);
         }
         //Move if doing nothing else
         else{
@@ -624,8 +632,8 @@ std::vector<std::set<long int> > calcCollision(LocationalMap& loc_map,
         float m1 = sel_actors[0]->getWeight();
         float m2 = sel_actors[1]->getWeight();
 
-        sf::Vector2f v1 = (u1*(m1-m2)+2.f*m2*u2)/(m1+m2);
-        sf::Vector2f v2 = (u2*(m2-m1)+2.f*m1*u1)/(m1+m2);
+        sf::Vector2f v1 = ((u1*(m1-m2))+2.f*m2*u2)/(m1+m2);
+        sf::Vector2f v2 = ((u2*(m2-m1))+2.f*m1*u1)/(m1+m2);
 
         //Set new speeds
         sel_actors[0]->setVelocity(v1.x, v1.y, loc_map.getLevelWidth(),
@@ -698,7 +706,7 @@ void calcProjectileCollision(std::vector<Collidable*>& actors, int level_w, int 
                 sf::Vector2f v1 = (u1*(m1-m2)+2.f*m2*u2)/(m1+m2);
 
                 // update actors velocity and reset projectile
-                actors[i]->setVelocity(v1.x,v1.y, level_w, level_h);
+                actors[i]->setVelocity(v1.x,v1.y,level_w, level_h);
                 projectiles[j]->shootBall();
 
 //                // add to collision sets if not already there

@@ -1,8 +1,8 @@
 #ifndef AIVIEW_H
 #define AIVIEW_H
+#include "SFML/Audio.hpp"
 #include "Collidable.h"
 #include "LocationalMap.h"
-
 
 class AIView
 {
@@ -10,7 +10,8 @@ class AIView
         AIView();
         virtual ~AIView();
 
-        void setAISpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors);
+        void setAISpd(Collidable* ai_sumo, LocationalMap& loc_map,
+        std::vector<Collidable*>& actors, sf::Sound *sound);
     protected:
     private:
 };
