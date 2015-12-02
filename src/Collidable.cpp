@@ -216,11 +216,17 @@ void Collidable::setVelocity(float x, float y, int level_w, int level_h)
     if (x > speed){
         velocity.x = speed;
     }
+    else if (x < -speed) {
+        velocity.x = -speed;
+    }
     else{
         velocity.x = x;
     }
     if (y > speed){
         velocity.y = speed;
+    }
+    else if (y < -speed) {
+        velocity.y = -speed;
     }
     else{
         velocity.y = y;

@@ -33,7 +33,8 @@ bool isSlideOffEdge (Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Co
     return off_edge;
 }
 
-void basicSetSpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors)
+void basicSetSpd(Collidable* ai_sumo, LocationalMap& loc_map,
+std::vector<Collidable*>& actors, sf::Sound *sound)
 {
     Wrestler* ai_wrest = dynamic_cast<Wrestler*>(ai_sumo);
 
@@ -41,19 +42,19 @@ void basicSetSpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collid
     if (isSlideOffEdge(ai_wrest, loc_map, actors)){
         // move left if moving right now
         if (ai_wrest->getVelocity().x > 0){
-            getInputSetSpd(ai_wrest, loc_map, actors, "left");
+            getInputSetSpd(ai_wrest, loc_map, actors, "left", sound);
         }
         // move right if moving left now
         else if (ai_wrest->getVelocity().x < 0){
-            getInputSetSpd(ai_wrest, loc_map, actors, "right");
+            getInputSetSpd(ai_wrest, loc_map, actors, "right", sound);
         }
         // move up if moving down now
         if (ai_wrest->getVelocity().y > 0){
-            getInputSetSpd(ai_wrest, loc_map, actors, "up");
+            getInputSetSpd(ai_wrest, loc_map, actors, "up", sound);
         }
         // move down if moving up now
         else if (ai_wrest->getVelocity().y < 0){
-            getInputSetSpd(ai_wrest, loc_map, actors, "down");
+            getInputSetSpd(ai_wrest, loc_map, actors, "down", sound);
         }
     }
 
@@ -64,38 +65,40 @@ void basicSetSpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collid
 
         // move left
         if (player_pos.x < ai_pos.x){
-            getInputSetSpd(ai_wrest, loc_map, actors, "left");
+            getInputSetSpd(ai_wrest, loc_map, actors, "left", sound);
         }
         // move right
         else if (player_pos.x > ai_pos.x){
-            getInputSetSpd(ai_wrest, loc_map, actors, "right");
+            getInputSetSpd(ai_wrest, loc_map, actors, "right", sound);
         }
         // move up
         if (player_pos.y < ai_pos.y){
-            getInputSetSpd(ai_wrest, loc_map, actors, "up");
+            getInputSetSpd(ai_wrest, loc_map, actors, "up", sound);
         }
         // move down
         else if (player_pos.y > ai_pos.y){
-            getInputSetSpd(ai_wrest, loc_map, actors, "down");
+            getInputSetSpd(ai_wrest, loc_map, actors, "down", sound);
         }
     }
 }
 
-void fumioSetSpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors)
+void takeshiSetSpd(Collidable* ai_sumo, LocationalMap& loc_map,
+std::vector<Collidable*>& actors, sf::Sound *sound)
 {
     //Could implement grabbing and dashing here
 
-    basicSetSpd(ai_sumo, loc_map, actors);
+    basicSetSpd(ai_sumo, loc_map, actors, sound);
 }
 
-void AIView::setAISpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors)
+void AIView::setAISpd(Collidable* ai_sumo, LocationalMap& loc_map,
+std::vector<Collidable*>& actors, sf::Sound *sound)
 {
     if (ai_sumo->getName() == "GreyRobot" || ai_sumo->getName() == "GreenRobot" ||
         ai_sumo->getName() == "RedRobot" || ai_sumo->getName() == "BlueRobot"){
-        basicSetSpd(ai_sumo, loc_map, actors);
+        basicSetSpd(ai_sumo, loc_map, actors, sound);
     }
     else if (ai_sumo->getName() == "Takeshi"){
-        fumioSetSpd(ai_sumo, loc_map, actors);
+        takeshiSetSpd(ai_sumo, loc_map, actors, sound);
     }
 }
 

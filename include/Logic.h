@@ -2,6 +2,7 @@
 #define LOGIC_H
 
 #include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 #include "Wrestler.h"
 #include "Projectile.h"
 #include "LocationalMap.h"
@@ -12,9 +13,10 @@
 
 void moveActors(std::vector<Collidable*> &actors, LocationalMap& loc_map,
 Profile& profile, LevelHandler& lev_handler, sf::View sf_view, int
-&num_bad_guys);
+&num_bad_guys, sf::Sound *wilhelm);
 
-void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map, std::vector<Collidable*>& actors, std::string ai_code);
+void getInputSetSpd(Collidable* wrestler, LocationalMap& loc_map,
+std::vector<Collidable*>& actors, std::string ai_code, sf::Sound *sound);
 
 //void setAISpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors);
 
