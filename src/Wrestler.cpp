@@ -379,7 +379,7 @@ void Wrestler::setCharacter(std::string character_name)
         setStats(18, 5, 9, 50);
     }
     else if(character_name == "Takeshi"){
-        setStats(12, 12, 23, 100);
+        setStats(12, 12, 22, 100);
     }
 
     setName(character_name);

@@ -336,13 +336,13 @@ Profile& profile, LevelHandler& lev_handler, sf::View sf_view, int
             }
             else {
                 if (dir == Projectile::NORTH)
-                    proj->moveBall(0,-8);
+                    proj->moveBall(0,-7);
                 else if (dir == Projectile::EAST)
-                    proj->moveBall(8,0);
+                    proj->moveBall(7,0);
                 else if (dir == Projectile::SOUTH)
-                    proj->moveBall(0,8);
+                    proj->moveBall(0,7);
                 else
-                    proj->moveBall(-8,0);
+                    proj->moveBall(-7,0);
             }
 
             // check to see if we should change the base direction
@@ -687,18 +687,18 @@ void calcProjectileCollision(std::vector<Collidable*>& actors, int level_w, int 
                 // set projectile velocity based on its direction
                 if (projectiles[j]->getDir() == Projectile::NORTH) {
                     u2.x = 0;
-                    u2.y = -8;
+                    u2.y = -7;
                 }
                 else if (projectiles[j]->getDir() == Projectile::EAST) {
-                    u2.x = 8;
+                    u2.x = 7;
                     u2.y = 0;
                 }
                 else if (projectiles[j]->getDir() == Projectile::SOUTH) {
                     u2.x = 0;
-                    u2.y = 8;
+                    u2.y = 7;
                 }
                 else {
-                    u2.x = -8;
+                    u2.x = -7;
                     u2.y = 0;
                 }
                 float m1 = actors[i]->getWeight();
