@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="250" height="100" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="tiles" tilewidth="32" tileheight="32" tilecount="900">
+  <image source="hyptosis.png" width="960" height="960"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="250" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztwzEJAAAMA7DCBNS/29rYkUB6SVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVdWXB3hB3is=
+  </data>
+ </layer>
+</map>
