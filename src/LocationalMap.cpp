@@ -68,12 +68,24 @@ void LocationalMap::addFuture(std::vector<Collidable*>& actors)
         int width = 0;
         size_t n;
 
+        sf::Vector2f actor_pos = actors[w]->getMovedPos(level_w, level_h);
+        int actor_w = actors[w]->getWidth();
+        int actor_h = actors[w]->getHeight();
+
         //Find all of the i rows that the object occupies
-        while((height + cell_size) <= actors[w]->getMovedPos(level_w, level_h).y && height <= level_h){
-            height += cell_size;
-            i++;
+        i = (int)actor_pos.y / cell_size;
+        height = i*cell_size;
+
+        if (height > level_h){
+            height = level_h;
+            i = level_h/cell_size;
         }
-        while(height < (actors[w]->getMovedPos(level_w, level_h).y + actors[w]->getHeight()) && height <= level_h){
+        else if (height < 0){
+            height = 0;
+            i = 0;
+        }
+
+        while(height < (actor_pos.y + actor_h) && height <= level_h){
             add_rows.push_back(i);
             height += cell_size;
             i++;
@@ -81,11 +93,19 @@ void LocationalMap::addFuture(std::vector<Collidable*>& actors)
 
         //Find all of the j columns that the object occupies
         //And add the object to the cell list for each row for each column
-        while((width + cell_size) <= actors[w]->getMovedPos(level_w, level_h).x && width <= level_w){
-            width += cell_size;
-            j++;
+        j = (int)actor_pos.x / cell_size;
+        width = j*cell_size;
+
+        if (width > level_w){
+            width = level_w;
+            j = level_w/cell_size;
         }
-        while(width < (actors[w]->getMovedPos(level_w, level_h).x + actors[w]->getWidth()) && width <= level_w){
+        else if (width < 0){
+            width = 0;
+            j = 0;
+        }
+
+        while(width < (actor_pos.x + actor_w) && width <= level_w){
             for (n = 0; n < add_rows.size(); n++){
                 cells[add_rows[n]*cols+j].addID(actors[w]->getID());
             }
@@ -107,12 +127,24 @@ void LocationalMap::addCurrent(std::vector<Collidable*>& actors)
         int width = 0;
         size_t n;
 
+        sf::Vector2f actor_pos = actors[w]->getPos();
+        int actor_w = actors[w]->getWidth();
+        int actor_h = actors[w]->getHeight();
+
         //Find all of the i rows that the object occupies
-        while((height + cell_size) <= actors[w]->getPos().y && height <= level_h){
-            height += cell_size;
-            i++;
+        i = (int)actor_pos.y / cell_size;
+        height = i*cell_size;
+
+        if (height > level_h){
+            height = level_h;
+            i = level_h/cell_size;
         }
-        while(height < (actors[w]->getPos().y + actors[w]->getHeight()) && height <= level_h){
+        else if (height < 0){
+            height = 0;
+            i = 0;
+        }
+
+        while(height < (actor_pos.y + actor_h) && height <= level_h){
             add_rows.push_back(i);
             height += cell_size;
             i++;
@@ -120,11 +152,19 @@ void LocationalMap::addCurrent(std::vector<Collidable*>& actors)
 
         //Find all of the j columns that the object occupies
         //And add the object to the cell list for each row for each column
-        while((width + cell_size) <= actors[w]->getPos().x && width <= level_w){
-            width += cell_size;
-            j++;
+        j = (int)actor_pos.x / cell_size;
+        width = j*cell_size;
+
+        if (width > level_w){
+            width = level_w;
+            j = level_w/cell_size;
         }
-        while(width < (actors[w]->getPos().x + actors[w]->getWidth()) && width <= level_w){
+        else if (width < 0){
+            width = 0;
+            j = 0;
+        }
+
+        while(width < (actor_pos.x + actor_w) && width <= level_w){
             for (n = 0; n < add_rows.size(); n++){
                 cells[add_rows[n]*cols+j].addID(actors[w]->getID());
             }
@@ -145,23 +185,43 @@ bool LocationalMap::isActorOffEdge(Collidable* actor)
     size_t n;
     bool off_edge = true;
 
+    sf::Vector2f actor_pos = actor->getPos();
+    int actor_w = actor->getWidth();
+    int actor_h = actor->getHeight();
+
     //Find all of the i rows that the object occupies
-    while((height + cell_size) <= actor->getPos().y && height <= level_h){
-        height += cell_size;
-        i++;
+    i = (int)actor_pos.y / cell_size;
+    height = i*cell_size;
+
+    if (height > level_h){
+        height = level_h;
+        i = level_h/cell_size;
     }
-    while(height < (actor->getPos().y + actor->getHeight()) && height <= level_h){
+    else if (height < 0){
+        height = 0;
+        i = 0;
+    }
+
+    while(height < (actor_pos.y + actor_h) && height <= level_h){
         add_rows.push_back(i);
         height += cell_size;
         i++;
     }
 
     //Find all of the j columns that the object occupies
-    while((width + cell_size) <= actor->getPos().x && width <= level_w){
-        width += cell_size;
-        j++;
+    j = (int)actor_pos.x / cell_size;
+    width = j*cell_size;
+
+    if (width > level_w){
+        width = level_w;
+        j = level_w/cell_size;
     }
-    while(width < (actor->getPos().x + actor->getWidth()) && width <= level_w){
+    else if (width < 0){
+        width = 0;
+        j = 0;
+    }
+
+    while(width < (actor_pos.x + actor_w) && width <= level_w){
         for (n = 0; n < add_rows.size(); n++){
             if (cells[add_rows[n]*cols+j].isStandable()){
                 off_edge = false;

@@ -6,13 +6,23 @@ AIView::AIView()
     //ctor
 }
 
-bool isSlideOffEdge (Collidable* ai_sumo, LocationalMap& loc_map)
+bool isSlideOffEdge (Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors)
 {
     sf::Vector2f old_pos = ai_sumo->getPos();
     sf::Vector2f old_vel = ai_sumo->getVelocity();
 
-    while(!(ai_sumo->getVelocity().x == 0 && ai_sumo->getVelocity().y == 0)){
+    sf::RectangleShape player_box(sf::Vector2f(actors[0]->getWidth(),actors[0]->getHeight()));
+    player_box.setPosition(actors[0]->getPos());
+    sf::FloatRect player_bounds = player_box.getGlobalBounds();
+
+    sf::RectangleShape ai_box(sf::Vector2f(ai_sumo->getWidth(),ai_sumo->getHeight()));
+    ai_box.setPosition(ai_sumo->getPos());
+    sf::FloatRect ai_bounds = ai_box.getGlobalBounds();
+
+    while(!(ai_sumo->getVelocity().x == 0 && ai_sumo->getVelocity().y == 0) && !ai_bounds.intersects(player_bounds)){
         ai_sumo->move(loc_map.getFriction(), loc_map.getLevelWidth(), loc_map.getLevelHeight());
+        ai_box.setPosition(ai_sumo->getPos());
+        ai_bounds = ai_box.getGlobalBounds();
     }
 
     bool off_edge = loc_map.isActorOffEdge(ai_sumo);
@@ -28,7 +38,7 @@ void basicSetSpd(Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collid
     Wrestler* ai_wrest = dynamic_cast<Wrestler*>(ai_sumo);
 
     //Reverse directions if the ai is sliding off the level's edge on its current path
-    if (isSlideOffEdge(ai_wrest, loc_map)){
+    if (isSlideOffEdge(ai_wrest, loc_map, actors)){
         // move left if moving right now
         if (ai_wrest->getVelocity().x > 0){
             getInputSetSpd(ai_wrest, loc_map, actors, "left");

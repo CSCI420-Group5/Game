@@ -263,7 +263,7 @@ void PlayerView::setSprite(Collidable* actor)
         Projectile::SpriteState state = proj->getState();
         sf::Vector2f pos = proj->getPos();
         sprite.setPosition(pos.x-(100-proj->getWidth())/2,pos.y-(90-proj->getHeight()));
-        
+
         if (state == Projectile::UP)
             sprite.setTextureRect(sf::IntRect(300,600,100,100));
 
@@ -322,7 +322,7 @@ void PlayerView::drawActors(sf::RenderWindow& App, std::vector<Collidable*> acto
     for(unsigned int i = 0; i < actors.size(); i++){
         setSprite(actors[i]);
         App.draw(sprite);
-        
+
         // draw projectile ball
         if (actors[i]->hasProjectile()) {
             Projectile *proj = dynamic_cast<Projectile*>(actors[i]);
