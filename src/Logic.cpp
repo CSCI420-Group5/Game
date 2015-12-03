@@ -324,13 +324,13 @@ Profile& profile, LevelHandler& lev_handler, sf::View sf_view, int
             Projectile::Dir dir = proj->getDir();
             if ((dir == Projectile::EAST || dir == Projectile::WEST) &&
                 (!proj->hasShot() || ball_pos.x > player_pos.x+view_size.x/2 ||
-                ball_pos.x < player_pos.x-view_size.x/2)) {
+                ball_pos.x+70 < player_pos.x-view_size.x/2)) {
                 proj->shootBall();
                 proj->setHasShot(true);
             }
             else if ((dir == Projectile::NORTH || dir == Projectile::SOUTH) &&
                 (!proj->hasShot() || ball_pos.y > player_pos.y+view_size.y/2 ||
-                ball_pos.y < player_pos.y-view_size.y/2)) {
+                ball_pos.y+70 < player_pos.y-view_size.y/2)) {
                 proj->shootBall();
                 proj->setHasShot(true);
             }

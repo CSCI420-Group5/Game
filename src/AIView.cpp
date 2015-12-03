@@ -8,6 +8,7 @@ AIView::AIView()
 
 bool isSlideOffEdge (Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Collidable*>& actors)
 {
+    bool off_edge = false;
     sf::Vector2f old_pos = ai_sumo->getPos();
     sf::Vector2f old_vel = ai_sumo->getVelocity();
 
@@ -19,13 +20,14 @@ bool isSlideOffEdge (Collidable* ai_sumo, LocationalMap& loc_map, std::vector<Co
     ai_box.setPosition(ai_sumo->getPos());
     sf::FloatRect ai_bounds = ai_box.getGlobalBounds();
 
-    while(!(ai_sumo->getVelocity().x == 0 && ai_sumo->getVelocity().y == 0) && !ai_bounds.intersects(player_bounds)){
+    while(!(ai_sumo->getVelocity().x == 0 && ai_sumo->getVelocity().y == 0) && !ai_bounds.intersects(player_bounds) &&
+          !off_edge){
         ai_sumo->move(loc_map.getFriction(), loc_map.getLevelWidth(), loc_map.getLevelHeight());
         ai_box.setPosition(ai_sumo->getPos());
         ai_bounds = ai_box.getGlobalBounds();
-    }
 
-    bool off_edge = loc_map.isActorOffEdge(ai_sumo);
+        off_edge = loc_map.isActorOffEdge(ai_sumo);
+    }
 
     ai_sumo->setPos(old_pos.x, old_pos.y);
     ai_sumo->setVelocity(old_vel.x, old_vel.y, loc_map.getLevelWidth(), loc_map.getLevelHeight());
